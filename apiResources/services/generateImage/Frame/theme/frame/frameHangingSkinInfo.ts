@@ -1,4 +1,4 @@
-import ProductCode from "constants/ProductCode";
+import ProductCode from "apiResources/constants/ProductCode";
 
 export default {
   [ProductCode.FRAME_GENERIC_A1]: {
