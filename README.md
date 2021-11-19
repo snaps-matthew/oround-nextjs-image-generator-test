@@ -23,6 +23,10 @@ npm run dev
 - Github - current
 - [Vercel](https://vercel.com/snaps-fe/oround-nextjs-image-generator)
 
+- CDN
+  - 운영
+    - https://product-image.oround.com <-> https://oround-nextjs-image-generator.vercel.app
+
 ##
 ### Client
 TBD:
