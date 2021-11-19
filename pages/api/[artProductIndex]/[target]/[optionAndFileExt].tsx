@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const categoryName = productEditInfo.groupDelimiterName
     const productCode = productEditInfo.productCode
-    const imageComposer = await generateImage({ thumbnailImage,categoryName,productCode,target,optionInfo })
+    // const imageComposer = await generateImage({ thumbnailImage,categoryName,productCode,target,optionInfo })
 
     console.log(productEditInfo)
     res.status(HttpResponseStatusCode.SUCCESS);
