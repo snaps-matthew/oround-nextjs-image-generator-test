@@ -1,0 +1,33 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "node": true
+  },
+  "parserOptions": {
+    "project": ["tsconfig.json"]
+  },
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    // Airbnb style guide 적용
+    "airbnb-typescript",
+    // eslint-plugin-prettier + eslint-config-prettier 동시 적용
+    "plugin:prettier/recommended"
+  ],
+  "rules": {
+    // 함수 호출 뒤에 띄어쓰기
+    "func-call-spacing": ["error", "never"],
+    // 콤마 앞 띄어쓰기 없고 뒤는 띄어쓰기 있고
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    // var 쓰면 에러
+    "@typescript-eslint/no-unused-vars": "error",
+    // any 쓰면 경고
+    "@typescript-eslint/no-explicit-any": "warn",
+    // '==' 및 '!=' 사용 금지
+    "eqeqeq": ["error", "always"],
+    // ""보다 템플릿 리터럴 사용
+    "prefer-template": "error"
+  }
+}
