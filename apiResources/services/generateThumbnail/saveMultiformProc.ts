@@ -12,15 +12,14 @@ import { drawPositionScene } from 'apiResources/services/drawPositionScene'
 import  {PAPER} from 'apiResources/constants/paperList'
 import {TYPE} from "../../constants/type";
 
-const saveMultiformProc = async (productEditInfo:any, optionInfo:any, targetAndFileExt:any) => {
+const saveMultiformProc = async (productEditInfo:any, optionInfo:any, target:any) => {
   const productCode = productEditInfo.productCode;
   const categoryCode = productEditInfo.productCode.slice(0,3);
-  const target = targetAndFileExt.split('.');
   let scene
   if(productEditInfo.edit.length>1 && productEditInfo.groupDelimiterName === "apparel"){
     scene = productEditInfo.edit.find((obj:any) => {
       return (
-        obj.type === target[0]
+        obj.type === target
       )
     })
   }else{
