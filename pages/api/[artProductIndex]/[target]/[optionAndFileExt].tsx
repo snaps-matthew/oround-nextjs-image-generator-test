@@ -90,8 +90,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
 
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-    let thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo, target);
-    // const imageComposer = await generateImage({ categoryCode, productCode, })
+    let thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
+
+    const categoryName = productEditInfo.groupDelimiterName
+    const productCode = productEditInfo.productCode
+    const imageComposer = await generateImage({ thumbnailImage,categoryName,productCode,target,optionInfo })
+
     console.log(productEditInfo)
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
