@@ -1,4 +1,4 @@
-import CommonCode from "constants/CommonCode";
+import CommonCode from "apiResources/constants/CommonCode";
 
 export default {
   [CommonCode.FRAME_WOOD]: {   // wood frame
