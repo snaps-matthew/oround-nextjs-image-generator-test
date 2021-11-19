@@ -11,17 +11,22 @@ import { newCanvas } from 'apiResources/utils/newCanvas'
 import { drawPositionScene } from 'apiResources/services/drawPositionScene'
 import  {PAPER} from 'apiResources/constants/paperList'
 import {TYPE} from "../../constants/type";
+import CommonCode from "apiResources/constants/CommonCode";
 
-const saveMultiformProc = async (productEditInfo:any, optionInfo:any, targetAndFileExt:any) => {
+const saveMultiformProc = async (productEditInfo:any, optionInfo:any) => {
   const productCode = productEditInfo.productCode;
   const categoryCode = productEditInfo.productCode.slice(0,3);
-  const target = targetAndFileExt.split('.');
+  let printPosition:string;
+  if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_FRONT){
+    printPosition = 'front'
+  }else if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_BACK){
+    printPosition = 'back'
+  }
+
   let scene
   if(productEditInfo.edit.length>1 && productEditInfo.groupDelimiterName === "apparel"){
     scene = productEditInfo.edit.find((obj:any) => {
-      return (
-        obj.type === target[0]
-      )
+      return  obj.type === printPosition
     })
   }else{
     scene = productEditInfo.edit[0]
