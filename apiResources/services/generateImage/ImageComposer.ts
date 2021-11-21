@@ -12,7 +12,7 @@ import { ImageCanvasInterface } from '../../interfaces/ImageCanvasInterface';
 
 // import coordinateData from '../../constants/'
 
-class ImageComposer implements ImageCanvasInterface {
+class ImageComposer {
   protected categoryName: string;
   protected productCode: string;
   protected productPath: string;
@@ -100,7 +100,7 @@ class ImageComposer implements ImageCanvasInterface {
     this.productEditInfo = data.productEditInfo
   }
 
-  async composite(): Promise<void> {}
+  // async composite(): Promise<void> {}
 
   drawObject(source: Image | Canvas, target: Canvas, x: number, y: number, width: number, height: number, angle: number = 0, skew: number=0) {
     const ctx = target.getContext('2d');
