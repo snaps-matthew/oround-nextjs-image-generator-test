@@ -18,12 +18,12 @@ class SmartTok extends ImageComposer {
 
   async composite() {
 
-    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, productOption, thumbnailImage, colorCode, sizeCode } = this;
+    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, productOption, thumbnailImage, colorCode, sizeCode, optionInfo } = this;
 
     // 리스트 && 상세이미지 용도별로 내려주기
     if (target === TargetType.STORE_LIST_1) {
 
-      return await createImageOfStoreList({ productCode, thumbnailImage, productOption, colorCode })
+      return await createImageOfStoreList({ productCode, optionInfo })
 
     }else if (target === TargetType.STORE_DETAIL_2) {
       // 아트워크 리사이징
