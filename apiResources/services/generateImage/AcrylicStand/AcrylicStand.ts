@@ -29,14 +29,14 @@ class AcrylicStand extends ImageCanvas {
     // resizeToCorrectSize(productSize, templateImage.width, templateImage.height);
     // loadedImages = removeCuttingLine(loadedImages, productSize);
 
-    if (this.target === TargetType.STORE_DETAIL_0) {
+    if (this.target === TargetType.STORE_DETAIL_2) {
       // templateImage = loadedImages[0];
       await createImageOfStoreDetail_0({ productCode, templateImage, canvas});
 
-    } else if (this.target === TargetType.STORE_DETAIL_1) {
+    } else if (this.target === TargetType.STORE_DETAIL_3) {
       // await createImageOfStoreDetail_1({ productCode, loadedImages, canvas, drawObject });
 
-    } else if (this.target === TargetType.STORE_LIST) {
+    } else if (this.target === TargetType.STORE_LIST_1) {
       // templateImage = loadedImages[0];
       // await createImageOfStoreList({ productCode, templateImage, canvas });
 

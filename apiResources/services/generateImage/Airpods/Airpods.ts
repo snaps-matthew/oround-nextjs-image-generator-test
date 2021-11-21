@@ -5,12 +5,12 @@ import {setDisplayMM} from "apiResources/services/setDisplayMM";
 import {removeCuttingLine} from "apiResources/services/removeCuttingLine";
 import ImageCanvas from "apiResources/services/generateImage/ImageCanvas";
 import {resizeToCorrectSize} from "apiResources/services/resizeToCorrectSize";
-import {createImageOfStoreList} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreList";
-import {createImageOfStoreDetail_1} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreDetail_1";
-import {createImageOfStoreDetail_0} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreDetail_0";
+import {createImageOfStoreList} from "apiResources/services/generateImage/Airpods/createImageOfStoreList";
+// import {createImageOfStoreDetail_1} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreDetail_1";
+// import {createImageOfStoreDetail_0} from "apiResources/services/generateImage/Airpods/createImageOfStoreDetail_0";
 import {loadImage} from "../../../utils/loadImage";
 
-class PhoneCase extends ImageCanvas {
+class AirPods extends ImageCanvas {
   constructor() {
     super();
   }
@@ -23,13 +23,13 @@ class PhoneCase extends ImageCanvas {
     if (this.target === TargetType.STORE_LIST_1) {
       await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
     } else if (this.target === TargetType.STORE_DETAIL_2) {
-      // await createImageOfStoreDetail_1({ productCode, loadedImages, canvas, drawObject });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
     } else if (this.target === TargetType.STORE_DETAIL_3) {
-      // templateImage = loadedImages[0];
-      await createImageOfStoreDetail_0({ productCode, templateImage, canvas});
-
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+    } else if (this.target === TargetType.STORE_DETAIL_4) {
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
     }
   }
 }
 
-export default PhoneCase;
+export default AirPods;

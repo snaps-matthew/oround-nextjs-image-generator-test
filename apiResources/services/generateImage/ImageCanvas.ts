@@ -11,27 +11,28 @@ class ImageCanvas implements ImageCanvasInterface {
   protected backCode: string;
   protected target: string;
   protected ext: string;
-  protected option: string;
   protected thumbnailImage: Canvas;
   protected productSizeInfo: any;
   protected canvas: Canvas;
   public contentType: string;
-
+  protected optionInfo: any;
+  protected productEditInfo: any;
   constructor() {
     this.categoryCode = '';
     this.productCode = '';
     this.paperCode = '';
     this.backCode = '';
     this.target = '';
-    this.option = '';
     this.ext = '';
     this.contentType = '';
     this.thumbnailImage = createCanvas(10,10);
     this.productSizeInfo = [];
     this.canvas = createCanvas(10,10);
+    this.optionInfo = '';
+    this.productEditInfo = ''
   }
 
-  init(props: { categoryCode: string, productCode: string, target: string, optionInfo: any;  thumbnailImage: Canvas, productSizeInfo: any}) {
+  init(props: { categoryCode: string, productCode: string, target: string, productEditInfo:any, optionInfo: any;  thumbnailImage: Canvas, productSizeInfo: any}) {
     const ext = props.optionInfo.ext;
     this.categoryCode = props.categoryCode;
     this.productCode = props.productCode;
@@ -40,9 +41,10 @@ class ImageCanvas implements ImageCanvasInterface {
     this.target = props.target;
     this.thumbnailImage = props.thumbnailImage;
     this.productSizeInfo = props.productSizeInfo;
-    this.option = props.optionInfo;
+    this.optionInfo = props.optionInfo;
     this.ext = ext;
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
+    this.productEditInfo = props.productEditInfo
   }
 
 

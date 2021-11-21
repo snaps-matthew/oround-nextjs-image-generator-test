@@ -9,6 +9,6 @@ import {compositeMaterial} from "apiResources/services/generateImage/Frame/compo
 import {newCanvas} from "apiResources/utils/newCanvas";
 import {resizeImageFull} from "apiResources/utils/resizeImageFUll";
 
-export const createImageOfStoreList = async (props:{paperCode: string, productSize: any, originImage: any, frameColor: string, canvas: any}) => {
+export const createImageOfStoreList = async (props:{productCode:string, optionInfo:any}) => {
 
 }

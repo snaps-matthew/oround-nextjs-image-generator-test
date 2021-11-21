@@ -33,6 +33,6 @@ export const createImageOfStoreList = async (props:{ productCode: string, templa
   // ctx.drawImage(skinImage, 0, 0, outBox.width, outBox.height);
   ctx.drawImage(templateImage, x, y, target.width, target.height);
 
-  const skinImage = await loadImage(`${Config.RESOURCE_CDN_URL}${target.skinPath}`);
+  const skinImage = await loadImage(`${target.skinPath}`);
   ctx.drawImage(skinImage, 0, 0, outBox.width, outBox.height);
 }

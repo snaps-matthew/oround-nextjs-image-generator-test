@@ -60,9 +60,9 @@ const optionInfo:any = [
 //node- http://localhost:3000/api/21237/1/112003:T00040.112015:T00092.jpg
 //card- http://localhost:3000/api/21239/1/112003:T00041.112010:T00073.jpg
 //smartTok http://localhost:3000/api/21242/1/112003:T00033.112002:T00003.jpg
-//airPodProCase http://localhost:3000/api/21243/1/112003:T00033.112002:T00008.jpg
-//airPodCase http://localhost:3000/api/21244/1/112003:T00033.112002:T00001.jpg
-//buds Case http://localhost:3000/api/21245/1/112003:T00033.112002:T00005.jpg
+//airPodProCase http://localhost:3000/api/21243/1/112003:T00033,112002:T00008.jpg
+//airPodCase http://localhost:3000/api/21244/1/112003:T00033,112002:T00001.jpg
+//buds Case http://localhost:3000/api/21245/1/112003:T00033,112002:T00005.jpg
 //round pinButton http://localhost:3000/api/21246/1/112010:T00070,112018:T00120,112003:T00044.jpg
 //simpleEcoBag http://localhost:3000/api/21249/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
 //pouch http://localhost:3000/api/21205/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
@@ -112,12 +112,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const categoryName = productEditInfo.groupDelimiterName
     const productCode = productEditInfo.productCode
-    // const imageComposer = await generateImage({ thumbnailImage,categoryName,productCode,target,optionInfo })
+    const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
     console.log(productEditInfo)
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
-    thumbnailImage.createPNGStream().pipe(res);
+    imageComposer.stream().pipe(res);
 
 
     // logger.info(`DEBUG : query Params : ${artProductIndex} : ${sizeCode} : ${optionAndFileExt}`);

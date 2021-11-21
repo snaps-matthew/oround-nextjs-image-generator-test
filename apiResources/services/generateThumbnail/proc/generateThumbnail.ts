@@ -132,7 +132,17 @@ export class ObjectCanvas {
   }
 }
 
-
+class ObjectCanvasBackground extends ObjectCanvas {
+  draw () {
+    const canvas = this.canvas
+    let {x, y, width, height, angle, alpha} = this.getObjectInfo()
+    x = x * this.scale
+    y = y * this.scale
+    width = width * this.scale
+    height = height * this.scale
+    this.drawObject(this.object.bgColor, canvas, x, y, width, height, angle, alpha);
+  }
+}
 class ObjectCanvasSticker extends ObjectCanvas {
   async draw () {
     const canvas = this.canvas
