@@ -17,7 +17,7 @@ import AirPodsPro from 'apiResources/services/generateImage/AirPodsPro/AirPodsPr
 import BuzCase from 'apiResources/services/generateImage/BuzCase/BuzCase'
 
 export const generateImage = async (props: {
-  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
+  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any,
 }) => {
 
   let imageComposer: any;

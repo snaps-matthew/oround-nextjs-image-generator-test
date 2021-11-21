@@ -14,7 +14,6 @@ import { ImageCanvasInterface } from '../../interfaces/ImageCanvasInterface';
 
 class ImageComposer implements ImageCanvasInterface {
   protected categoryName: string;
-  protected productOption: string;
   protected productCode: string;
   protected productPath: string;
   protected patternSrcCoords: number[];
@@ -42,7 +41,6 @@ class ImageComposer implements ImageCanvasInterface {
     this.target = '';
     this.productPath = '';
     this.productCode = '';
-    this.productOption = '';
     this.colorCode = '';
     this.sizeCode = ''
     this.layerOrder = [];
@@ -70,23 +68,20 @@ class ImageComposer implements ImageCanvasInterface {
     target: string,
     colorCode: string,
     sizeCode: string,
-    productOption: any,
+    productEditInfo: any,
     optionInfo: any,
     productPath: string,
     categoryCode: string,
-    productEditInfo:any,
     productSizeInfo: any
   }) {
-
     // 아트워크 이미지 base64 로 변환
     await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
-    this.productOption = data.productOption
     this.categoryName = data.categoryName
     this.productPath = data.productPath
     this.productCode = data.productCode
     this.target = data.target
-    this.artworkWidth = data.productOption.edit[0].width;
-    this.artworkHeight = data.productOption.edit[0].height;
+    this.artworkWidth = data.productEditInfo.edit[0].width;
+    this.artworkHeight = data.productEditInfo.edit[0].height;
     this.layerOrder = []
     this.wrinkleMag = -20;
     this.patternSrcCoords = [0,0,this.artworkWidth,0,this.artworkWidth,this.artworkHeight,0,this.artworkHeight];

@@ -8,7 +8,7 @@ import {
 } from 'apiResources/utils/artworkImageCreator';
 import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import TargetType from 'apiResources/constants/TargetType';
-import { createImageOfStoreList } from 'apiResources/services/generateImage/SmartTok/createImageOfStoreList';
+import { createImageOfStoreList } from 'apiResources/services/generateImage/TinCase/createImageOfStoreList';
 const { exec } = require('child_process');
 
 class TinCase extends ImageComposer {
@@ -18,29 +18,26 @@ class TinCase extends ImageComposer {
 
   async composite() {
 
-    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, productOption, thumbnailImage, colorCode, sizeCode, optionInfo } = this;
+    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, productOption, thumbnailImage, colorCode, sizeCode, optionInfo, canvas, productEditInfo, drawObject, stream } = this;
 
-    // 리스트 && 상세이미지 용도별로 내려주기
-    if (target === TargetType.STORE_LIST_1) {
+    // 리스트의 경우 하나의 이미지만 사용한다.
+    let templateImage = this.thumbnailImage
 
-      return await createImageOfStoreList({ productCode, optionInfo })
+    if (this.target === TargetType.STORE_LIST_1) {
 
-    }else if (target === TargetType.STORE_DETAIL_2) {
-      // 아트워크 리사이징
-      await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
 
-      // 아트워크 패턴 둥글게 자르기
-      await imageDstOut(productPath, productCode);
+    } else if (this.target === TargetType.STORE_DETAIL_2) {
 
-      // 최종 아트워크 상품위에 올리기
-      return await getArtworkOnModel(productPath, productCode);
-    }
-    else if (target === TargetType.STORE_DETAIL_3) {
-    }
-    else if (target === TargetType.STORE_DETAIL_4) {
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
 
-    }
-    else {
+    } else if (this.target === TargetType.STORE_DETAIL_3) {
+
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+
+    } else if (this.target === TargetType.STORE_DETAIL_4) {
+
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
 
     }
   }
