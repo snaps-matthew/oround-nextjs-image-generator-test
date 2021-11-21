@@ -1,7 +1,14 @@
 import ImageComposer from "../ImageComposer";
 import {ExecException} from "child_process";
-import {getArtworkReszied, getImageWrinkled, imageDstOut} from "../../../utils/artworkImageCreator";
+import {
+  getArtworkOnModel,
+  getArtworkReszied,
+  getImageWrinkled,
+  imageDstOut,
+} from '../../../utils/artworkImageCreator';
 import {imageTextSaver} from "../../../utils/imageTextSaver";
+import TargetType from '../../../constants/TargetType';
+import { createImageOfStoreDetail_0 } from '../Apparel/createImageOfStoreDetail_0';
 const { exec } = require('child_process');
 
 class SmartTok extends ImageComposer {
@@ -9,26 +16,27 @@ class SmartTok extends ImageComposer {
     super();
   }
 
-  async compositeArtwork() {
-    const { categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath } = this;
-    console.log(categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath)
-    // 아트워크 리사이징
-    await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryCode);
+  async composite() {
 
-    // 마스킹으로 잘라내기
-    console.log(`마스킹하기 ${productPath}/${productCode}_mask.png`)
-    await imageDstOut(`${productPath}/${productCode}_mask.png`)
+    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, productOption, thumbnailImage, colorCode, sizeCode } = this;
 
-    return new Promise((resolve, reject) => {
-      exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
-        // exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}' PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
-        if (err) console.error(err);
+    // 리스트 && 상세이미지 용도별로 내려주기
+    if (target === TargetType.STORE_DETAIL_1) {
+      // 아트워크 리사이징
+      await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
 
-        imageTextSaver(stdout, 'final');
+      // 최종 아트워크 상품위에 올리기
+      return await getArtworkOnModel(productPath, productCode);
+    }
+    else if (target === TargetType.STORE_DETAIL_2) {
+      return await createImageOfStoreDetail_0({ productCode, thumbnailImage, productOption, colorCode })
+    }
+    else if (target === TargetType.STORE_DETAIL_3) {
 
-        resolve(stdout);
-      })
-    })
+    }
+    else {
+
+    }
   }
 }
 

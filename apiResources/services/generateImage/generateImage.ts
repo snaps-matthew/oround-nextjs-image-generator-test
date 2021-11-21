@@ -7,22 +7,31 @@ import Apparel from './Apparel/Apparel';
 import TinCase from './TinCase/TinCase';
 import SmartTok from './SmartTok/SmartTok';
 
-export const generateImage = async (props: { categoryCode: string, productCode: string, paperCode: string, backCode: string, target: string, optionAndFileExt: string; imageData: string, productSizeInfo: object, productType: string, productOption: string, psdPath: string, productPath: string, patternPath: string, patternSrcCoords: number[], patternDstCoords: number[], colorCodes: string[], layerOrder: string[], artworkSize:number[] }) => {
+export const generateImage = async (props: {
+  categoryName: string,
+  productCode: string,
+  target: string,
+  thumbnailImage: any,
+  productOption: string,
+  productPath: string,
+  colorCode: string,
+  sizeCode: string
+}) => {
 
   let imageComposer: any;
-
-  switch (props.categoryCode) {
-    case CategoryCode.APPAREL:
+  switch (props.categoryName) {
+    case 'apparel':
       imageComposer = new Apparel();
       break;
-    case CategoryCode.SMARTTOK:
+    case 'smarttok':
       imageComposer = new SmartTok();
       break;
-    case CategoryCode.TINCASE:
+    case 'tinCase':
       imageComposer = new TinCase();
       break;
   }
 
   await imageComposer.init(props);
-  return await imageComposer.compositeArtwork();
+
+  return await imageComposer.composite();
 }
