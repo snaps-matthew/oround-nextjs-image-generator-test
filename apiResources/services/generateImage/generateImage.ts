@@ -17,38 +17,38 @@ import AirPodsPro from 'apiResources/services/generateImage/AirPodsPro/AirPodsPr
 import BuzCase from 'apiResources/services/generateImage/BuzCase/BuzCase'
 
 export const generateImage = async (props: {
-  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any,
+  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
 }) => {
 
   let imageComposer: any;
   switch (props.productEditInfo.groupDelimiterName) {
-    // case 'apparel':
-    //   imageComposer = new Apparel();
-    //   break;
-    // case 'smartTok':
-    //   imageComposer = new SmartTok();
-    //   break;
+    case 'apparel':
+      imageComposer = new Apparel();
+      break;
+    case 'smartTok':
+      imageComposer = new SmartTok();
+      break;
     case 'tinCase':
       imageComposer = new TinCase();
       break;
-    // case 'frame': // free size
-    //   imageComposer = new Frame();
-    //   break;
-    // case 'canvasFrame': // free size
-    //   imageComposer = new CanvasFrame();
-    //   break;
-    // case 'woodFrame': // free size
-    //   imageComposer = new WoodFrame();
-    //   break;
-    // case 'sticker': // free size
-    //   imageComposer = new Sticker();
-    //   break;
-    // case 'acrylicStand': // free size
-    //   imageComposer = new AcrylicStand();
-    //   break;
-    // case 'acrylicKeyring': // free size
-    //   imageComposer = new AcrylicKeyring();
-    //   break;
+    case 'frame': // free size
+      imageComposer = new Frame();
+      break;
+    case 'canvasFrame': // free size
+      imageComposer = new CanvasFrame();
+      break;
+    case 'woodFrame': // free size
+      imageComposer = new WoodFrame();
+      break;
+    case 'sticker': // free size
+      imageComposer = new Sticker();
+      break;
+    case 'acrylicStand': // free size
+      imageComposer = new AcrylicStand();
+      break;
+    case 'acrylicKeyring': // free size
+      imageComposer = new AcrylicKeyring();
+      break;
     case 'phoneCase':
       imageComposer = new PhoneCase();
       break;

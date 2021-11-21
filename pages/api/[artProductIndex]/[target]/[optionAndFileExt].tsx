@@ -50,7 +50,7 @@ const optionInfo:any = [
   {112021 :"diviceColorCode"}
 ]
 
-//EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00131,112004:T00056.jpg
+//EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00129,112004:T00056.jpg
 //tinCase- http://localhost:3000/api/21241/1/112003:T00034,112002:T00010.jpg
 //sticker- http://localhost:3000/api/21191/1/112003:T00033,112006:T00064.jpg
 //woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg

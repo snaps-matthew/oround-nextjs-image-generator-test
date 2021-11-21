@@ -17,7 +17,6 @@ class TinCase extends ImageComposer {
   }
 
   async composite() {
-
     const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, thumbnailImage, colorCode, sizeCode, optionInfo, canvas, productEditInfo, drawObject, stream } = this;
 
     // 리스트의 경우 하나의 이미지만 사용한다.

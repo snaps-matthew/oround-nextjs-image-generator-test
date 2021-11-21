@@ -86,7 +86,6 @@ class ImageComposer implements ImageCanvasInterface {
     this.wrinkleMag = -20;
     this.patternSrcCoords = [0,0,this.artworkWidth,0,this.artworkWidth,this.artworkHeight,0,this.artworkHeight];
     // this.patternDstCoords = coordinateData[data.productCode][`${OptionCodes[data.sizeCode]}/${OptionCodes[data.colorCode]}`];
-
     const ext = data.optionInfo.ext;
     this.categoryCode = data.categoryCode;
     this.productCode = data.productCode;
