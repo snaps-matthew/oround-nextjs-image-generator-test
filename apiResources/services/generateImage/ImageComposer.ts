@@ -17,6 +17,7 @@ class ImageComposer {
   protected productPath: string;
   protected patternSrcCoords: number[];
   protected patternDstCoords: number[];
+  protected optionInfo: any;
   protected colorCode: string;
   protected layerOrder: string[];
   protected wrinkleMag: number;
@@ -50,6 +51,7 @@ class ImageComposer {
     colorCode: string,
     sizeCode: string,
     productOption: any,
+    optionInfo: any,
     productPath: string, }) {
 
     // 아트워크 이미지 base64 로 변환
