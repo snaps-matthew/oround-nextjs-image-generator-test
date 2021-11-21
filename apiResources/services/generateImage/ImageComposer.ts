@@ -1,11 +1,11 @@
-import {imageTextSaver} from "../../utils/imageTextSaver";
+import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import { Canvas, createCanvas, Image } from 'canvas';
 import { createRequire } from 'module';
 import {getPSDData, imageConverter} from "../../utils/artworkImageCreator";
 import fs from "fs";
 import productInfo from '../../constants/productInfo';
 import { OptionCodes } from '../../constants/OptionCodes';
-import { newCanvas } from '../../utils/newCanvas';
+import { newCanvas } from 'apiResources/utils/newCanvas';
 import { ImageCanvasInterface } from '../../interfaces/ImageCanvasInterface';
 
 // const coordinateData = require('../../constants/coordinateData.json')
@@ -75,7 +75,7 @@ class ImageComposer {
     productSizeInfo: any
   }) {
     // 아트워크 이미지 base64 로 변환
-    await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
+    // await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
     this.categoryName = data.categoryName
     this.productPath = data.productPath
     this.productCode = data.productCode

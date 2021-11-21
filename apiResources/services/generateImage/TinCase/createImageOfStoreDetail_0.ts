@@ -17,7 +17,5 @@ export const createImageOfStoreDetail_0 = async (props:{ productCode: string, th
     height: productOption.size[0].horizontalSizePx,
     imagData: thumbnailImage.toDataURL()
   }
-  console.log(artworkImageData);
-  console.log('createImageOfStoreDetail_0');
   return await artworkImageMerger({artworkImageData}, `${Config.RESOURCE_CDN_URL}/${productCode}/${sideCode}/${colorCode}`, wrapperSize?.width, wrapperSize?.height)
 }

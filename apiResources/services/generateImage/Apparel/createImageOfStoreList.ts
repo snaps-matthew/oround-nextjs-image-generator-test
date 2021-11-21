@@ -26,7 +26,6 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   canvas.width = outBox.width;
   canvas.height = outBox.height;
   let ctx = canvas.getContext('2d');
-  console.log(skinPath);
   const skinImage_bottom = await loadImage(skinPathBottom);
 
   const wrapper = getWrapperSize(productCode)

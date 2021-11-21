@@ -14,7 +14,6 @@ import buildCommand from "apiResources/services/generateImage/buildCommand"
 class PinbButton extends ImageCanvas {
   constructor() {
     super();
-    console.log(1111)
   }
 
   async composite() {
