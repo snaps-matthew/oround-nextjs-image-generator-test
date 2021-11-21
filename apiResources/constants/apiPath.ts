@@ -45,4 +45,7 @@ export const API_PATH  = {
   RESOURCE_SCENE_MASK: "/Upload/Data1/Resource/skin/sceneMaskEditor/",
 
   COUNTRY_CODE: '?countryCode=',
+
+
+  ARTWORK_RESOURCE_SKIN: 'artwork-editor/resource/product/'
 }
