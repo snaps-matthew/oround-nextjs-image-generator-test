@@ -16,13 +16,12 @@ import CommonCode from "apiResources/constants/CommonCode";
 const saveMultiformProc = async (productEditInfo:any, optionInfo:any) => {
   const productCode = productEditInfo.productCode;
   const categoryCode = productEditInfo.productCode.slice(0,3);
-  let printPosition:string;
+  let printPosition:any;
   if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_FRONT){
     printPosition = 'front'
   }else if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_BACK){
     printPosition = 'back'
   }
-
   let scene
   if(productEditInfo.edit.length>1 && productEditInfo.groupDelimiterName === "apparel"){
     scene = productEditInfo.edit.find((obj:any) => {

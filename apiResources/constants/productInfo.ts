@@ -17,6 +17,7 @@ export interface ProductGroupInfoState {
   };
 }
 
+
 // 기본적으로 상품 그룹에 따라 번들을 호출하지만, 그룹이 같고 상품에 따라 달라야 하는 경우 해당 상품의 번들로 연결한다.
 
 const productInfo: ProductGroupInfoState = {

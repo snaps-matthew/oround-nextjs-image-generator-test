@@ -48,17 +48,35 @@ const optionInfo:any = [
   {112019 :"chainColorCode"},
   {112020 :"printPositionCode"},
   {112021 :"diviceColorCode"}
-  ]
+]
 
-//EX)  http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00131,112004:T00056.jpg
+//EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00131,112004:T00056.jpg
+//tinCase- http://localhost:3000/api/21241/1/112003:T00034,112002:T00010.jpg
+//sticker- http://localhost:3000/api/21191/1/112003:T00033,112006:T00064.jpg
+//woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg
+//hardphoneCase- http://localhost:3000/api/21215/1/112014:T00090,112001:T00094,112003:T00033,112021:T00153.jpg
+//acrylicKeyring- http://localhost:3000/api/21235/1/112005:T00060,112017:T00117,112008:T00067,112016:T00112,112019:T00123,112003:T00035.jpg
+//acrylicStand- http://localhost:3000/api/21236/1/112003:T00033.jpg
+//node- http://localhost:3000/api/21237/1/112003:T00040.112015:T00092.jpg
+//card- http://localhost:3000/api/21239/1/112003:T00041.112010:T00073.jpg
+//smartTok http://localhost:3000/api/21242/1/112003:T00033.112002:T00003.jpg
+//airPodProCase http://localhost:3000/api/21243/1/112003:T00033.112002:T00008.jpg
+//airPodCase http://localhost:3000/api/21244/1/112003:T00033.112002:T00001.jpg
+//buds Case http://localhost:3000/api/21245/1/112003:T00033.112002:T00005.jpg
+//round pinButton http://localhost:3000/api/21246/1/112010:T00070,112018:T00120,112003:T00044.jpg
+//simpleEcoBag http://localhost:3000/api/21249/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
+//pouch http://localhost:3000/api/21205/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
+//canvasFrame http://localhost:3000/api/21207/1/112003:T00035.jpg
+//hood http://localhost:3000/api/21195/1/112002:T00014,112003:T00036,112020:T00129,112004:T00056.jpg
+//zopUpHoodie http://localhost:3000/api/21192/1/112002:T00024,112003:T00036,112020:T00129,112004:T00056.jpg
+
+
+
+
 const getPathParams = (requestQuery: { [key: string]: string | string[] }): IRequestQuery => {
 // console.log('requestQuery=-=-=',requestQuery.optionAndFileExt)
   const artProductIndexParam:any = requestQuery.artProductIndex;
   const targetParam:any = requestQuery.target;
-  let targetInfo:any = ''
-  if(targetParam === "1"){
-    targetInfo = "front"
-  }
   const optionAndFileExtParam:any = requestQuery.optionAndFileExt;
   let optionParamArr:any = optionAndFileExtParam.split(".")[0]
   optionParamArr = optionParamArr.split(",")
@@ -75,7 +93,7 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
   tempInfo['ext'] = optionAndFileExtParam.split(".")[1]
   let pramCodes:any = {}
   pramCodes['artProductIndex'] = artProductIndexParam
-  pramCodes['target'] = targetInfo
+  pramCodes['target'] = targetParam
   pramCodes['optionAndFileExt'] = tempInfo
 
   return pramCodes
@@ -151,5 +169,3 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   }
 }
-
-
