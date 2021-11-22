@@ -10,7 +10,7 @@ import { compositeOneColorPrintImage } from 'apiResources/services/generateThumb
 import { newCanvas } from 'apiResources/utils/newCanvas'
 import { drawPositionScene } from 'apiResources/services/drawPositionScene'
 import  {PAPER} from 'apiResources/constants/paperList'
-import {TYPE} from "../../constants/type";
+import {TYPE} from "apiResources/constants/type";
 import CommonCode from "apiResources/constants/CommonCode";
 
 const saveMultiformProc = async (productEditInfo:any, optionInfo:any) => {

@@ -8,7 +8,7 @@ import {
 } from 'apiResources/utils/artworkImageCreator';
 import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import TargetType from 'apiResources/constants/TargetType';
-import { createImageOfStoreList } from 'apiResources/services/generateImage/TinCase/createImageOfStoreList';
+import { createImageOfStoreList } from 'apiResources/services/generateImage/Note/createImageOfStoreList';
 const { exec } = require('child_process');
 
 class Note extends ImageComposer {

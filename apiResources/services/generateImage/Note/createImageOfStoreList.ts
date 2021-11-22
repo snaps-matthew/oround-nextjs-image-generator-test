@@ -19,23 +19,20 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const colorCode = optionInfo.colorCode
 
   const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
-  const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}`;
-  const skinPathTop = skinPath+'_top.png';
-  const skinPathBottom = skinPath+'_bottom.png';
+  const skinPath = `${domain}/${SceneType.page}/${directionCode}/`;
+  const skinPathTop = skinPath+'top.png';
 
   const outBox = {width: 500, height: 500};
   canvas.width = outBox.width;
   canvas.height = outBox.height;
   let ctx = canvas.getContext('2d');
 
-  const skinImage_bottom = await loadImage(skinPathBottom);
   const skinImage_top = await loadImage(skinPathTop);
 
   const wrapper = getWrapperSize(productCode)
   const offset = getOffset(productCode, SceneType.page)
   const temp = newCanvas(wrapper.width, wrapper.height);
 
-  temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
   temp.ctx.drawImage(templateImage, offset.left, offset.top);
   temp.ctx.drawImage(skinImage_top, 0, 0,wrapper.width, wrapper.height);
 

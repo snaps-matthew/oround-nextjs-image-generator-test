@@ -8,10 +8,10 @@ import {
 } from 'apiResources/utils/artworkImageCreator';
 import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import TargetType from 'apiResources/constants/TargetType';
-import { createImageOfStoreList } from 'apiResources/services/generateImage/Note/createImageOfStoreList';
+import { createImageOfStoreList } from 'apiResources/services/generateImage/Card/createImageOfStoreList';
 const { exec } = require('child_process');
 
-class Note extends ImageComposer {
+class Card extends ImageComposer {
   constructor() {
     super();
   }
@@ -23,7 +23,7 @@ class Note extends ImageComposer {
     let templateImage = this.thumbnailImage
 
     if (this.target === TargetType.STORE_LIST_1) {
-      console.log('Note 들어왔다');
+
       await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
 
     } else if (this.target === TargetType.STORE_DETAIL_2) {
@@ -42,4 +42,4 @@ class Note extends ImageComposer {
   }
 }
 
-export default Note;
+export default Card;

@@ -8,7 +8,7 @@ import {resizeToCorrectSize} from "apiResources/services/resizeToCorrectSize";
 import {createImageOfStoreList} from "apiResources/services/generateImage/AirPodsPro/createImageOfStoreList";
 // import {createImageOfStoreDetail_1} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreDetail_1";
 // import {createImageOfStoreDetail_0} from "apiResources/services/generateImage/PhoneCase/createImageOfStoreDetail_0";
-import {loadImage} from "../../../utils/loadImage";
+import {loadImage} from "apiResources/utils/loadImage";
 
 class AirPodsPro extends ImageCanvas {
   constructor() {

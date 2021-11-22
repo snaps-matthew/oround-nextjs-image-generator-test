@@ -80,6 +80,23 @@ export const getArtworkOnModel = (productPath:string, productCode:string) => {
   })
 }
 
+export const artworkGeneralMerger = async (artworkImages:string[]) => {
+  let artworkCommand = `composite `;
+
+  for (let i=0; i < artworkImages.length; i++) {
+    artworkCommand += `'${artworkImages[i]}' `;
+  }
+
+  return new Promise((resolve, reject) => {
+    exec(`${artworkCommand}PNG:- | base64`, (err:ExecException, stdout:string) => {
+
+      if (err) console.error(err);
+      imageTextSaver(stdout, 'final')
+      resolve(stdout)
+    })
+  })
+}
+
 // 아트워크 리사이징 + 리포지셔닝
 export const artworkImageMerger = async (artworkImageData:any, productImgPath:string, canvasWidth:any, canvasHeight:any) => {
   await imageTextSaver(artworkImageData, 'pattern');
@@ -96,7 +113,6 @@ export const artworkImageMerger = async (artworkImageData:any, productImgPath:st
     })
   })
 }
-
 
 // 좌표 없을 시 psd 읽어서 좌표 가지고 오기
 export const getPSDData = async (psdPath:string, categoryCode:string, coordPath:string, prodCode:string, prodOption:string) => {
