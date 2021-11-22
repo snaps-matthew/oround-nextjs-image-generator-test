@@ -43,7 +43,6 @@
 // }
 //
 // export default Frame;
-
 import TargetType from "apiResources/constants/TargetType";
 
 import {loadImages} from "apiResources/services/loadImages";

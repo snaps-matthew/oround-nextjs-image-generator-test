@@ -1,7 +1,6 @@
 import CategoryCode from "apiResources/constants/CategoryCode";
 import Frame from "apiResources/services/generateImage/Frame/Frame";
 import Polaroid from "apiResources/services/generateImage/Polaroid/Polaroid";
-import PinButton from "apiResources/services/generateImage/PinButton/PinbButton";
 import {Image} from "canvas";
 import Apparel from 'apiResources/services/generateImage/Apparel/Apparel';
 import TinCase from 'apiResources/services/generateImage/TinCase/TinCase';
@@ -17,7 +16,7 @@ import AirPodsPro from 'apiResources/services/generateImage/AirPodsPro/AirPodsPr
 import BuzCase from 'apiResources/services/generateImage/BuzCase/BuzCase'
 import Note from 'apiResources/services/generateImage/Note/Note'
 import Card from 'apiResources/services/generateImage/Card/Card'
-
+import Button from 'apiResources/services/generateImage/Button/Button'
 export const generateImage = async (props: {
   thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
 }) => {
@@ -62,6 +61,9 @@ export const generateImage = async (props: {
       break;
     case 'buzCase':
       imageComposer = new BuzCase();
+      break;
+    case 'button':
+      imageComposer = new Button();
       break;
     case 'note':
       imageComposer = new Note();
