@@ -4,54 +4,56 @@ import CommonCode from "apiResources/constants/CommonCode";
 import { COMMON_NAME } from 'apiResources/constants/commonName'
 import {loadImage} from "apiResources/utils/loadImage";
 import {resolve} from "path";
-// import stickerPaperClear from 'resources/paper/imgs/sticker_paper_clear.jpg'
-// import BizPaperClear from 'resources/paper/imgs/trans_biz_paper_clear.jpg'
-// import BizPaperWhite from 'resources/paper/imgs/trans_biz_paper_white.jpg'
-// import paperCraft from 'resources/paper/imgs/paper_craft.jpg'
-// import paperHologram from 'resources/paper/imgs/paper_hologram.jpg'
-// import paperLinen from 'resources/paper/imgs/paper_linen.jpg'
-// import paperPearl from 'resources/paper/imgs/paper_pearl.jpg'
-// import paperFelt from 'resources/paper/imgs/paper_felt.jpg'
-// import paperMetal from 'resources/paper/imgs/paper_metalsign.jpg'
-// import paperAcrylicClear from 'resources/paper/imgs/rectangle.jpg'
-// import paperAcrylicGlitterSilver from 'resources/paper/imgs/keyring-glitter-glass.jpg'
+import Config from "apiResources/constants/Config";
+// import stickerPaperClear from `${RESOURCE_CDN_URL}/paper/imgs/sticker_paper_clear.jpg'
+// import BizPaperClear from `${RESOURCE_CDN_URL}/paper/imgs/trans_biz_paper_clear.jpg'
+// import BizPaperWhite from `${RESOURCE_CDN_URL}/paper/imgs/trans_biz_paper_white.jpg'
+// import paperCraft from `${RESOURCE_CDN_URL}/paper/imgs/paper_craft.jpg'
+// import paperHologram from `${RESOURCE_CDN_URL}/paper/imgs/paper_hologram.jpg'
+// import paperLinen from `${RESOURCE_CDN_URL}/paper/imgs/paper_linen.jpg'
+// import paperPearl from `${RESOURCE_CDN_URL}/paper/imgs/paper_pearl.jpg'
+// import paperFelt from `${RESOURCE_CDN_URL}/paper/imgs/paper_felt.jpg'
+// import paperMetal from `${RESOURCE_CDN_URL}/paper/imgs/paper_metalsign.jpg'
+// import paperAcrylicClear from `${RESOURCE_CDN_URL}/paper/imgs/rectangle.jpg'
+// import paperAcrylicGlitterSilver from `${RESOURCE_CDN_URL}/paper/imgs/keyring-glitter-glass.jpg'
 // import paperAcrylicGlitterGold from 'resources/paper./imgs/keyring-glitter-gold.jpg'
-// import paperAcrylicHologram from 'resources/paper/imgs/keyring-hologram.jpg'
-// import paperAcrylicWhite from 'resources/paper/imgs/keyring-white.jpg'
+// import paperAcrylicHologram from `${RESOURCE_CDN_URL}/paper/imgs/keyring-hologram.jpg'
+// import paperAcrylicWhite from `${RESOURCE_CDN_URL}/paper/imgs/keyring-white.jpg'
+const { RESOURCE_CDN_URL } = Config;
 
 export const getPaperImage = async(code:string) => {
   let paperImage = ''
   let paperName = ''
-  const stickerPaperClear = 'resources/paper/imgs/sticker_paper_clear.jpg'
-  const BizPaperClear = 'resources/paper/imgs/trans_biz_paper_clear.jpg'
-  const BizPaperWhite = 'resources/paper/imgs/trans_biz_paper_white.jpg'
-  const paperCraft = 'resources/paper/imgs/paper_craft.jpg'
-  const paperHologram = 'resources/paper/imgs/paper_hologram.jpg'
-  const paperLinen = 'resources/paper/imgs/paper_linen.jpg'
-  const paperPearl = 'resources/paper/imgs/paper_pearl.jpg'
-  const paperFelt = 'resources/paper/imgs/paper_felt.jpg'
-  const paperMetal = 'resources/paper/imgs/paper_metalsign.jpg'
-  const paperAcrylicClear = 'resources/paper/imgs/rectangle.jpg'
-  const paperAcrylicGlitterSilver = 'resources/paper/imgs/keyring-glitter-glass.jpg'
-  const paperAcrylicGlitterGold = 'resources/paper./imgs/keyring-glitter-gold.jpg'
-  const paperAcrylicHologram = 'resources/paper/imgs/keyring-hologram.jpg'
-  const paperAcrylicWhite = 'resources/paper/imgs/keyring-white.jpg'
+  const stickerPaperClear = `${RESOURCE_CDN_URL}/paper/imgs/sticker_paper_clear.jpg`;
+  const BizPaperClear = `${RESOURCE_CDN_URL}/paper/imgs/trans_biz_paper_clear.jpg`;
+  const BizPaperWhite = `${RESOURCE_CDN_URL}/paper/imgs/trans_biz_paper_white.jpg`;
+  const paperCraft = `${RESOURCE_CDN_URL}/paper/imgs/paper_craft.jpg`;
+  const paperHologram = `${RESOURCE_CDN_URL}/paper/imgs/paper_hologram.jpg`;
+  const paperLinen = `${RESOURCE_CDN_URL}/paper/imgs/paper_linen.jpg`;
+  const paperPearl = `${RESOURCE_CDN_URL}/paper/imgs/paper_pearl.jpg`;
+  const paperFelt = `${RESOURCE_CDN_URL}/paper/imgs/paper_felt.jpg`;
+  const paperMetal = `${RESOURCE_CDN_URL}/paper/imgs/paper_metalsign.jpg`;
+  const paperAcrylicClear = `${RESOURCE_CDN_URL}/paper/imgs/rectangle.jpg`;
+  const paperAcrylicGlitterSilver = `${RESOURCE_CDN_URL}/paper/imgs/keyring-glitter-glass.jpg`;
+  const paperAcrylicGlitterGold = `${RESOURCE_CDN_URL}/paper/imgs/keyring-glitter-gold.jpg`;
+  const paperAcrylicHologram = `${RESOURCE_CDN_URL}/paper/imgs/keyring-hologram.jpg`;
+  const paperAcrylicWhite = `${RESOURCE_CDN_URL}/paper/imgs/keyring-white.jpg`;
   switch (code){
     case CommonCode.PAPER_CRAFT:
-      paperImage = await loadImage(resolve(__dirname, paperCraft));
+      paperImage = await loadImage(paperCraft);
       paperName = COMMON_NAME.PAPER_CRAFT
       break
     case CommonCode.PAPER_CRAFT175:
-      paperImage = await loadImage(resolve(__dirname, paperCraft));
+      paperImage = await loadImage(paperCraft);
       paperName = COMMON_NAME.PAPER_CRAFT175
       break
     case CommonCode.PAPER_HOLOGRAM:
-      paperImage = await loadImage(resolve(__dirname, paperHologram));
+      paperImage = await loadImage(paperHologram);
       paperName = COMMON_NAME.PAPER_HOLOGRAM
       break
 
     case CommonCode.PAPER_FAN_TRANSPARENCY:
-      paperImage = await loadImage(resolve(__dirname, stickerPaperClear));
+      paperImage = await loadImage(stickerPaperClear);
       paperName = COMMON_NAME.PAPER_FAN_TRANSPARENCY
       break
 
@@ -59,55 +61,55 @@ export const getPaperImage = async(code:string) => {
     case CommonCode.PAPER_TRANSPARENCY_GLOSSY:
       // if(category === CategoryCode.TRANS_BUSINESS_CARD){
       //   if(code === CommonCode.PAPER_TRANSPARENCY){
-      //     paperImage = await loadImage(resolve(__dirname, BizPaperWhite));
+      //     paperImage = await loadImage(BizPaperWhite));
       //     paperName = COMMON_NAME.PAPER_TRANSPARENCY
       //   }else{
-      //     paperImage = await loadImage(resolve(__dirname, BizPaperClear));
+      //     paperImage = await loadImage(BizPaperClear));
       //     paperName = COMMON_NAME.PAPER_TRANSPARENCY_GLOSSY
       //   }
       // }else{
-        paperImage = await loadImage(resolve(__dirname, stickerPaperClear));
+        paperImage = await loadImage(stickerPaperClear);
         paperName = COMMON_NAME.PAPER_TRANSPARENCY
       // }
       break
 
     case CommonCode.PAPER_LINEN:
-      paperImage = await loadImage(resolve(__dirname, paperLinen));
+      paperImage = await loadImage(paperLinen);
       paperName = COMMON_NAME.PAPER_LINEN
       break
 
     case CommonCode.PAPER_PEARL:
-      paperImage = await loadImage(resolve(__dirname, paperPearl));
+      paperImage = await loadImage(paperPearl);
       paperName = COMMON_NAME.PAPER_PEARL
       break
 
     case CommonCode.PAPER_FELT:
-      paperImage = await loadImage(resolve(__dirname, paperFelt));
+      paperImage = await loadImage(paperFelt);
       paperName = COMMON_NAME.PAPER_FELT
       break
 
     case CommonCode.PAPER_METAL_BRUSH:
-      paperImage = await loadImage(resolve(__dirname, paperMetal));
+      paperImage = await loadImage(paperMetal);
       paperName = COMMON_NAME.PAPER_METAL_BRUSH
       break
 
     case CommonCode.PAPER_ACRYLIC_TRANSPARENCY:
-      paperImage = await loadImage(resolve(__dirname, paperAcrylicClear));
+      paperImage = await loadImage(paperAcrylicClear);
       paperName = COMMON_NAME.PAPER_ACRYLIC_TRANSPARENCY
       break
 
     case CommonCode.PAPER_ACRYLIC_GLITTER_SILVER:
-      paperImage = await loadImage(resolve(__dirname, paperAcrylicGlitterSilver));
+      paperImage = await loadImage(paperAcrylicGlitterSilver);
       paperName = COMMON_NAME.PAPER_ACRYLIC_GLITTER_SILVER
       break
 
     case CommonCode.PAPER_ACRYLIC_GLITTER_GOLD:
-      paperImage = await loadImage(resolve(__dirname, paperAcrylicGlitterGold));
+      paperImage = await loadImage(paperAcrylicGlitterGold);
       paperName = COMMON_NAME.PAPER_ACRYLIC_GLITTER_GOLD
       break
 
     case CommonCode.PAPER_ACRYLIC_HOLOGRAM:
-      paperImage = await loadImage(resolve(__dirname, paperAcrylicHologram));
+      paperImage = await loadImage(paperAcrylicHologram);
       paperName = COMMON_NAME.PAPER_ACRYLIC_HOLOGRAM
       break
 
