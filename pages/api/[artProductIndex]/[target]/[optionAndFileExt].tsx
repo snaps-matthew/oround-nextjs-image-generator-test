@@ -19,6 +19,9 @@ import productInfo from "apiResources/constants/productInfo";
 
 import logger from 'logger';
 
+import GM from 'gm';
+import { spawn } from 'child_process';
+
 
 interface IRequestQuery {
   [key: string]: any;
@@ -102,16 +105,14 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const pramCodes = getPathParams(req.query);
+    console.log(pramCodes);
     const artProductIndex = pramCodes.artProductIndex
     const target = pramCodes.target
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
     let thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
-    const categoryName = productEditInfo.groupDelimiterName
-    const productCode = productEditInfo.productCode
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
-    console.log(productEditInfo)
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
     imageComposer.stream().pipe(res);
@@ -163,6 +164,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageCanvas}' alt='hi' /></body></html>`)
 
   } catch (error) {
-
+    logger.error(error);
   }
 }
