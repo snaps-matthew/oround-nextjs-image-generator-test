@@ -103,43 +103,6 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
 }
 // interface IRequest
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  logger.info("handler");
-  try {
-    logger.info("DEBUG");
-    const magick = spawn(`magick`, ['--version']);
-    const convert = spawn(`convert`, ['--version']);
-
-    magick.stdout.on('data', (data) => {
-      logger.info(`DEBUG : magick data : ${data}`);
-    });
-    convert.stdout.on('data', (data) => {
-      logger.info(`DEBUG : convert data : ${data}`);
-    })
-
-  } catch (error) {
-    logger.error(`DEBUG : ERROR`);
-    logger.error(error);
-  }
-
-  try {
-    logger.info("gm");
-    const gm = GM.subClass({ imageMagick: true });
-
-    gm("https://oround-image-generator-resources.s3.ap-northeast-2.amazonaws.com/effect/imgs/bizcard_glossy.png")
-      .resize(100, 100)
-      .stream()
-      .pipe(res);
-
-    res.status(HttpResponseStatusCode.SUCCESS);
-    res.setHeader("content-type", 'image/png');
-  } catch (error) {
-    logger.info(`ERROR : gm`);
-    logger.error(error);
-    res.status(500).send("error");
-    return;
-  }
-
-  /*
   try {
     const pramCodes = getPathParams(req.query);
     console.log(pramCodes);
@@ -203,5 +166,4 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } catch (error) {
     logger.error(error);
   }
-   */
 }
