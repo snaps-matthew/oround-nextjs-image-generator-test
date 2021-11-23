@@ -20,7 +20,7 @@ import productInfo from "apiResources/constants/productInfo";
 import logger from 'logger';
 
 import GM from 'gm';
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 
 
 interface IRequestQuery {
@@ -105,11 +105,20 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   logger.info("handler");
   try {
-    console.log("CONVERT");
-    exec(`convert https://oround-image-generator-resources.s3.ap-northeast-2.amazonaws.com/effect/imgs/bizcard_glossy.png -resize 200x200`)
+    logger.info("DEBUG");
+    const magick = spawn(`magick`, ['--version']);
+    const convert = spawn(`convert`, ['--version']);
+
+    magick.stdout.on('data', (data) => {
+      logger.info(`DEBUG : magick data : ${data}`);
+    });
+    convert.stdout.on('data', (data) => {
+      logger.info(`DEBUG : convert data : ${data}`);
+    })
 
   } catch (error) {
-    console.log(`DEBUG : ERROR`);
+    logger.error(`DEBUG : ERROR`);
+    logger.error(error);
   }
 
   try {
