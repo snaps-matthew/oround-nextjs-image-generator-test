@@ -52,15 +52,12 @@ const optionInfo:any = [
 ]
 
 //EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00129,112004:T00056.jpg
-
 //woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg
 //card- http://localhost:3000/api/21239/1/112003:T00041.112010:T00073.jpg
-
 //airPodProCase http://localhost:3000/api/21243/1/112003:T00033,112002:T00008.jpg
 //airPodCase http://localhost:3000/api/21244/1/112003:T00033,112002:T00001.jpg
 //buds Case http://localhost:3000/api/21245/1/112003:T00033,112002:T00005.jpg
-//round pinButton http://localhost:3000/api/21246/1/112010:T00070,112018:T00120,112003:T00044.jpg
-//simpleEcoBag http://localhost:3000/api/21249/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
+
 //canvasFrame http://localhost:3000/api/21207/1/112003:T00035.jpg
 //hood http://localhost:3000/api/21195/1/112002:T00014,112003:T00036,112020:T00129,112004:T00056.jpg
 
@@ -73,7 +70,8 @@ const optionInfo:any = [
 //pouch http://localhost:3000/api/27563/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
 //tinCase- http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
 //smartTok http://localhost:3000/api/27600/4/112003:T00033,112002:T00003.jpg
-
+//round pinButton http://localhost:3000/api/27604/1/112010:T00070,112018:T00120,112003:T00044.jpg
+//simpleEcoBag http://localhost:3000/api/27607/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
 
 
 const getPathParams = (requestQuery: { [key: string]: string | string[] }): IRequestQuery => {

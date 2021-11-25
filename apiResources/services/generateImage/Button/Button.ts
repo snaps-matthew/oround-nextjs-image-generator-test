@@ -17,18 +17,18 @@ class Button extends ImageCanvas {
   }
 
   async composite() {
-    const {productCode, canvas, productEditInfo, optionInfo, drawObject,stream} = this;
+    const {productCode, canvas, productEditInfo, optionInfo, target} = this;
     // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = this.thumbnailImage
 
     if (this.target === TargetType.STORE_LIST_1) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     } else if (this.target === TargetType.STORE_DETAIL_2) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     } else if (this.target === TargetType.STORE_DETAIL_3) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     } else if (this.target === TargetType.STORE_DETAIL_4) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     }
   }
 }
