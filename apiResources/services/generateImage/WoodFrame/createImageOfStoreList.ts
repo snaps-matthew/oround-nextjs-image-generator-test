@@ -41,7 +41,6 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   //
   // const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
   // ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
-
   const size = imageFull(width, height, outBox.width, outBox.height, 0);
   ctx.drawImage(templateImage, size.x, size.y, size.width, size.height);
 

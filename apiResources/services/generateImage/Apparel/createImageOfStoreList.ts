@@ -8,26 +8,21 @@ import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
+import { getCreateImageInitInfo } from '../../../utils/getSelectedScene';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any}) => {
+export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 
-  const {templateImage, productEditInfo, optionInfo, canvas} = props;
+  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
-  const directionCode = productEditInfo.directionCode
-  const width = productEditInfo.edit[0].width
-  const height = productEditInfo.edit[0].height
   const colorCode = optionInfo.colorCode
 
   const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const skinPath = `${domain}/${SceneType.front}/${colorCode}`;
   const skinPathBottom = skinPath+'.png';
 
-  const outBox = {width: 500, height: 500};
-  canvas.width = outBox.width;
-  canvas.height = outBox.height;
-  let ctx = canvas.getContext('2d');
-  const skinImage_bottom = await loadImage(skinPathBottom);
+  const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
+  const skinImage_bottom = await loadImage(skinPathBottom);
   const wrapper = getWrapperSize(productCode)
   const offset = getOffset(productCode, SceneType.front)
   const temp = newCanvas(wrapper.width, wrapper.height);

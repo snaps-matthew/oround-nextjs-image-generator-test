@@ -23,6 +23,9 @@ const createObject = async (object:any, canvas:any, isImageMaskPrint:boolean, sc
   const objectType = object.type
   let canvasObject:ObjectCanvas;
   switch (objectType) {
+    case TYPE.OBJECT_BACKGROUND:
+      canvasObject = new ObjectCanvasBackground(object)
+      break
 
     case TYPE.OBJECT_IMAGE:
       canvasObject = new ObjectCanvasImage(object)
@@ -75,7 +78,6 @@ export class ObjectCanvas {
     let type = (typeof obj === 'string') ? 'color' : 'image'
     const ctx = canvas.getContext('2d')
     let halfWidth = 0, halfHeight = 0, realX = x, realY = y
-
     ctx.save()
     if (angle !== 0) {
       halfWidth = width / 2
@@ -89,7 +91,8 @@ export class ObjectCanvas {
     if (alpha !== 1) ctx.globalAlpha = alpha
     if (type === 'color') {
       ctx.fillStyle = obj
-      ctx.fillRect(realX - halfWidth, realY - halfHeight, width, height)
+      // ctx.fillRect(realX - halfWidth, realY - halfHeight, width, height)
+      ctx.fillRect(0,0, width, height)
     } else {
       ctx.drawImage(obj, realX - halfWidth, realY - halfHeight, width, height)
     }
@@ -140,7 +143,8 @@ class ObjectCanvasBackground extends ObjectCanvas {
     y = y * this.scale
     width = width * this.scale
     height = height * this.scale
-    this.drawObject(this.object.bgColor, canvas, x, y, width, height, angle, alpha);
+    const bgColor:string  = this.object.bgColor
+    this.drawObject(bgColor, canvas, x, y, width, height, angle, alpha);
   }
 }
 class ObjectCanvasSticker extends ObjectCanvas {

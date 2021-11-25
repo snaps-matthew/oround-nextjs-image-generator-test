@@ -19,9 +19,6 @@ import productInfo from "apiResources/constants/productInfo";
 
 import logger from 'logger';
 
-import GM from 'gm';
-import { spawn } from 'child_process';
-
 
 interface IRequestQuery {
   [key: string]: any;
@@ -55,7 +52,7 @@ const optionInfo:any = [
 
 //EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00129,112004:T00056.jpg
 //tinCase- http://localhost:3000/api/21241/1/112003:T00034,112002:T00010.jpg
-//sticker- http://localhost:3000/api/21191/1/112003:T00033,112006:T00064.jpg
+
 //woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg
 //hardphoneCase- http://localhost:3000/api/21215/1/112014:T00090,112001:T00094,112003:T00033,112021:T00153.jpg
 //acrylicKeyring- http://localhost:3000/api/21235/1/112005:T00060,112017:T00117,112008:T00067,112016:T00112,112019:T00123,112003:T00035.jpg
@@ -71,8 +68,9 @@ const optionInfo:any = [
 //pouch http://localhost:3000/api/21205/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
 //canvasFrame http://localhost:3000/api/21207/1/112003:T00035.jpg
 //hood http://localhost:3000/api/21195/1/112002:T00014,112003:T00036,112020:T00129,112004:T00056.jpg
-//zopUpHoodie http://localhost:3000/api/21192/1/112002:T00024,112003:T00036,112020:T00129,112004:T00056.jpg
 
+//zopUpHoodie http://localhost:3000/api/27550/1/112002:T00024,112003:T00036,112020:T00129,112004:T00056.jpg
+//sticker- http://localhost:3000/api/27549/1/112003:T00034,112006:T00064.jpg
 
 
 
@@ -105,14 +103,19 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const pramCodes = getPathParams(req.query);
-    console.log(pramCodes);
     const artProductIndex = pramCodes.artProductIndex
     const target = pramCodes.target
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
+
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-    let thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
+
+    const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
+
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
+
+    // console.log(productEditInfo)
+
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
     imageComposer.stream().pipe(res);
@@ -164,6 +167,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageCanvas}' alt='hi' /></body></html>`)
 
   } catch (error) {
-    logger.error(error);
+
   }
 }

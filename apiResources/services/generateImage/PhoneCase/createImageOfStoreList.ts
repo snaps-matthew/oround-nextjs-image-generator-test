@@ -5,46 +5,46 @@ import {Image} from "canvas";
 import { SceneType } from 'apiResources/constants/sceneType';
 import { API_URL } from 'apiResources/constants/apiURL';
 import { API_PATH } from 'apiResources/constants/apiPath';
-import { imageFull } from '../../../utils/imageAlign';
+import { imageFull } from 'apiResources/utils/imageAlign';
+import { newCanvas } from 'apiResources/utils/newCanvas';
+import TargetType from 'apiResources/constants/TargetType';
+import { getCreateImageInitInfo,  getSelectedScene } from 'apiResources/utils/getSelectedScene';
+import { TYPE } from 'apiResources/constants/type';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas} = props;
+export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
+  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode = optionInfo.diviceColor;
   const isHardCase = productCode.slice(-1) === '2';
   const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const device = isHardCase ? '' : `${domain}/${SceneType.page}/1-device/${comparisonColorCode}.png`;
   const caseSkin = isHardCase ? '' : `${domain}/${SceneType.page}/2-case/T00088.png`;
-  const skin = isHardCase ?
+  const skinPath = isHardCase ?
     `${domain}/${SceneType.page}/3-skin/T00090.png` :
     `${domain}/${SceneType.page}/3-skin/${comparisonColorCode}_T00088.png`; // 젤리 케이스로 고정 (등록시 상품 코드가 같음- 사용자는 옵션으로 선택)
   const width = productEditInfo.edit[0].width
   const height = productEditInfo.edit[0].height
 
-  const outBox = {width: 500, height: 500};
-  let inBox = {
-    [ProductCode.PHONE_CASE_FANCY_GALAXY_S_20_PLUS]:{
-      width: width,
-      height: height,
-      skinPath: skin
-    },
-    [ProductCode.POLAROID_MINI]:{
-      width: 367,
-      height: 585,
-      skinPath: `${Config.RESOURCE_CDN_URL}/Polaroid/imgs/list_polaroid_mini@2x.png`
-    }
-  };
+  const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  const target = inBox[productCode];
-  canvas.width = outBox.width;
-  canvas.height = outBox.height;
-  let ctx = canvas.getContext('2d');
+  if (target !== TargetType.STORE_DETAIL_4) {
+    //target 1, 2, 3의 경우
+    const temp = newCanvas(width, height);
+    ctx.drawImage(temp.canvas, 0, 0, outBox.width, outBox.height);
+    const size = imageFull(width, height, outBox.width, outBox.height, 0);
+    ctx.drawImage(templateImage, size.x, size.y, size.width, size.height);
+    const skinImage = await loadImage(skinPath);
+    ctx.drawImage(skinImage, size.x, size.y, size.width, size.height);
+  }else {
+    //target 4의 경우
+    let scene:any = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
+    let imageObject:any = scene.object.filter((obj:any) => {
+      const type = obj.type
+      return type === TYPE.OBJECT_IMAGE
+    })
 
-  const x = (outBox.width - target.width) / 2;
-  const y = (outBox.height - target.height) / 2;
-
-  const size = imageFull(width, height, outBox.width, outBox.height, 0);
-  ctx.drawImage(templateImage, size.x, size.y, size.width, size.height);
-  const skinImage = await loadImage(target.skinPath);
-  ctx.drawImage(skinImage, size.x, size.y, size.width, size.height);
+    const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+    const detailClipart = await loadImage(detailClipartpath);
+    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+  }
 }

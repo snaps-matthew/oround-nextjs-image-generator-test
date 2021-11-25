@@ -9,7 +9,7 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any}) => {
+export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
 
   const {templateImage, productEditInfo, optionInfo, canvas} = props;
   const productCode:string = productEditInfo.productCode;
@@ -26,7 +26,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   canvas.width = outBox.width;
   canvas.height = outBox.height;
   let ctx = canvas.getContext('2d');
-
+  ctx.fillStyle = '#f1f1f1';
+  ctx.fillRect(0,0, outBox.width, outBox.height);
   const skinImage_top = await loadImage(skinPathTop);
 
   const wrapper = getWrapperSize(productCode)

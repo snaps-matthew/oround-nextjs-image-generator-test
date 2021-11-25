@@ -17,42 +17,15 @@ export const thumbnailForScene = async (scene:any, productCode:string, scale:num
     return await thumbnailForNormal(scene, scale)
   }
 }
-// 레이아웃 사진틀 저장시 확장해서 라인을 그려주기때문에
-export const thumbnailLayout = (scene:any, scale:number=1) => {
-  const object = scene['object'].map((obj:{setIn:any; get:any;}) =>{
-    if(obj.get('@type') === TYPE.OBJECT_IMAGE){
-      obj = obj
-        .setIn(['border','@type'], 'singleColor')
-        .setIn(['border','@singleAlpha'], 0.1)
-        .setIn(['border','@singleThickness'], 2)
-        .setIn(['border','@singleColor'], '#000000')
-    }
-    return obj
-  });
-  scene = scene.set('object', object);
-  return generateThumbnail(scene, false, scale)
-}
 
 // 일반적인 모든 오브젝트가 순서에 맞게 출력
 export const thumbnailForNormal = async (scene:any, scale:number) => {
   return await generateThumbnail(scene, false, scale)
 }
 
-// 효과 표현 하기위해 overPrint 설정된 오브젝트만 출력
-export const thumbnailForOverPrint = (scene:any,  scale:number) => {
-  scene = scene.set('object', scene.get('object').filter((obj:{get:any}) => obj.get('@overPrint')))
-  return generateThumbnail(scene, false, scale)
-}
-
-// 효과 표현 하기위해 overPrint 제외한 오브젝트만 출력
-export const thumbnailForNotOverPrint = (scene:any,  scale:number) => {
-  scene = scene.set('object', scene.get('object').filter((obj:{get:any}) => !obj.get('@overPrint')))
-  return generateThumbnail(scene, false, scale)
-}
-
 // 효과 표현 하기위해 whiteWrite 설정된 오브젝트만 출력
 export const thumbnailForWhitePrint = (scene:any, categoryCode:string, scale:number=1, paperCode:string='') => {
-  let tempScene:any  = scene
+  let tempScene = scene
   if(isWhitePrint(categoryCode) || !paperCode){
     tempScene = tempScene.object.filter((obj:any) => obj.whitePrint )
   } else {
@@ -70,28 +43,15 @@ export const thumbnailToObject = async (scene:any, scale:number) => {
   })
   return await generateThumbnail(tempScene, false, scale)
 }
-// 이미지에 마스크가 있는 경우 마스크에 회색을 칠해서 출력
-export const thumbnailToMaskImage = (scene:any, borderImageINIItem:any, scale:any) => {
-  return generateThumbnail(scene, true, scale)
-}
-
-// 어페럴 날염용 이미지 출력 (불투명 100%
-export const thumbnailForScreenApparel = (scene:any, scale:any) => {
-  const object = scene.get('object')
-    .filter((obj:{get:any;})=> obj.get('@type') !== TYPE.OBJECT_BACKGROUND ||
-      (obj.get('@subType') === TYPE.BACKGROUND_PDF && obj.get('@imageSequence') !== ''))
-    .map((obj:{set:any;}) => obj.set('@alpha', 1))
-
-  scene = scene.set('object', object)
-  return generateThumbnail(scene, false, scale)
-}
 
 // 씬 마스크 이미지 를 출력
 export const thumbnailSceneMask = async (scene:any, tmpProductCode:any, caseSkin:any, caseColor:any) => {
-  const mask = scene.get('object').find((obj:{get:any}) => obj.get('@type') === TYPE.OBJECT_SCENE_MASK)
+  const mask = scene.object.filter((obj:any) => {
+    obj.type === TYPE.OBJECT_SCENE_MASK
+  })
   const maskImg = await loadImage(mask)
-  const sceneWidth = scene.get('@width')
-  const sceneHeight = scene.get('@height')
+  const sceneWidth = scene.width
+  const sceneHeight = scene.height
   const {canvas, ctx} = newCanvas(sceneWidth, sceneHeight)
   ctx.drawImage(maskImg, 0, 0, sceneWidth, sceneHeight)
   return canvas
@@ -101,8 +61,8 @@ export const thumbnailSceneMask = async (scene:any, tmpProductCode:any, caseSkin
 export const serverSceneMask = async (scene:any, tmpProductCode:any, caseSkin:any, caseColor:any) => {
   const mask = getResourceSceneMaskPath(tmpProductCode, caseSkin)
   const maskImg = await loadImage(mask)
-  const sceneWidth = scene.get('@width')
-  const sceneHeight = scene.get('@height')
+  const sceneWidth = scene.width
+  const sceneHeight = scene.height
   const {canvas, ctx} = newCanvas(sceneWidth, sceneHeight)
   ctx.drawImage(maskImg, 0, 0, sceneWidth, sceneHeight)
   return canvas
@@ -113,8 +73,8 @@ export const makePaperMasking = async (isSceneMasking:any, paperImage:any, scene
   const paperBackgroundUrl = await asyncCreateObjectURL(paperCanvas)
 
   const sceneMask =  isSceneMasking? await thumbnailSceneMask(scene, tmpProductCode, caseSkin, caseColor) : await thumbnailToObject(scene,1)
-  const sceneWidth = scene.get('@width')
-  const sceneHeight = scene.get('@height')
+  const sceneWidth = scene.width
+  const sceneHeight = scene.height
 
   const {canvas, ctx} = newCanvas(sceneWidth, sceneHeight)
   ctx.fillStyle = '#f2f4f7'
@@ -128,8 +88,8 @@ export const makePaperMasking = async (isSceneMasking:any, paperImage:any, scene
 }
 
 export const makePaper = async (paperImage:any, scene:any) => {
-  const sceneWidth = scene.get('@width')
-  const sceneHeight = scene.get('@height')
+  const sceneWidth = scene.width
+  const sceneHeight = scene.height
   paperImage = await loadImage(paperImage)
   const {canvas, ctx} = newCanvas(sceneWidth, sceneHeight)
   const fullSize = paperFull(paperImage.width, paperImage.height, sceneWidth, sceneHeight, 0)

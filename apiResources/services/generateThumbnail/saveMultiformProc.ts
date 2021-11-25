@@ -12,30 +12,21 @@ import { drawPositionScene } from 'apiResources/services/drawPositionScene'
 import  {PAPER} from 'apiResources/constants/paperList'
 import {TYPE} from "apiResources/constants/type";
 import CommonCode from "apiResources/constants/CommonCode";
+import { getSelectedScene } from '../../utils/getSelectedScene';
+
+
 
 const saveMultiformProc = async (productEditInfo:any, optionInfo:any) => {
   const productCode = productEditInfo.productCode;
   const categoryCode = productEditInfo.productCode.slice(0,3);
-  let printPosition:any;
-  if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_FRONT){
-    printPosition = 'front'
-  }else if(optionInfo.printPositionCode===CommonCode.PRINT_POSITION_BACK){
-    printPosition = 'back'
-  }
-  let scene
-  if(productEditInfo.edit.length>1 && productEditInfo.groupDelimiterName === "apparel"){
-    scene = productEditInfo.edit.find((obj:any) => {
-      return  obj.type === printPosition
-    })
-  }else{
-    scene = productEditInfo.edit[0]
-  }
+
+  let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
   // 2. 바닥에 베이스로 사용할(오브젝트 전체) 스크린샷 이미지
   let thumbnailCanvas:any = await thumbnailForScene(scene, productCode,  getProductScale(categoryCode));
   // console.log('thumbnailForScene=-=-=1111',scene)
   // 3. 화이트 배경(whitePrint) 이미지 생성
   // const whitePrintCanvas = await thumbnailForWhitePrint(scene, categoryCode);
-  // console.log('thumbnailForWhitePrint=-=-=2222',whitePrintCanvas)
+  // // console.log('thumbnailForWhitePrint=-=-=2222',whitePrintCanvas)
   // // 8. 용지 합성이 필요한 상품의 경우 합성을 한다.
   // thumbnailCanvas = await compositePaperImage(thumbnailCanvas, whitePrintCanvas, optionInfo, productCode);
   // console.log('compositePaperImage=-=-=3333',scene, thumbnailCanvas)
