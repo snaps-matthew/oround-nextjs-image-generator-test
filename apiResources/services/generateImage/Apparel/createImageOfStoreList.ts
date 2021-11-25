@@ -8,7 +8,9 @@ import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
-import { getCreateImageInitInfo } from '../../../utils/getSelectedScene';
+import { getCreateImageInitInfo, getDetailClipart } from '../../../utils/getSelectedScene';
+import TargetType from '../../../constants/TargetType';
+import { TYPE } from '../../../constants/type';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 
@@ -22,15 +24,22 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  const skinImage_bottom = await loadImage(skinPathBottom);
-  const wrapper = getWrapperSize(productCode)
-  const offset = getOffset(productCode, SceneType.front)
-  const temp = newCanvas(wrapper.width, wrapper.height);
+  if (target === TargetType.STORE_DETAIL_3) {
+    //target 3의 경우
+    const skinImage_bottom = await loadImage(skinPathBottom);
+    const wrapper = getWrapperSize(productCode)
+    const offset = getOffset(productCode, SceneType.front)
+    const temp = newCanvas(wrapper.width, wrapper.height);
 
-  temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
-  temp.ctx.drawImage(templateImage, offset.left, offset.top);
+    temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
+    temp.ctx.drawImage(templateImage, offset.left, offset.top);
 
-  const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
-  ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
+    const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
+    ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
 
+  }else if (target === TargetType.STORE_DETAIL_4) {
+    //target 4의 경우
+    const detailClipart = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+  }
 }

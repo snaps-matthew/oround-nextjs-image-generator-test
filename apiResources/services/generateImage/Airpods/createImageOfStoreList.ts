@@ -9,7 +9,7 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import TargetType from 'apiResources//constants/TargetType';
-import { getSelectedScene, getOutBoxSize } from 'apiResources/utils/getSelectedScene';
+import { getSelectedScene, getCreateImageInitInfo, getDetailClipart } from 'apiResources/utils/getSelectedScene';
 import { TYPE } from 'apiResources//constants/type';
 
 
@@ -25,12 +25,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const skinPathTop = skinPath+'_top.png';
   const skinPathBottom = skinPath+'_bottom.png';
 
-  const outBox = getOutBoxSize(target)
-  canvas.width = outBox.width;
-  canvas.height = outBox.height;
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#f1f1f1';
-  ctx.fillRect(0, 0, outBox.width, outBox.height);
+  const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
@@ -47,15 +42,11 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
     const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
+
   }else{
+
     //target 4의 경우
-    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
-    let imageObject = scene.object.filter((obj:any) => {
-      const type = obj.type
-      return type === TYPE.OBJECT_IMAGE
-    })
-    const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
-    const detailClipart = await loadImage(detailClipartpath);
+    const detailClipart = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
     ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
   }
 }

@@ -1,47 +1,78 @@
-import Config from "apiResources/constants/Config";
-import ProductCode from "apiResources/constants/ProductCode";
-import {loadImage} from "apiResources/utils/loadImage";
-import {Image} from "canvas";
-import { SceneType } from 'apiResources/constants/sceneType';
-import { API_URL } from 'apiResources/constants/apiURL';
-import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
+import { OroundCV } from 'apiResources/utils/OroundCV';
+import {  getStandCutLineSize, getStandHelperWidth, getStandStickSize  } from 'apiResources/utils/getStandSize';
+import { getCreateImageInitInfo, getSelectedScene } from '../../../utils/getSelectedScene';
+import TargetType from 'apiResources/constants/TargetType';
+import { loadImage } from 'apiResources/utils/loadImage';
+import { TYPE } from 'apiResources/constants/type';
+import { API_URL } from 'apiResources/constants/apiURL';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas} = props;
-  const productCode:string = productEditInfo.productCode;
-  const directionCode = productEditInfo.directionCode
+export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, paperImage?:any}) => {
+  const {templateImage, productEditInfo, optionInfo, canvas, target, paperImage} = props;
   const width = productEditInfo.edit[0].width
   const height = productEditInfo.edit[0].height
-  const colorCode = optionInfo.colorCode
 
-  const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
-  const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}`;
-  const skinPathTop = skinPath+'_top.png';
-  const skinPathBottom = skinPath+'_bottom.png';
+  const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  const outBox = {width: 500, height: 500};
-  canvas.width = outBox.width;
-  canvas.height = outBox.height;
-  let ctx = canvas.getContext('2d');
+  if (target !== TargetType.STORE_DETAIL_4) {
+    //target 1, 2, 3의 경우
+    const ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
 
-  // const skinImage_bottom = await loadImage(skinPathBottom);
-  // const skinImage_top = await loadImage(skinPathTop);
+    const cutLine = getStandCutLineSize() * ratio;
+    const contour = newCanvas(width, height);   // 칼선 캔버스
+    const result = newCanvas(width, height);    // 최종 출력물 캔버스
+    let scene:any = getSelectedScene(productEditInfo);
+    const stickObject = scene.object.find((obj: { type: string; }) => obj.type === 'stick');
+    const helperObject = scene.object.find((obj: { type: string; }) => obj.type === 'helper');
 
-  // const wrapper = getWrapperSize(productCode)
-  // const offset = getOffset(productCode, SceneType.page)
-  // const temp = newCanvas(wrapper.width, wrapper.height);
-  //
-  // temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
-  // temp.ctx.drawImage(templateImage, offset.left, offset.top);
-  // temp.ctx.drawImage(skinImage_top, 0, 0,wrapper.width, wrapper.height);
-  //
-  // const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
-  // ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
+    const helperX = helperObject.x;
+    const helperY = helperObject.y;
+    const helperWidth = helperObject.width;
+    const stickX = stickObject.x;
+    const stickY = stickObject.y;
+    const stickWidth = stickObject.width;
+    const stickHeight = stickObject.height;
+    contour.ctx.drawImage(templateImage, 0, 0);
 
-  const size = imageFull(width, height, outBox.width, outBox.height, 0);
-  ctx.drawImage(templateImage, size.x, size.y, size.width, size.height);
+    const oroundCV = new OroundCV();
+    oroundCV.alphaBinarization(contour.canvas);
+    oroundCV.dilation(contour.canvas, cutLine);
+    oroundCV.addStand(helperX, helperY, helperWidth, width);
+    oroundCV.findObjectContour(contour.canvas);
+    oroundCV.contourPaintColor(contour.canvas);
 
+    contour.ctx.fillStyle = '#ffffff';
+    contour.ctx.fillRect(stickX, stickY, stickWidth, stickHeight);
+
+    if (paperImage) {
+      const fullSize = imageFull(paperImage.width, paperImage.height, width, height, 0);
+      result.ctx.save();
+      result.ctx.drawImage(paperImage, fullSize.x, fullSize.y, fullSize.width, fullSize.height);
+      result.ctx.globalCompositeOperation = 'destination-in';
+      result.ctx.drawImage(contour.canvas, 0, 0);
+      result.ctx.restore();
+    }
+
+    const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 1, 3);
+
+    result.ctx.drawImage(shadowCanvas, 0, 0);
+    result.ctx.drawImage(contour.canvas, 0, 0);
+    result.ctx.drawImage(templateImage, 0, 0);
+
+    const size = imageFull(width, height, outBox.width, outBox.height, 0);
+    ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);
+
+  }else {
+    //target 4의 경우
+    let scene:any = getSelectedScene(productEditInfo);
+    let imageObject:any = scene.object.filter((obj:any) => {
+      const type = obj.type
+      return type === TYPE.OBJECT_IMAGE
+    })
+
+    const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+    const detailClipart = await loadImage(detailClipartpath);
+    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+  }
 }

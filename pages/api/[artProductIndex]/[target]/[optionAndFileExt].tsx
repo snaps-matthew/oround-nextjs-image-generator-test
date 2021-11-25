@@ -6,7 +6,6 @@ import {getTemplateImagePath} from "apiResources/api/getTemplateImagePath";
 import {generateImage} from "apiResources/services/generateImage/generateImage";
 import {getProductSizeInfo} from "apiResources/api/getProductSizeInfo";
 import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
-import saveMultiformProc from "apiResources/services/generateThumbnail/saveMultiformProc";
 import productGroupList from "apiResources/constants/ProdType";
 import LayerOrderRef from "apiResources/constants/LyaerOrderRef";
 import prodInfo from "apiResources/constants/ProdInfo";
@@ -18,6 +17,8 @@ import {optionTypeInfo, getOptionInfo} from "apiResources/constants/optionInfo";
 import productInfo from "apiResources/constants/productInfo";
 
 import logger from 'logger';
+import generateThumbnail from '../../../../apiResources/services/generateThumbnail/proc/generateThumbnail';
+import { getSelectedScene } from '../../../../apiResources/utils/getSelectedScene';
 
 
 interface IRequestQuery {
@@ -51,26 +52,27 @@ const optionInfo:any = [
 ]
 
 //EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00129,112004:T00056.jpg
-//tinCase- http://localhost:3000/api/21241/1/112003:T00034,112002:T00010.jpg
 
 //woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg
-//hardphoneCase- http://localhost:3000/api/21215/1/112014:T00090,112001:T00094,112003:T00033,112021:T00153.jpg
-//acrylicKeyring- http://localhost:3000/api/21235/1/112005:T00060,112017:T00117,112008:T00067,112016:T00112,112019:T00123,112003:T00035.jpg
-//acrylicStand- http://localhost:3000/api/21236/1/112003:T00033.jpg
-//node- http://localhost:3000/api/21237/1/112003:T00040.112015:T00092.jpg
 //card- http://localhost:3000/api/21239/1/112003:T00041.112010:T00073.jpg
-//smartTok http://localhost:3000/api/21242/1/112003:T00033.112002:T00003.jpg
+
 //airPodProCase http://localhost:3000/api/21243/1/112003:T00033,112002:T00008.jpg
 //airPodCase http://localhost:3000/api/21244/1/112003:T00033,112002:T00001.jpg
 //buds Case http://localhost:3000/api/21245/1/112003:T00033,112002:T00005.jpg
 //round pinButton http://localhost:3000/api/21246/1/112010:T00070,112018:T00120,112003:T00044.jpg
 //simpleEcoBag http://localhost:3000/api/21249/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
-//pouch http://localhost:3000/api/21205/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
 //canvasFrame http://localhost:3000/api/21207/1/112003:T00035.jpg
 //hood http://localhost:3000/api/21195/1/112002:T00014,112003:T00036,112020:T00129,112004:T00056.jpg
 
 //zopUpHoodie http://localhost:3000/api/27550/1/112002:T00024,112003:T00036,112020:T00129,112004:T00056.jpg
 //sticker- http://localhost:3000/api/27549/1/112003:T00034,112006:T00064.jpg
+//acrylicKeyring- http://localhost:3000/api/27593/1/112005:T00058,112017:T00114,112003:T00034,112008:T00065,112016:T00107,112019:T00122.jpg
+//hardphoneCase- http://localhost:3000/api/27573/1/112014:T00090,112001:T00094,112003:T00033,112021:T00153.jpg
+//acrylicStand- http://localhost:3000/api/27594/1/112003:T00033.jpg
+//note- http://localhost:3000/api/27596/1/112003:T00040.112015:T00092.jpg
+//pouch http://localhost:3000/api/27563/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
+//tinCase- http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
+//smartTok http://localhost:3000/api/27600/4/112003:T00033,112002:T00003.jpg
 
 
 
@@ -109,8 +111,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
 
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-
-    const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
+    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
+    const thumbnailImage = await generateThumbnail(scene)
+    // const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
 
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 

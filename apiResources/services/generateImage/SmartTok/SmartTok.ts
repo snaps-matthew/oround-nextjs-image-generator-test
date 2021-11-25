@@ -22,7 +22,7 @@ class SmartTok extends ImageComposer {
     let templateImage = this.thumbnailImage
     // 리스트 && 상세이미지 용도별로 내려주기
     if (target === TargetType.STORE_LIST_1) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     }else if (target === TargetType.STORE_DETAIL_2) {
       // 아트워크 리사이징
       // await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
@@ -30,16 +30,10 @@ class SmartTok extends ImageComposer {
       // await imageDstOut(productPath, productCode);
       // // 최종 아트워크 상품위에 올리기
       // await getArtworkOnModel(productPath, productCode);
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     }
-    else if (target === TargetType.STORE_DETAIL_3) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    }
-    else if (target === TargetType.STORE_DETAIL_4) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    }
-    else {
-
+    else if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {
+      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
     }
   }
 }

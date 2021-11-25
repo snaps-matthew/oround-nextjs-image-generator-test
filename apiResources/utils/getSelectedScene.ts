@@ -1,5 +1,8 @@
 import CommonCode from 'apiResources/constants/CommonCode';
 import TargetType from 'apiResources/constants/TargetType';
+import { TYPE } from 'apiResources/constants/type';
+import { API_URL } from 'apiResources/constants/apiURL';
+import { loadImage } from 'apiResources/utils/loadImage';
 
 export const getSelectedScene = (productEditInfo:any, printPositionCode?:string) => {
   let tempScene
@@ -20,12 +23,10 @@ export const getSelectedScene = (productEditInfo:any, printPositionCode?:string)
 }
 export const getCreateImageInitInfo = (target:string, canvas:any) =>{
   let outBox:any = {};
-  if (target === TargetType.STORE_LIST_1) {
+  if (target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {
     outBox = {width: 500, height: 500};
   } else if (target=== TargetType.STORE_DETAIL_2) {
-    outBox = {width: 1468, height: 1468};
-  } else if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {
-    outBox = {width: 648, height: 648};
+    outBox = {width: 1000, height: 1000};
   }
 
   canvas.width = outBox.width;
@@ -37,3 +38,17 @@ export const getCreateImageInitInfo = (target:string, canvas:any) =>{
 
   return imageCanvasInfo
 }
+
+export const  getDetailClipart = async (productEditInfo:any, printPositionCode?:string ) => {
+  let scene:any = getSelectedScene(productEditInfo, printPositionCode);
+  let imageObject:any = scene.object.filter((obj:any) => {
+    const type = obj.type
+    return type === TYPE.OBJECT_IMAGE
+  })
+
+  const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+  const detailClipart:any  = await loadImage(detailClipartpath);
+
+  return detailClipart
+}
+
