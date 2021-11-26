@@ -1,106 +1,83 @@
 import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import { Canvas, createCanvas, Image } from 'canvas';
-import { createRequire } from 'module';
-import {getPSDData, imageConverter} from "../../utils/artworkImageCreator";
-import fs from "fs";
-import productInfo from '../../constants/productInfo';
-import { OptionCodes } from '../../constants/OptionCodes';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { ImageCanvasInterface } from '../../interfaces/ImageCanvasInterface';
-
-// const coordinateData = require('../../constants/coordinateData.json')
-
-// import coordinateData from '../../constants/'
+import SizeCode from 'apiResources/constants/SizeCode'
+import ColorCode from '../../constants/ColorCode';
 
 class ImageComposer {
   protected categoryName: string;
   protected productCode: string;
-  protected productPath: string;
-  protected patternSrcCoords: number[];
-  protected patternDstCoords: number[];
   protected optionInfo: any;
-  protected colorCode: string;
   protected layerOrder: string[];
   protected wrinkleMag: number;
   protected artworkWidth: any;
   protected artworkHeight: any;
   protected target: string;
+  protected productSize: string;
   protected thumbnailImage: any;
+  protected directionCode: string;
   protected canvas: Canvas;
   protected sizeCode: string;
-
-  protected categoryCode: string;
   protected paperCode: string;
   protected backCode: string;
   protected ext: string;
-  protected productSizeInfo: any;
-  public contentType: string;
+  protected productColor: string;
   protected productEditInfo: any;
+  public contentType: string;
 
   constructor() {
     this.target = '';
-    this.productPath = '';
     this.productCode = '';
-    this.colorCode = '';
     this.sizeCode = ''
     this.layerOrder = [];
     this.wrinkleMag = -20;
     this.categoryName = '';
-    this.patternSrcCoords = [];
-    this.patternDstCoords = [];
+    this.directionCode = '';
     this.canvas = createCanvas(10,10);
-
-    this.categoryCode = '';
+    this.productSize = '';
+    this.productColor = '';
     this.paperCode = '';
     this.backCode = '';
     this.ext = '';
     this.contentType = '';
     this.thumbnailImage = createCanvas(10,10);
-    this.productSizeInfo = [];
     this.optionInfo = '';
     this.productEditInfo = ''
   }
 
   async init(data:{
-    thumbnailImage:any,
-    categoryName: string,
-    productCode: string,
-    target: string,
-    colorCode: string,
-    sizeCode: string,
-    productEditInfo: any,
-    optionInfo: any,
-    productPath: string,
-    categoryCode: string,
-    productSizeInfo: any
+    thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
   }) {
     // 아트워크 이미지 base64 로 변환
-    // await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
-    this.categoryName = data.categoryName
-    this.productPath = data.productPath
-    this.productCode = data.productCode
-    this.target = data.target
+    await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
+
+    // 이미지 매직에 사용될 인자들
+    // (1) 아트워크 소스 이미지 좌표 [배열] => width/height 값 이용해서 만든다
+    // (2) 아트워크 들어갈 좌표 [배열] => coordinateData[productCode][option] 파일에 있다
+    // (3) 상품 컬러코드 "문자" => "#ffffff"
+    // (4) 상품 리소스 경로 => AWS S3 경로
+
+    const ext = data.optionInfo.ext;
+    this.productCode = data.productEditInfo.productCode;
+    this.categoryName = data.productEditInfo.groupDelimiterName;
     this.artworkWidth = data.productEditInfo.edit[0].width;
     this.artworkHeight = data.productEditInfo.edit[0].height;
-    this.layerOrder = []
-    this.wrinkleMag = -20;
-    this.patternSrcCoords = [0,0,this.artworkWidth,0,this.artworkWidth,this.artworkHeight,0,this.artworkHeight];
-    // this.patternDstCoords = coordinateData[data.productCode][`${OptionCodes[data.sizeCode]}/${OptionCodes[data.colorCode]}`];
-    const ext = data.optionInfo.ext;
-    this.categoryCode = data.categoryCode;
-    this.productCode = data.productCode;
-    this.paperCode = data.optionInfo.paperCode;
-    this.backCode = data.optionInfo.backCode;
-    this.target = data.target;
+    this.directionCode = data.productEditInfo.directionCode || '';
     this.thumbnailImage = data.thumbnailImage;
-    this.productSizeInfo = data.productSizeInfo;
+    this.productEditInfo = data.productEditInfo;
     this.optionInfo = data.optionInfo;
-    this.ext = ext;
+    this.target = data.target;
+    this.productSize = SizeCode[data.optionInfo.sizeCode];
+    this.productColor = ColorCode[data.optionInfo.colorCode];
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
-    this.productEditInfo = data.productEditInfo
-  }
+    this.ext = ext;
 
-  // async composite(): Promise<void> {}
+    // 주름 넣는 강도??
+    this.wrinkleMag = 10000000;
+
+    // 필요 없을 수도 있다 => Apparel 들어가서 나눌까
+    this.layerOrder = [];
+  }
 
   drawObject(source: Image | Canvas, target: Canvas, x: number, y: number, width: number, height: number, angle: number = 0, skew: number=0) {
     const ctx = target.getContext('2d');

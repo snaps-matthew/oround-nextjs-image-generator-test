@@ -16,8 +16,10 @@ class Apparel extends ImageComposer {
     super();
   }
 
+  //
+
   async composite() {
-    const { target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName,  optionInfo, canvas, productEditInfo  } = this;
+    const { target, productCode, patternSrcCoords, patternDstCoords, categoryName,  optionInfo, canvas, productEditInfo  } = this;
 
     // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = this.thumbnailImage
@@ -26,14 +28,8 @@ class Apparel extends ImageComposer {
       await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
 
     } else if (this.target === TargetType.STORE_DETAIL_2) {
-      // 아트워크 리사이징
-      await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
 
-      // 주름 및 그림자 생성하기
-      await getImageWrinkled(productPath, productCode);
-
-      // 최종 아트워크 상품위에 올리기
-      return await getArtworkOnModel(productPath, productCode);
+      return true;
 
     } else if (this.target === TargetType.STORE_DETAIL_3) {
 

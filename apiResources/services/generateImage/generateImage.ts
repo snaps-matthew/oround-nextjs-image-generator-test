@@ -76,6 +76,10 @@ export const generateImage = async (props: {
   }
 
   await imageComposer.init(props);
-  await imageComposer.composite();
+  if (props.target == '1' || props.target == '2') {
+    return await imageComposer.composite();
+  } else {
+    await imageComposer.composite();
+  }
   return imageComposer;
 }

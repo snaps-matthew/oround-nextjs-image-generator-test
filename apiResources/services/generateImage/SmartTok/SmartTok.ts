@@ -1,15 +1,7 @@
-import ImageComposer from "../ImageComposer";
-import {ExecException} from "child_process";
-import {
-  getArtworkOnModel,
-  getArtworkReszied,
-  getImageWrinkled,
-  imageDstOut,
-} from 'apiResources/utils/artworkImageCreator';
-import {imageTextSaver} from "apiResources/utils/imageTextSaver";
+import ImageComposer from "apiResources/services/generateImage/ImageComposer";
 import TargetType from 'apiResources/constants/TargetType';
 import { createImageOfStoreList } from 'apiResources/services/generateImage/SmartTok/createImageOfStoreList';
-const { exec } = require('child_process');
+import { createImageOfStoreDetail } from 'apiResources/services/generateImage/SmartTok/createImageOfStoreDetail';
 
 class SmartTok extends ImageComposer {
   constructor() {
@@ -17,23 +9,31 @@ class SmartTok extends ImageComposer {
   }
 
   async composite() {
+    const {
+      target,
+      productCode,
+      productEditInfo,
+      thumbnailImage,
+      categoryName,
+      productColor,
+      directionCode,
+      artworkHeight,
+      artworkWidth,
+      productSize,
+      optionInfo,
+      canvas } = this;
 
-    const { canvas, productEditInfo, target, productCode, patternSrcCoords, patternDstCoords, productPath, categoryName, thumbnailImage, colorCode, sizeCode, optionInfo } = this;
-    let templateImage = this.thumbnailImage
-    // 리스트 && 상세이미지 용도별로 내려주기
-    if (target === TargetType.STORE_LIST_1) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
-    }else if (target === TargetType.STORE_DETAIL_2) {
-      // 아트워크 리사이징
-      // await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
-      // // 아트워크 패턴 둥글게 자르기
-      // await imageDstOut(productPath, productCode);
-      // // 최종 아트워크 상품위에 올리기
-      // await getArtworkOnModel(productPath, productCode);
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
-    }
-    else if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {
-      await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
+    // 리스트의 경우 하나의 이미지만 사용한다.
+    let templateImage = thumbnailImage;
+
+    if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
+
+      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight })
+
+    } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
+
+      await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
+
     }
   }
 }

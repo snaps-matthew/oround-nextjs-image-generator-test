@@ -1,24 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-
 import HttpResponseStatusCode from "apiResources/constants/HttpResponseStatusCode";
-import {validationParams} from "apiResources/utils/validationParams";
-import {getTemplateImagePath} from "apiResources/api/getTemplateImagePath";
 import {generateImage} from "apiResources/services/generateImage/generateImage";
-import {getProductSizeInfo} from "apiResources/api/getProductSizeInfo";
 import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
-import productGroupList from "apiResources/constants/ProdType";
-import LayerOrderRef from "apiResources/constants/LyaerOrderRef";
-import prodInfo from "apiResources/constants/ProdInfo";
-import * as fs from 'fs';
-import {createCanvas} from "canvas";
-import {getArtworkReszied, getImageWrinkled} from "apiResources/utils/artworkImageCreator";
-import {imageTextSaver} from "apiResources/utils/imageTextSaver";
-import {optionTypeInfo, getOptionInfo} from "apiResources/constants/optionInfo";
-import productInfo from "apiResources/constants/productInfo";
-
-import logger from 'logger';
-import generateThumbnail from '../../../../apiResources/services/generateThumbnail/proc/generateThumbnail';
-import { getSelectedScene } from '../../../../apiResources/utils/getSelectedScene';
+import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
+import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
 
 
 interface IRequestQuery {
@@ -68,10 +53,19 @@ const optionInfo:any = [
 //acrylicStand- http://localhost:3000/api/27594/1/112003:T00033.jpg
 //note- http://localhost:3000/api/27596/1/112003:T00040.112015:T00092.jpg
 //pouch http://localhost:3000/api/27563/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
-//tinCase- http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
 //smartTok http://localhost:3000/api/27600/4/112003:T00033,112002:T00003.jpg
 //round pinButton http://localhost:3000/api/27604/1/112010:T00070,112018:T00120,112003:T00044.jpg
 //simpleEcoBag http://localhost:3000/api/27607/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
+
+          // [TINCASE] //
+
+// SILVER + S => http://localhost:3000/api/27599/1/112003:T00033,112002:T00010.jpg
+// SILVER + M => http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
+// SILVER + L => http://localhost:3000/api/27599/1/112003:T00035,112002:T00010.jpg
+
+// BLACK + S => http://localhost:3000/api/27599/1/112003:T00033,112002:T00003.jpg
+// BLACK + M => http://localhost:3000/api/27599/1/112003:T00034,112002:T00003.jpg
+// BLACK + L => http://localhost:3000/api/27599/1/112003:T00035,112002:T00003.jpg
 
 
 const getPathParams = (requestQuery: { [key: string]: string | string[] }): IRequestQuery => {
@@ -115,12 +109,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
-    // console.log(productEditInfo)
-
     res.status(HttpResponseStatusCode.SUCCESS);
-    res.setHeader("content-type", 'image/png');
-    imageComposer.stream().pipe(res);
 
+    if (target === '1' || target === '2') {
+      res.setHeader("content-type", 'text/html');
+      res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageComposer}' /></body></html>`)
+    } else {
+      res.setHeader("content-type", 'image/png');
+      imageComposer.stream().pipe(res);
+    }
 
     // logger.info(`DEBUG : query Params : ${artProductIndex} : ${sizeCode} : ${optionAndFileExt}`);
     // let thumbnailImage = await saveMultiformProc(productEditInfo, categoryCode, optionAndFileExt)
