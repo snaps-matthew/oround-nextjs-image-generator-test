@@ -1,6 +1,6 @@
 export interface OffsetState {
- top: number;
- left: number;
+  top: number;
+  left: number;
 }
 
 export interface WrapperState {
@@ -14,16 +14,16 @@ export interface ProductGroupInfoState {
     offset?: {  // 스킨으로 부터 씬의 위치
       [key: string]: OffsetState;
     };
+    margin?: number;
   };
 }
-
 
 // 기본적으로 상품 그룹에 따라 번들을 호출하지만, 그룹이 같고 상품에 따라 달라야 하는 경우 해당 상품의 번들로 연결한다.
 
 const productInfo: ProductGroupInfoState = {
   /** frame */
   '1010010001': { // 원목 액자
-    //todo 여기 원목액자 wrapper 잡아줘야함
+    margin: 10
   },
   '1010020001': { // 알루미늄 액자
   },
@@ -48,86 +48,127 @@ const productInfo: ProductGroupInfoState = {
 
   /** phone */
   '1030010001': { //갤럭시S21ultra 젤리
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030010002': { // 갤럭시S21ultra 하드
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030020001': { // 갤럭시S21+ 젤리
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030020002': { // 갤럭시S21+ 하드
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030030001': { // 갤럭시S21 젤리
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030030002': { // 갤럭시S21 하드
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030040001': { // 갤럭시S20ultra 하드
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030040002': { // 갤럭시S20ultra
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030050001': { // 갤럭시S20+
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030050002': { // 갤럭시S20+
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030060001': { // 갤럭시S20
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030060002': { // 갤럭시S20
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030070001': { // 갤럭시노트20ultra
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030070002': { // 갤럭시노트20ultra
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030080001': { // 갤럭시노트20
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030080002': { // 갤럭시노트20
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030090001': { // 갤럭시노트10+
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030090002': { // 갤럭시노트10+
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030100001': { // 갤럭시노트10
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030100002': { // 갤럭시노트10
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030110001': { // 아이폰X
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030110002': { // 아이폰X
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030120001': { // 아이폰XS
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030120002': { // 아이폰XS
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030130001': { // 아이폰XR
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030130002': { // 아이폰XR
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030140001': { // 아이폰XSMax
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030150001': { // 아이폰11
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030150002': { // 아이폰11
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030160001': { // 아이폰11 pro
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030160002': { // 아이폰11 pro
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030170001': { // 아이폰11 proMax
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030170002': { // 아이폰11 proMax
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030180001': { // 아이폰12
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030180002': { // 아이폰12
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030190001': { // 아이폰12pro
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030190002': { // 아이폰12pro
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030200001': { // 아이폰12mini
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030200002': { // 아이폰12mini
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030210001': { // 아이폰12proMax
+    wrapperSize: { width: 380, height: 650 }
   },
   '1030210002': { // 아이폰12proMax
+    wrapperSize: { width: 380, height: 650 }
   },
 
   /** goods */
@@ -140,61 +181,61 @@ const productInfo: ProductGroupInfoState = {
   '1040030001': { // note
     wrapperSize: { width: 389, height: 465 },
     offset: {
-      page: { top: 11, left: 42 },
+      page: { top: 11, left: 42 }
     }
   },
   '1040040001': { // spring note
     wrapperSize: { width: 386, height: 460 },
     offset: {
-      page: { top: 11, left: 42 },
+      page: { top: 11, left: 42 }
     }
   },
   '1040050001': { // card flat
     wrapperSize: { width: 381, height: 517 },
     offset: {
-      page: { top: 40, left: 43 },
+      page: { top: 40, left: 43 }
     }
   },
   '1040050002': { // card folder
     wrapperSize: { width: 343, height: 495 },
     offset: {
-      page: { top: 29, left: 25 },
+      page: { top: 29, left: 25 }
     }
   },
   '1040060001': { // tinCase
     wrapperSize: { width: 429, height: 654 },
     offset: {
-      page: { top: 89, left: 75 },
+      page: { top: 89, left: 75 }
     }
   },
   '1040070001': { // smartTok circle
     wrapperSize: { width: 382, height: 382 },
     offset: {
-      page: { top: 35, left: 35 },
+      page: { top: 35, left: 35 }
     }
   },
   '1040070002': { // smartTok heart
     wrapperSize: { width: 402, height: 370 },
     offset: {
-      page: { top: 32, left: 30 },
+      page: { top: 32, left: 30 }
     }
   },
   '1040080001': { // airpodsCase
     wrapperSize: { width: 549, height: 534 },
     offset: {
-      page: { top: 88, left: 159 },
+      page: { top: 88, left: 159 }
     }
   },
   '1040090001': { // airpodsProCase
     wrapperSize: { width: 745, height: 532 },
     offset: {
-      page: { top: 138, left: 221 },
+      page: { top: 138, left: 221 }
     }
   },
   '1040100001': { // buzCase
     wrapperSize: { width: 585, height: 395 },
     offset: {
-      page: { top: 152, left: 164 },
+      page: { top: 152, left: 164 }
     }
   },
   '1040110001': { // pinButton circle
