@@ -4,6 +4,7 @@ import {generateImage} from "apiResources/services/generateImage/generateImage";
 import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
+import TargetType from 'apiResources/constants/TargetType';
 
 
 interface IRequestQuery {
@@ -101,68 +102,23 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const target = pramCodes.target
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
-
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
     let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
     const thumbnailImage = await generateThumbnail(scene)
     // const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
-
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
     res.status(HttpResponseStatusCode.SUCCESS);
 
-    if (target === '1' || target === '2') {
+    if ((target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
+      console.log(1111);
       res.setHeader("content-type", 'text/html');
       res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageComposer}' /></body></html>`)
     } else {
+      console.log(2222);
       res.setHeader("content-type", 'image/png');
       imageComposer.stream().pipe(res);
     }
-
-    // logger.info(`DEBUG : query Params : ${artProductIndex} : ${sizeCode} : ${optionAndFileExt}`);
-    // let thumbnailImage = await saveMultiformProc(productEditInfo, categoryCode, optionAndFileExt)
-    // const imageData:any = thumbnailImage.toDataURL();
-    // const artworkSize:any = [productEditInfo.edit[0].width, productEditInfo.edit[0].height];
-
-//=========================start
-//     const artworkData = {
-//       x: 0,
-//       y: 40,
-//       width: 400,
-//       height: 373,
-//       path: `https://cdn.oround.com/artwork/2021/OCTOBER/20/21192/ED/cC9PAQ-20211020142757553.png`
-//     }
-
-    // 필요한 것들
-    // productCode, groupDelimiterName (그룹 이름), edit[0].type (사이드),
-
-    // const artworkSize:any = [400,453];
-    //
-    // const dataSet:any = {
-    //   productCode,
-    //   productType: productGroupList[productCode],
-    //   productOption,
-    //   layerOrder: LayerOrderRef[productCode] ? LayerOrderRef[productCode][productOption] : [],
-    //   // psdPath: `/Users/david/Desktop/SMARTTOK/${productEditInfo.productCode}/${productOption ? productOption + '/' : ''}${productEditInfo.productCode}.psd`,
-    //   psdPath: `/Users/david/Desktop/APPAREL/${productCode}/${productOption}/${productCode}.psd`,
-    //   // patternPath: `https://cdn.oround.com/artwork/2021/OCTOBER/20/21192/ED/cC9PAQ-20211020142757553.png`,
-    //   // productPath: `/Users/david/Desktop/SMARTTOK/${productEditInfo.productCode}${productOption ? '/' + productOption : ''}`,
-    //   // productPath: `https://cdn.ohprint.me/design/resource/Model3d/SMARTTOK/${productCode}/${productOption}`,
-    //   productPath: `/Users/david/Desktop/APPAREL/${productCode}/${productOption}`,
-    //   colorCodes: prodInfo[productCode] ? prodInfo[productCode].productColor : null,
-    //   categoryCode,
-    //   paperCode,
-    //   backCode,
-    //   target,
-    //   optionAndFileExt,
-    //   // imageData,
-    //   artworkSize,
-    //   // thumbnailImage
-    // }
-    //
-    // const imageCanvas = await generateImage(dataSet);
-    //
-    // res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageCanvas}' alt='hi' /></body></html>`)
 
   } catch (error) {
 

@@ -1,8 +1,7 @@
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { OroundCV } from 'apiResources/utils/OroundCV';
-import { getStickerCutLineSize } from 'apiResources/utils/getStickerSize';
-import { getCreateImageInitInfo, getSelectedScene } from '../../../utils/getSelectedScene';
+import { getCreateImageInitInfo, getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage } from 'apiResources/utils/loadImage';
 import { TYPE } from 'apiResources/constants/type';

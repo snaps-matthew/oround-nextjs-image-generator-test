@@ -25,7 +25,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const skinPathTop = skinPath+'/top.png';
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target === TargetType.STORE_DETAIL_3) {
+  if (target === TargetType.STORE_DETAIL_3  || target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) {
     //target 3의 경우
     // const skinImage_bottom = await loadImage(skinPathBottom);
     const skinImage_top = await loadImage(skinPathTop);

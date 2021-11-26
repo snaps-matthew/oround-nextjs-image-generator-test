@@ -17,6 +17,7 @@ import BuzCase from 'apiResources/services/generateImage/BuzCase/BuzCase'
 import Note from 'apiResources/services/generateImage/Note/Note'
 import Card from 'apiResources/services/generateImage/Card/Card'
 import Button from 'apiResources/services/generateImage/Button/Button'
+import TargetType from 'apiResources/constants/TargetType';
 export const generateImage = async (props: {
   thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
 }) => {
@@ -76,7 +77,7 @@ export const generateImage = async (props: {
   }
 
   await imageComposer.init(props);
-  if (props.target == '1' || props.target == '2') {
+  if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
   } else {
     await imageComposer.composite();
