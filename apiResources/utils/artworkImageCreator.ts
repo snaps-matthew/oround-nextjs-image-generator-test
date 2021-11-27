@@ -1,14 +1,9 @@
 import * as fs from 'fs';
 import 'ag-psd/initialize-canvas.js';
 import { readPsd } from 'ag-psd';
-import { createRequire } from 'module';
 import {ExecException} from "child_process";
-import {deflateRawSync} from "zlib";
-import logger from '../../logger';
-import exp from 'constants';
-import { fakeTimerWaitFor } from '@reduxjs/toolkit/src/query/tests/helpers';
 const { exec } = require('child_process');
-const { imageTextSaver } = require('./imageTextSaver');
+const { imageTextSaver } = require('apiResources/utils/imageTextSaver');
 
 // 아트워크 리사이징 (아트워크 이미지가 들어갈 영역의 크기/좌표에 맞춰 조절)
 // 필요한 요소들: (1) 아트워크 파일경로, (2) 아트워크 좌표, (3) 타켓(아트워크 넣을 영역) 좌표
