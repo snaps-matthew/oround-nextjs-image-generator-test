@@ -8,7 +8,7 @@ import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
-import { getCreateImageInitInfo, getSelectedScene } from '../../../utils/getSelectedScene';
+import { getCreateImageInitInfo, getDetailClipart, getSelectedScene } from '../../../utils/getSelectedScene';
 import TargetType from '../../../constants/TargetType';
 import { TYPE } from '../../../constants/type';
 
@@ -40,13 +40,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   }else{
     //target 4의 경우
-    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
-    let imageObject = scene.object.filter((obj:any) => {
-      const type = obj.type
-      return type === TYPE.OBJECT_IMAGE
-    })
-    const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
-    const detailClipart = await loadImage(detailClipartpath);
-    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
+    ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }
 }

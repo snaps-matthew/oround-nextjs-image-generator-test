@@ -45,7 +45,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   }else{
 
     //target 4의 경우
-    const detailClipart = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
-    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
+    ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }
 }

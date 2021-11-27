@@ -46,9 +46,10 @@ export const  getDetailClipart = async (productEditInfo:any, printPositionCode?:
     return type === TYPE.OBJECT_IMAGE
   })
 
-  const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
-  const detailClipart:any  = await loadImage(detailClipartpath);
-
-  return detailClipart
+  const artworkImagePath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+  const artworkImage:any  = await loadImage(artworkImagePath);
+  const artworkImageWidth = imageObject[0].original.width
+  const artworkImageHeight = imageObject[0].original.height
+  return {artworkImage, artworkImageWidth, artworkImageHeight}
 }
 

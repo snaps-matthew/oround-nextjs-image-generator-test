@@ -9,7 +9,7 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import TargetType from 'apiResources//constants/TargetType';
-import { getSelectedScene, getCreateImageInitInfo } from 'apiResources/utils/getSelectedScene';
+import { getSelectedScene, getCreateImageInitInfo, getDetailClipart } from 'apiResources/utils/getSelectedScene';
 import { TYPE } from 'apiResources//constants/type';
 
 
@@ -44,13 +44,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
   }else{
     //target 4의 경우
-    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
-    let imageObject = scene.object.filter((obj:any) => {
-      const type = obj.type
-      return type === TYPE.OBJECT_IMAGE
-    })
-    const detailClipartpath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
-    const detailClipart = await loadImage(detailClipartpath);
-    ctx.drawImage(detailClipart, 0, 0, outBox.width, outBox.height);
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
+    ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }
 }
