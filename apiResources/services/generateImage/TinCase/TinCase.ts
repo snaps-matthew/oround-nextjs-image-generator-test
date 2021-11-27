@@ -1,5 +1,5 @@
-import ImageComposer from "apiResources/services/generateImage/ImageComposer";
 import TargetType from 'apiResources/constants/TargetType';
+import ImageComposer from "apiResources/services/generateImage/ImageComposer";
 import { createImageOfStoreList } from 'apiResources/services/generateImage/TinCase/createImageOfStoreList';
 import { createImageOfStoreDetail } from 'apiResources/services/generateImage/TinCase/createImageOfStoreDetail';
 

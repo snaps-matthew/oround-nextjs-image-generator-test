@@ -1,22 +1,11 @@
 import ImageComposer from "../ImageComposer";
-import {ExecException} from "child_process";
-import {
-  getArtworkOnModel,
-  getArtworkReszied,
-  getImageWrinkled,
-  imageDstOut,
-} from 'apiResources/utils/artworkImageCreator';
-import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import TargetType from 'apiResources/constants/TargetType';
 import { createImageOfStoreList } from 'apiResources/services/generateImage/Apparel/createImageOfStoreList';
-const { exec } = require('child_process');
 
 class Apparel extends ImageComposer {
   constructor() {
     super();
   }
-
-  //
 
   async composite() {
     const { target, optionInfo, canvas, productEditInfo  } = this;

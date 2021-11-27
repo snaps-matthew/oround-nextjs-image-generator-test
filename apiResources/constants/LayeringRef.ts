@@ -1,11 +1,11 @@
-const productGroupList:any = {
-  '1040110001': 'PIN',
-  '1040110002': 'PIN',
-  '1040110003': 'PIN',
-  '1040120001': 'MIRROR',
-  '1040130001': 'MAGNET',
-  '1040130002': 'MAGNET',
-  '1040130003': 'MAGNET',
+const LayeringRef:any = {
+  '1040110001': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040110002': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040110003': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040120001': ['back', 'patternImageBack', 'patternImageFront', 'mirror', 'glare'],
+  '1040130001': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
+  '1040130002': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
+  '1040130003': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1040060001': 'TINCASE',
   '1050010001': 'APPAREL',
   '1050010002': 'APPAREL',
@@ -37,4 +37,4 @@ const productGroupList:any = {
   '1050080002': 'FINGER'
 }
 
-export default productGroupList
+export default LayeringRef

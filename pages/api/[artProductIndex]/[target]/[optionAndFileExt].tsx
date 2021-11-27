@@ -6,7 +6,6 @@ import generateThumbnail from 'apiResources/services/generateThumbnail/proc/gene
 import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 
-
 interface IRequestQuery {
   [key: string]: any;
   // artProductIndex: string
@@ -106,16 +105,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
     const thumbnailImage = await generateThumbnail(scene)
     // const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
+    
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
     res.status(HttpResponseStatusCode.SUCCESS);
 
-    if ((target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
-      console.log(1111);
+    if ((target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button'].includes(productEditInfo.groupDelimiterName)) {
       res.setHeader("content-type", 'text/html');
       res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageComposer}' /></body></html>`)
     } else {
-      console.log(2222);
       res.setHeader("content-type", 'image/png');
       imageComposer.stream().pipe(res);
     }

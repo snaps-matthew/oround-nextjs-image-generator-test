@@ -49,7 +49,7 @@ class ImageComposer {
     thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
   }) {
     // 아트워크 이미지 base64 로 변환
-    await imageTextSaver(data.thumbnailImage.toDataURL(), 'pattern');
+    await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
 
     // 이미지 매직에 사용될 인자들
     // (1) 아트워크 소스 이미지 좌표 [배열] => width/height 값 이용해서 만든다

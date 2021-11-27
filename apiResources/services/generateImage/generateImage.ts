@@ -1,7 +1,4 @@
-import CategoryCode from "apiResources/constants/CategoryCode";
 import Frame from "apiResources/services/generateImage/Frame/Frame";
-import Polaroid from "apiResources/services/generateImage/Polaroid/Polaroid";
-import {Image} from "canvas";
 import Apparel from 'apiResources/services/generateImage/Apparel/Apparel';
 import TinCase from 'apiResources/services/generateImage/TinCase/TinCase';
 import SmartTok from 'apiResources/services/generateImage/SmartTok/SmartTok';
@@ -77,7 +74,8 @@ export const generateImage = async (props: {
   }
 
   await imageComposer.init(props);
-  if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(props.productEditInfo.groupDelimiterName)) {
+  if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button'].includes(props.productEditInfo.groupDelimiterName)) {
+
     return await imageComposer.composite();
   } else {
     await imageComposer.composite();

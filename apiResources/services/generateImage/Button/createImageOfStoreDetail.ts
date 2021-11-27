@@ -1,29 +1,45 @@
-import { getArtworkReszied, imageDstOut, getArtworkOnModel } from 'apiResources/utils/artworkImageCreator';
+import {
+  getArtworkReszied,
+  imageDstOut,
+  getArtworkOnModel,
+  multiLayerMerger,
+} from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
+import LayeringRef from 'apiResources/constants/LayeringRef';
 
 export const createImageOfStoreDetail = async (props:any) => {
-  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight } = props;
-  const productPath = `${Config.RESOURCE_CDN_URL}/TinCase/${productCode}/${productSize}/${productColor}`;
-  let patternSrcCoords = [];
+  const { categoryName, productCode, productSize, artworkWidth, artworkHeight } = props;
+  const productPath = `${Config.RESOURCE_CDN_URL}/Button/${productCode}/${productSize}`;
 
   // 틴케이스의 경우 가로/세로 옵션에 따라 아트워크가 만들어져서 그에 따라 patternSrcCoord 좌표 만들어주어야 한다
-  if (directionCode === '182002') {
-    patternSrcCoords = [artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight, 0, 0];
-  } else {
-    patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
-  }
+  const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
 
   // 틴케이스 patternDstCoords => 사이즈만 고려
-  const patternDstCoords = coordinateData[productCode][productSize]
+  const patternDstCoordsBack = coordinateData[productCode][productSize].back;
+  const patternDstCoordsFront = coordinateData[productCode][productSize].front;
 
-  console.log('TINCASE IMAGEMAGICK', patternSrcCoords, patternDstCoords, categoryName, productPath);
   // (1) 아트워크 리사이징
-  await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName);
+      // 뒷면 이미지 생성
+  await getArtworkReszied(patternSrcCoords, patternDstCoordsBack, categoryName, 'patternImageBack');
+      // 앞면 이미지 생성
+  await getArtworkReszied(patternSrcCoords, patternDstCoordsFront, categoryName, 'patternImageFront');
 
-  // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
-  await imageDstOut(productPath, productCode);
+  // (2) 아트워크 마스킹 => 버튼의 경우, 앞면 아트워크 이미지만 잘라주면 된다
+  await imageDstOut(productPath, 'frontmask', productCode);
 
-  // (3) 상품 위에 올리기
-  return await getArtworkOnModel(productPath, productCode);
+  // (3) 이미지 레이어 머지
+    // 버튼 이미지 레이어 순서대로 경로 붙이기
+  let imageLayerPath = '';
+
+  for (let i=0; i < LayeringRef[productCode].length; i++) {
+    const currentImage = LayeringRef[productCode][i];
+    imageLayerPath += currentImage.includes('pattern') ? `inline:apiResources/resources/${currentImage}.txt ` : `${productPath}/${productCode}_${currentImage}.png `
+  }
+
+  await multiLayerMerger(imageLayerPath);
+
+  await imageDstOut(productPath, 'mask', productCode);
+
+  return getArtworkOnModel(productPath, productCode);
 }

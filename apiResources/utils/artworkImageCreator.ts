@@ -19,12 +19,13 @@ const { imageTextSaver } = require('./imageTextSaver');
 // pattern/final image text file path => 쉘에 입력 철자수 제한 때문에 이미지를 base64 로 변화해서 텍스트 파일에 저장한다
 // productColor => 색상 값 받아서 crop 이미지 색상 변경 후 패턴 이미지 올려서 반환
 
-export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], categoryName:string) => {
+export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], categoryName:string, saveName:string) => {
   // 위치조정 많이 필요하지 않으면 isApparel => true/false 로 만들기
   const adjustment:any = {
     'tinCase': {x:0, y:0},
     'smartTok': {x:0, y:0},
-    'apparel': {x:-12, y:20}
+    'apparel': {x:-12, y:20},
+    'button': {x:0, y:0}
   }
   const perspectiveCoords: number[] = [];
 
@@ -40,7 +41,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
     `, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'pattern')
+      imageTextSaver(stdout, saveName)
 
       resolve(stdout);
     })
@@ -54,7 +55,7 @@ export const getImageWrinkled = (productImgPath:string, productCode:string) => {
 
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'pattern')
+      imageTextSaver(stdout, 'patternImage')
 
       resolve(stdout);
     })
@@ -62,13 +63,13 @@ export const getImageWrinkled = (productImgPath:string, productCode:string) => {
 }
 
 // 아트워크 마스킹
-export const imageDstOut = (productPath:string, productCode:string) => {
+export const imageDstOut = (productPath:string, maskImgName:string, productCode:string) => {
 
   return new Promise((resolve, reject) => {
-    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_mask.png inline:apiResources/resources/patternImage.txt -alpha Set PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
+    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:apiResources/resources/patternImage.txt -alpha Set PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'pattern')
+      imageTextSaver(stdout, 'patternImage')
 
       resolve(stdout);
     })
@@ -81,7 +82,7 @@ export const getArtworkOnModel = (productPath:string, productCode:string) => {
     exec(`composite 'inline:apiResources/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'final');
+      imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
@@ -96,18 +97,31 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
   }
 
   return new Promise((resolve, reject) => {
-    exec(`${artworkCommand}PNG:- | base64`, (err:ExecException, stdout:string) => {
+    exec(`${artworkCommand} PNG:- | base64`, (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
-      imageTextSaver(stdout, 'final')
+      imageTextSaver(stdout, 'finalImage')
       resolve(stdout)
+    })
+  })
+}
+
+// 다중 레이어 머징
+export const multiLayerMerger = async (layerPaths:string) => {
+  return new Promise((resolve, reject) => {
+    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, (err:ExecException, stdout:string) => {
+      if (err) console.error(err);
+
+      imageTextSaver(stdout, 'patternImage')
+
+      resolve(stdout);
     })
   })
 }
 
 // 아트워크 리사이징 + 리포지셔닝
 export const artworkImageMerger = async (artworkImageData:any, productImgPath:string, canvasWidth:any, canvasHeight:any) => {
-  await imageTextSaver(artworkImageData, 'pattern');
+  await imageTextSaver(artworkImageData, 'patternImage');
 
   return new Promise((resolve, reject) => {
     const { x, y, width, height, path } = artworkImageData;
@@ -115,7 +129,7 @@ export const artworkImageMerger = async (artworkImageData:any, productImgPath:st
     exec(`composite -geometry ${width}x${height}+${x}+${y} 'inline:apiResources/resources/patternImage.txt' ${productImgPath} PNG:- | base64`, { maxBuffer: 2000 * 2000 },(err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'final');
+      imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
