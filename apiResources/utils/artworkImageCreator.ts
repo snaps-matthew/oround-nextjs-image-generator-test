@@ -6,6 +6,7 @@ import {ExecException} from "child_process";
 import {deflateRawSync} from "zlib";
 import logger from '../../logger';
 import exp from 'constants';
+import { fakeTimerWaitFor } from '@reduxjs/toolkit/src/query/tests/helpers';
 const { exec } = require('child_process');
 const { imageTextSaver } = require('./imageTextSaver');
 
@@ -97,7 +98,7 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
   }
 
   return new Promise((resolve, reject) => {
-    exec(`${artworkCommand} PNG:- | base64`, (err:ExecException, stdout:string) => {
+    exec(`${artworkCommand} PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
       imageTextSaver(stdout, 'finalImage')

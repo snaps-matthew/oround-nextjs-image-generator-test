@@ -74,8 +74,7 @@ export const generateImage = async (props: {
   }
 
   await imageComposer.init(props);
-  if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button'].includes(props.productEditInfo.groupDelimiterName)) {
-
+  if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
   } else {
     await imageComposer.composite();
