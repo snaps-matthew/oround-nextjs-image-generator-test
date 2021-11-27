@@ -1,5 +1,4 @@
 const productGroupList:any = {
-  '1111': 'APPAREL',
   '1040110001': 'PIN',
   '1040110002': 'PIN',
   '1040110003': 'PIN',
