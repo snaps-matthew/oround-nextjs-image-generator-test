@@ -102,9 +102,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
+    let scene = getSelectedScene(productEditInfo, optionInfo);
     const thumbnailImage = await generateThumbnail(scene)
-    // const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
     res.status(HttpResponseStatusCode.SUCCESS);

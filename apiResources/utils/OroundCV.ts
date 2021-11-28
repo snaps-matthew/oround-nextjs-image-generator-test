@@ -271,31 +271,6 @@ export class OroundCV {
     ctx.drawImage(tmp.canvas, 0, 0);
   }
 
-  erode (targetCanvas: any, canvas: any, mask: number) {
-    this.extendCanvas(5, canvas);
-    this.alphaBinarizationCanvas(canvas);
-    this.erosion(canvas, mask);
-    this.findObjectContour(canvas);
-    this.extendCanvas(-5, canvas);
-    this.invertFrontBackColor(canvas);
-
-    const ctx = targetCanvas.getContext('2d') as CanvasRenderingContext2D;
-    ctx.drawImage(canvas, 0, 0);
-  }
-
-  dilate (targetCanvas: any, canvas: any, mask: number) {
-    // console.time()
-    this.extendCanvas(mask, canvas);
-    this.alphaBinarization(canvas);
-    this.dilation(canvas, mask);
-    this.findObjectContour(canvas);
-    this.invertFrontBackColor(canvas);
-    // console.timeEnd()
-    this.extendCanvas(mask * -1, canvas);
-    const ctx = targetCanvas.getContext('2d') as CanvasRenderingContext2D;
-    ctx.drawImage(canvas, 0, 0);
-  }
-
   clearCanvas (targetCanvas: any) {
     const ctx: any = targetCanvas.getContext('2d');
     ctx.clearRect(0, 0, targetCanvas.width, targetCanvas.height);
@@ -417,7 +392,8 @@ export class OroundCV {
     isInset = false,
     x: number = 0,
     y: number = 0,
-    blur: number
+    blur: number = 5,
+    opacity: number = 30
   ) {
     const result = newCanvas(imageCanvas.width, imageCanvas.height);
 
@@ -435,7 +411,7 @@ export class OroundCV {
       tmpOutShadow.ctx.drawImage(imageCanvas, 5, 5);
 
       // 임시 쉐도우 캔버스에 (배걍 + 구멍) 캔버스를 그리면서 그림자를 생성한다.
-      tmpShadow.ctx.shadowColor = '#00000030';
+      tmpShadow.ctx.shadowColor = `#000000${opacity}`;
       tmpShadow.ctx.shadowBlur = blur;
       tmpShadow.ctx.shadowOffsetX = x;
       tmpShadow.ctx.shadowOffsetY = y;
@@ -451,7 +427,7 @@ export class OroundCV {
 
     } else {
       result.ctx.save();
-      result.ctx.shadowColor = '#00000030';
+      result.ctx.shadowColor = `#000000${opacity}`;
       result.ctx.shadowBlur = blur;
       result.ctx.shadowOffsetX = x;
       result.ctx.shadowOffsetY = y;

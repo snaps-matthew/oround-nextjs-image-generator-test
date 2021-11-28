@@ -1,9 +1,6 @@
-// import 'whatwg-fetch'
 import axios from 'axios'
 import { API_URL } from 'apiResources/constants/apiURL'
-import { API_PATH } from 'apiResources/constants/apiPath'
 import {BadRequest} from "apiResources/utils/GeneralError";
-// import { getSessionToken, removeSessionToken } from '../configs/sessionStorage'
 
 export const getProductEditInfo = async (artProductIndex:string, sizeCode:string): Promise<any> => {
   const params = {

@@ -3,19 +3,29 @@ import TargetType from 'apiResources/constants/TargetType';
 import { TYPE } from 'apiResources/constants/type';
 import { API_URL } from 'apiResources/constants/apiURL';
 import { loadImage } from 'apiResources/utils/loadImage';
+import productInfo from 'apiResources/constants/productInfo';
 
-export const getSelectedScene = (productEditInfo:any, printPositionCode?:string) => {
+export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
   let tempScene
-  if(productEditInfo.edit.length>1 && productEditInfo.groupDelimiterName === "apparel"){
-    let printPosition:any;
-    if(printPositionCode===CommonCode.PRINT_POSITION_FRONT){
-      printPosition = 'front'
-    }else if(printPositionCode===CommonCode.PRINT_POSITION_BACK){
-      printPosition = 'back'
+  if(productEditInfo.edit.length>1){
+    if(productEditInfo.groupDelimiterName === "apparel"){
+      let printPosition:string;
+      const printPositionCode = optionInfo.printPositionCode
+      if(printPositionCode===CommonCode.PRINT_POSITION_FRONT){
+        printPosition = 'front'
+      }else if(printPositionCode===CommonCode.PRINT_POSITION_BACK){
+        printPosition = 'back'
+      }
+      tempScene = productEditInfo.edit.find((obj:any) => {
+        return  obj.type === printPosition
+      })
+    }else if(productEditInfo.groupDelimiterName === "canvasFrame"){
+      let sizeCode = optionInfo.sizeCode
+      tempScene = productEditInfo.edit.find((obj:any) => {
+        return  obj.sizeCode === sizeCode
+      })
     }
-    tempScene = productEditInfo.edit.find((obj:any) => {
-      return  obj.type === printPosition
-    })
+
   }else{
     tempScene = productEditInfo.edit[0]
   }
@@ -53,3 +63,7 @@ export const  getDetailClipart = async (productEditInfo:any, printPositionCode?:
   return {artworkImage, artworkImageWidth, artworkImageHeight}
 }
 
+export const getPreviewMargin = (productCode: string) => {
+  return productInfo[productCode] &&
+    (productInfo[productCode].margin || 5);
+};
