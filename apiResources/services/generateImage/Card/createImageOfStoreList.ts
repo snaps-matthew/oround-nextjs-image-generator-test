@@ -9,7 +9,7 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import TargetType from '../../../constants/TargetType';
-import { getCreateImageInitInfo, getDetailClipart } from '../../../utils/getSelectedScene';
+import { getArtworkImage, getCreateImageInitInfo } from '../../../utils/getSelectedScene';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
 
@@ -41,7 +41,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   }else{
     //target 4의 경우
-    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getArtworkImage(productEditInfo, optionInfo)
     const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }

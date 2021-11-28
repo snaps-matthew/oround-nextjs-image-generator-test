@@ -9,7 +9,11 @@ import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
-import { getCreateImageInitInfo, getDetailClipart, getSelectedScene } from 'apiResources/utils/getSelectedScene';
+import {
+  getArtworkImage,
+  getCreateImageInitInfo,
+  getSelectedScene,
+} from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { TYPE } from '../../../constants/type';
 
@@ -45,7 +49,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   }else if (target === TargetType.STORE_DETAIL_4) {
     //target 4의 경우
-    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getArtworkImage(productEditInfo, optionInfo)
     const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }

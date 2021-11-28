@@ -49,8 +49,8 @@ export const getCreateImageInitInfo = (target:string, canvas:any) =>{
   return imageCanvasInfo
 }
 
-export const  getDetailClipart = async (productEditInfo:any, printPositionCode?:string ) => {
-  let scene:any = getSelectedScene(productEditInfo, printPositionCode);
+export const  getArtworkImage = async (productEditInfo:any, optionInfo?:string ) => {
+  let scene:any = getSelectedScene(productEditInfo, optionInfo);
   let imageObject:any = scene.object.filter((obj:any) => {
     const type = obj.type
     return type === TYPE.OBJECT_IMAGE

@@ -2,7 +2,11 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { OroundCV } from 'apiResources/utils/OroundCV';
 import {  getStandCutLineSize, getStandHelperWidth, getStandStickSize  } from 'apiResources/utils/getStandSize';
-import { getCreateImageInitInfo, getDetailClipart, getSelectedScene } from '../../../utils/getSelectedScene';
+import {
+  getArtworkImage,
+  getCreateImageInitInfo,
+  getSelectedScene,
+} from '../../../utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage } from 'apiResources/utils/loadImage';
 import { TYPE } from 'apiResources/constants/type';
@@ -65,7 +69,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   }else {
     //target 4의 경우
-    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getDetailClipart(productEditInfo, optionInfo.printPositionCode)
+    const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getArtworkImage(productEditInfo, optionInfo)
     const size = imageFull(artworkImageWidth, artworkImageHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(artworkImage, size.x, size.y, size.width, size.height);
   }
