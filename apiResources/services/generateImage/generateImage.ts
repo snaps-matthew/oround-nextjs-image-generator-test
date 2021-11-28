@@ -48,8 +48,8 @@ export const generateImage = async (props: {
     case 'acrylicKeyring': // free size
       imageComposer = new AcrylicKeyring();
       break;
-    case 'phoneCase':
     case 'hardPhoneCase':
+    case 'clearPhoneCase':
       imageComposer = new PhoneCase();
       break;
     case 'airpods':
