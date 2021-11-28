@@ -206,7 +206,7 @@ export const imageConverter = async (path:string) => {
 // 한번에 색상 변경 + 만들어진 패턴 얹어서 보여주기
 export const changeColor = (productPath:string, productCode:string, productColor:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:apiResources/resources/patternImage.txt' -compose over -composite PNG:- | base64`, (err:ExecException|null, stdout:string) => {
+    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:apiResources/resources/patternImage.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 2000 },(err:ExecException|null, stdout:string) => {
 
       imageTextSaver(stdout, 'patternImage');
 
@@ -218,7 +218,7 @@ export const changeColor = (productPath:string, productCode:string, productColor
 // 텍스처 변경
 export const changeTexture = (productPath:string, productCode:string, texturePath:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:apiResources/resources/patternImage.txt -compose over -composite PNG:- | base64`, (err:ExecException, stdout:string) => {
+    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:apiResources/resources/patternImage.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 2000 },(err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       imageTextSaver(stdout, 'patternImage');
