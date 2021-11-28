@@ -49,6 +49,7 @@ export const generateImage = async (props: {
       imageComposer = new AcrylicKeyring();
       break;
     case 'phoneCase':
+    case 'hardPhoneCase':
       imageComposer = new PhoneCase();
       break;
     case 'airpods':

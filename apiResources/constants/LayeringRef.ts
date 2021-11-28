@@ -6,35 +6,24 @@ const LayeringRef:any = {
   '1040130001': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1040130002': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1040130003': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
-  '1040060001': 'TINCASE',
-  '1050010001': 'APPAREL',
-  '1050010002': 'APPAREL',
-  '1050010003': 'APPAREL',
-  '1050010004': 'APPAREL',
-  '1050010005': 'APPAREL',
-  '1050010006': 'APPAREL',
-  '1050020001': 'APPAREL',
-  '1050020002': 'APPAREL',
-  '1050030001': 'APPAREL',
-  '1050030002': 'APPAREL',
-  '1050030003': 'APPAREL',
-  '1050030004': 'APPAREL',
-  '1050040001': 'APPAREL',
-  '1050050001': 'STRING',
-  '1050050002': 'HOOD',
-  '1050050003': 'HOOD',
-  '1050060001': 'HOOD',
-  '1050060002': 'HOOD',
-  '1050060003': 'APPAREL',
-  '1050070001': 'ECOBAG',
-  '1050070002': 'ECOBAG',
-  '1050070003': 'ECOBAG',
-  '1050070004': 'ECOBAG',
-  '1050070005': 'ECOBAG',
-  '1050070006': 'ECOBAG',
-  '1050070007': 'ECOBAG',
-  '1050080001': 'FINGER',
-  '1050080002': 'FINGER'
+  '1050050001': {
+    'front': ['patternImage', 'string']
+  },
+  '1050050002': {
+    'front': ['patternImage', 'string']
+  },
+  '1050050003': ['hoodie'],
+  '1050060001': {
+    'front': ['patternImage', 'string']
+  },
+  '1050060002': {
+    'front': ['patternImage', 'string']
+  },
+  "1050080001": ['patternImage', 'finger'],
+  '1050080002': {
+    'L': ['patternImage', 'finger'],
+    'M': ['patternImage', 'finger']
+  }
 }
 
 export default LayeringRef

@@ -2,7 +2,7 @@ import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import { Canvas, createCanvas, Image } from 'canvas';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import SizeCode from 'apiResources/constants/SizeCode'
-import ColorCode from '../../constants/ColorCode';
+import { ColorStringCode } from 'apiResources/constants/ColorCode';
 
 class ImageComposer {
   protected categoryName: string;
@@ -48,8 +48,7 @@ class ImageComposer {
   async init(data:{
     thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
   }) {
-    // 아트워크 이미지 base64 로 변환
-    await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
+    if (['tinCase', 'smartTok', 'button', 'apparel'].includes(data.productEditInfo.groupDelimiterName)) await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
 
     // 이미지 매직에 사용될 인자들
     // (1) 아트워크 소스 이미지 좌표 [배열] => width/height 값 이용해서 만든다
@@ -68,7 +67,7 @@ class ImageComposer {
     this.optionInfo = data.optionInfo;
     this.target = data.target;
     this.productSize = SizeCode[data.optionInfo.sizeCode];
-    this.productColor = ColorCode[data.optionInfo.colorCode];
+    this.productColor = ColorStringCode[data.optionInfo.colorCode];
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
     this.ext = ext;
 

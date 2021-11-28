@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import 'ag-psd/initialize-canvas.js';
 import { readPsd } from 'ag-psd';
-import {ExecException} from "child_process";
+import { ExecException } from 'child_process';
 const { exec } = require('child_process');
 const { imageTextSaver } = require('apiResources/utils/imageTextSaver');
 
@@ -78,7 +78,7 @@ export const getArtworkOnModel = (productPath:string, productCode:string) => {
     exec(`composite 'inline:apiResources/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'finalImage');
+      // imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
@@ -103,7 +103,15 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
 }
 
 // 다중 레이어 머징
-export const multiLayerMerger = async (layerPaths:string) => {
+export const multiLayerMerger = async (layers:string[], productCode:string, productPath:string) => {
+  let layerPaths:string = '';
+
+  for (let i=0; i < layers.length; i++) {
+    const currentLayer = layers[i];
+
+    layerPaths += currentLayer.includes('pattern') ? `inline:apiResources/resources/${currentLayer}.txt ` : `${productPath}/${productCode}_${currentLayer}.png `
+  }
+
   return new Promise((resolve, reject) => {
     exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
@@ -196,11 +204,26 @@ export const imageConverter = async (path:string) => {
 }
 
 // 한번에 색상 변경 + 만들어진 패턴 얹어서 보여주기
-export const changeColor = (productImgPath:string, productCode:string, productColor:string) => {
+export const changeColor = (productPath:string, productCode:string, productColor:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert '${productImgPath}/${productCode}' \\( +clone +level-colors '#FF69B4' \\) -compose multiply -composite '${productImgPath}/${productCode}' -compose multiply -composite '${productImgPath}/${productCode}' -compose multiply -composite 'inline:apiResources/resources/patternImage.txt' -compose over -composite PNG:- | base64`, (err:ExecException|null, stdout:string) => {
+    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:apiResources/resources/patternImage.txt' -compose over -composite PNG:- | base64`, (err:ExecException|null, stdout:string) => {
+
+      imageTextSaver(stdout, 'patternImage');
 
       resolve(stdout)
+    })
+  })
+}
+
+// 텍스처 변경
+export const changeTexture = (productPath:string, productCode:string, texturePath:string) => {
+  return new Promise((resolve, reject) => {
+    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:apiResources/resources/patternImage.txt -compose over -composite PNG:- | base64`, (err:ExecException, stdout:string) => {
+      if (err) console.error(err);
+
+      imageTextSaver(stdout, 'patternImage');
+
+      resolve(stdout);
     })
   })
 }

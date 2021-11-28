@@ -5,5 +5,9 @@ export const newCanvas = (width: number, height: number) => {
   canvas.width = width
   canvas.height = height
   const ctx = canvas.getContext('2d')
-  return { canvas, ctx }
+  return { canvas, ctx,
+    createPNGStream(param: {palette: Uint8ClampedArray; backgroundIndex: number}) {
+      
+    },
+  }
 }

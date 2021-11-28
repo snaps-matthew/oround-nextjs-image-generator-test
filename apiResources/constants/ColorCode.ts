@@ -1,4 +1,4 @@
-const ColorCode:any = {
+export const ColorStringCode:any = {
   'T00001': 'transparent',
   'T00002': 'white',
   'T00003': 'black',
@@ -6,5 +6,34 @@ const ColorCode:any = {
   'T00010': 'silver',
 }
 
-export default ColorCode;
+// 딥 그린 없음
+export const ColorHexCode:any = {
+  'T00002': '#ffffff',
+  'T00003': '#262626',
+  'T00004': '#07203b',
+  'T00007': '#f3cb45',
+  'T00012': '#ff5420',
+  'T00013': '#bd1524',
+  'T00014': '#104caf',
+  'T00015': '#521a25',
+  'T00016': '#578e7f',
+  'T00017': '#3c5369',
+  'T00019': '#525759',
+  'T00020': '#1946a8',
+  'T00022': '#122044',
+  'T00023': '#fed8cf',
+  'T00024': '#621924',
+  'T00025': '#c90962',
+  'T00026': '#efe6d2',
+  'T00027': '#3b1469',
+  'T00028': '#f1eade',
+  'T00029': '#f2a200',
+  'T00030': '#025f2f',
+}
 
+// 모쿠 그레이 없음
+export const TextureCode:any = {
+  'T00011': 'SS_T00011',
+  'T00018': 'SS_T00018',
+  'T00021':	'FW_T00021'
+}

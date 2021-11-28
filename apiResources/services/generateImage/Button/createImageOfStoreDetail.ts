@@ -30,14 +30,8 @@ export const createImageOfStoreDetail = async (props:any) => {
 
   // (3) 이미지 레이어 머지
     // 버튼 이미지 레이어 순서대로 경로 붙이기
-  let imageLayerPath = '';
 
-  for (let i=0; i < LayeringRef[productCode].length; i++) {
-    const currentImage = LayeringRef[productCode][i];
-    imageLayerPath += currentImage.includes('pattern') ? `inline:apiResources/resources/${currentImage}.txt ` : `${productPath}/${productCode}_${currentImage}.png `
-  }
-
-  await multiLayerMerger(imageLayerPath);
+  await multiLayerMerger(LayeringRef[productCode], productCode, productPath);
 
   await imageDstOut(productPath, 'mask', productCode);
 
