@@ -15,12 +15,17 @@ import Note from 'apiResources/services/generateImage/Note/Note'
 import Card from 'apiResources/services/generateImage/Card/Card'
 import Button from 'apiResources/services/generateImage/Button/Button'
 import TargetType from 'apiResources/constants/TargetType';
+import ProductCode from '../../constants/ProductCode';
 export const generateImage = async (props: {
   thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
 }) => {
 
   let imageComposer: any;
-  switch (props.productEditInfo.groupDelimiterName) {
+  let groupDelimiterName = props.productEditInfo.groupDelimiterName
+  if(props.productEditInfo.productCode === ProductCode.FRAME_ALUMINIUM){
+    groupDelimiterName = 'woodFrame';
+  }
+  switch (groupDelimiterName) {
     case 'apparel':
       imageComposer = new Apparel();
       break;
