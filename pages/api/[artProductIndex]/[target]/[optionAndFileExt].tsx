@@ -5,6 +5,12 @@ import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
+import { loadImage } from 'apiResources/utils/loadImage'
+import fs from 'fs';
+import { createCanvas } from 'canvas';
+import { Blob, Buffer } from 'buffer';
+const { Image } = require('canvas')
+
 
 interface IRequestQuery {
   [key: string]: any;
@@ -57,7 +63,7 @@ const optionInfo:any = [
 //round pinButton http://localhost:3000/api/27604/1/112010:T00070,112018:T00120,112003:T00044.jpg
 //simpleEcoBag http://localhost:3000/api/27607/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
 
-          // [TINCASE] //
+// [TINCASE] //
 
 // SILVER + S => http://localhost:3000/api/27599/1/112003:T00033,112002:T00010.jpg
 // SILVER + M => http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
@@ -102,21 +108,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-    let scene = getSelectedScene(productEditInfo, optionInfo);
+    let scene = getSelectedScene(productEditInfo, optionInfo.printPositionCode);
     const thumbnailImage = await generateThumbnail(scene)
+    // const thumbnailImage = await saveMultiformProc(productEditInfo, optionInfo);
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
-
     res.status(HttpResponseStatusCode.SUCCESS);
 
     if ((target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
-      res.setHeader("content-type", 'text/html');
-      res.send(`<html><body><img height="800px" src='data:image/png;base64, ${imageComposer}' /></body></html>`)
+
+      const canvas = createCanvas(500,500);
+      const ctx = canvas.getContext('2d');
+      const image = await loadImage('data:image/png;base64,'+ imageComposer);
+      ctx.drawImage(image, 0, 0, 500, 500);
+
+      res.setHeader("content-type", 'image/png');
+      canvas.createPNGStream().pipe(res);
+
     } else {
       res.setHeader("content-type", 'image/png');
       imageComposer.stream().pipe(res);
     }
 
   } catch (error) {
-
+    console.log(error);
   }
 }
