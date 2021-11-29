@@ -20,7 +20,7 @@ export const createImageOfStoreDetail = async (props:any) => {
   let productOption = '';
   let extraLayer = [];
 
-  if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.productCode) {
+  if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
     productOption = 'front';
     patternDstCoords = patternDstCoords.front;
     // productPath += '/front';
@@ -41,7 +41,11 @@ export const createImageOfStoreDetail = async (props:any) => {
   // 옵션이 있는 경우 [이미지경로, 아트워크 들어 갈 좌표 변경해준다]
   if (productOption) {
     productPath += `/${productOption}`;
+  } else {
+    patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
+
+
 
   // 추가 레이어 확인하고 올려준다
   const extraLayerLength = LayeringRef[productCode];
@@ -49,7 +53,7 @@ export const createImageOfStoreDetail = async (props:any) => {
   if (extraLayerLength) {
     extraLayer = (productOption) ?  LayeringRef[productCode].productOption : LayeringRef[productCode];
   }
-  console.log(productPath);
+
   // (1) 아트워크 좌표에 맞춰 리사이징
   await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, 'patternImage');
 

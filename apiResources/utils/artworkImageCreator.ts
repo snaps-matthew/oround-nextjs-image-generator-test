@@ -113,7 +113,7 @@ export const multiLayerMerger = async (layers:string[], productCode:string, prod
   }
 
   return new Promise((resolve, reject) => {
-    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, (err:ExecException, stdout:string) => {
+    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 2000 * 2000}, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       imageTextSaver(stdout, 'patternImage')
