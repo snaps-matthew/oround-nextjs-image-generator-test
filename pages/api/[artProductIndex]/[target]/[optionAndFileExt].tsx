@@ -114,7 +114,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
 
-    if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
+    if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
 
       const canvas = createCanvas(500,500);
       const ctx = canvas.getContext('2d');
