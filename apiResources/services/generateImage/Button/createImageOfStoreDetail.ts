@@ -26,14 +26,14 @@ export const createImageOfStoreDetail = async (props:any) => {
   await getArtworkReszied(patternSrcCoords, patternDstCoordsFront, categoryName, 'patternImageFront');
 
   // (2) 아트워크 마스킹 => 버튼의 경우, 앞면 아트워크 이미지만 잘라주면 된다
-  await imageDstOut(productPath, 'frontmask', productCode);
+  await imageDstOut('patternImageFront', productPath, 'frontmask', productCode);
 
   // (3) 이미지 레이어 머지
     // 버튼 이미지 레이어 순서대로 경로 붙이기
 
   await multiLayerMerger(LayeringRef[productCode], productCode, productPath);
 
-  await imageDstOut(productPath, 'mask', productCode);
+  await imageDstOut('patternImage', productPath, 'mask', productCode);
 
   return getArtworkOnModel(productPath, productCode);
 }

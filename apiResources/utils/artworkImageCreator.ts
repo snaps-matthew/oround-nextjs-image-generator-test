@@ -59,10 +59,10 @@ export const getImageWrinkled = (productImgPath:string, productCode:string) => {
 }
 
 // 아트워크 마스킹
-export const imageDstOut = (productPath:string, maskImgName:string, productCode:string) => {
+export const imageDstOut = (target:string, productPath:string, maskImgName:string, productCode:string) => {
 
   return new Promise((resolve, reject) => {
-    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:apiResources/resources/patternImage.txt -alpha Set PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
+    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:apiResources/resources/${target}.txt -alpha Set PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       imageTextSaver(stdout, 'patternImage')
@@ -96,7 +96,7 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
     exec(`${artworkCommand} PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
-      imageTextSaver(stdout, 'finalImage')
+
       resolve(stdout)
     })
   })
@@ -133,7 +133,7 @@ export const artworkImageMerger = async (artworkImageData:any, productImgPath:st
     exec(`composite -geometry ${width}x${height}+${x}+${y} 'inline:apiResources/resources/patternImage.txt' ${productImgPath} PNG:- | base64`, { maxBuffer: 2000 * 2000 },(err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      imageTextSaver(stdout, 'finalImage');
+      // imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
