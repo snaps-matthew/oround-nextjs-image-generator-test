@@ -3,6 +3,7 @@ import { Canvas, createCanvas, Image } from 'canvas';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import SizeCode from 'apiResources/constants/SizeCode'
 import { ColorStringCode } from 'apiResources/constants/ColorCode';
+import TargetType from 'apiResources/constants/TargetType';
 
 class ImageComposer {
   protected categoryName: string;
@@ -48,7 +49,7 @@ class ImageComposer {
   async init(data:{
     thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
   }) {
-    if (['tinCase', 'smartTok', 'button', 'apparel'].includes(data.productEditInfo.groupDelimiterName)) await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
+    if ((data.target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(data.productEditInfo.groupDelimiterName)) await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
 
     // 이미지 매직에 사용될 인자들
     // (1) 아트워크 소스 이미지 좌표 [배열] => width/height 값 이용해서 만든다
@@ -72,7 +73,7 @@ class ImageComposer {
     this.ext = ext;
 
     // 주름 넣는 강도??
-    this.wrinkleMag = 10000000;
+    this.wrinkleMag = -20;
 
     // 필요 없을 수도 있다 => Apparel 들어가서 나눌까
     this.layerOrder = [];

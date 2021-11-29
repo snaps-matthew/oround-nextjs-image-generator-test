@@ -93,7 +93,7 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
   }
 
   return new Promise((resolve, reject) => {
-    exec(`${artworkCommand} PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
+    exec(`${artworkCommand} PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
       imageTextSaver(stdout, 'finalImage')
@@ -113,7 +113,7 @@ export const multiLayerMerger = async (layers:string[], productCode:string, prod
   }
 
   return new Promise((resolve, reject) => {
-    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 2000 * 2000}, (err:ExecException, stdout:string) => {
+    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 1024 * 102400}, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       imageTextSaver(stdout, 'patternImage')
@@ -195,7 +195,7 @@ export const addCoordinateData  = (coordPath:string, prodCode:string, prodOption
 // base64 컨버터
 export const imageConverter = async (path:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert '${path}' PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
+    exec(`convert '${path}' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
 
       resolve(stdout);
     })

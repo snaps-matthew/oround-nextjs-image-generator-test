@@ -9,8 +9,7 @@ import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { getArtworkImage, getCreateImageInitInfo } from '../../../utils/getSelectedScene';
-import TargetType from '../../../constants/TargetType';
-import { TYPE } from '../../../constants/type';
+import TargetType from 'apiResources/constants/TargetType';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 
@@ -24,7 +23,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) {
+  if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_LIST_1) {
     //target 3의 경우
     const skinImage_bottom = await loadImage(skinPathBottom);
     const wrapper = getWrapperSize(productCode)

@@ -25,11 +25,11 @@ class Apparel extends ImageComposer {
 
     // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = thumbnailImage;
-    if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
+    if (this.target === TargetType.STORE_DETAIL_2) {
 
       return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo })
 
-    } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
+    } else if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
       await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
 
