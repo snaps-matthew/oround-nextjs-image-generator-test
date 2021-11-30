@@ -1,8 +1,5 @@
 
-import Config from "apiResources/constants/Config";
-import ProductCode from "apiResources/constants/ProductCode";
 import {loadImage} from "apiResources/utils/loadImage";
-import {Image} from "canvas";
 import { SceneType } from 'apiResources/constants/sceneType';
 import { API_URL } from 'apiResources/constants/apiURL';
 import { API_PATH } from 'apiResources/constants/apiPath';
@@ -15,7 +12,6 @@ import {
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { TYPE } from '../../../constants/type';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target: string}) => {
 
@@ -32,7 +28,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_LIST_1) {
+  if (target === TargetType.STORE_DETAIL_3) {
     //target 3의 경우
     const skinImage_top = await loadImage(skinPathTop);
 

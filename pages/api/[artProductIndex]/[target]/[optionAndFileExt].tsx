@@ -6,10 +6,7 @@ import generateThumbnail from 'apiResources/services/generateThumbnail/proc/gene
 import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage } from 'apiResources/utils/loadImage'
-import fs from 'fs';
 import { createCanvas } from 'canvas';
-import { Blob, Buffer } from 'buffer';
-const { Image } = require('canvas')
 
 
 interface IRequestQuery {
@@ -118,10 +115,19 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
     if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
 
-      const canvas = createCanvas(500,500);
+      const canvas = createCanvas(1000,1000);
       const ctx = canvas.getContext('2d');
       const image = await loadImage('data:image/png;base64,'+ imageComposer);
-      ctx.drawImage(image, 0, 0, 500, 500);
+      ctx.drawImage(image, 0, 0, 1000, 1000);
+
+      canvas.createPNGStream().pipe(res);
+
+    } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
+
+      const canvas = createCanvas(1000,1000);
+      const ctx = canvas.getContext('2d');
+      const image = await loadImage('data:image/png;base64,'+ imageComposer);
+      ctx.drawImage(image, 0, 0, 1000, 1000);
 
       canvas.createPNGStream().pipe(res);
 

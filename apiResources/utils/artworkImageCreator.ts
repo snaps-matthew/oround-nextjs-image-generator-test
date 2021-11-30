@@ -78,7 +78,7 @@ export const getArtworkOnModel = (productPath:string, productCode:string) => {
     exec(`composite 'inline:apiResources/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      // imageTextSaver(stdout, 'finalImage');
+      imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
@@ -111,7 +111,7 @@ export const multiLayerMerger = async (layers:string[], productCode:string, prod
 
     layerPaths += currentLayer.includes('pattern') ? `inline:apiResources/resources/${currentLayer}.txt ` : `${productPath}/${productCode}_${currentLayer}.png `
   }
-
+  console.log('MULTI-LAYER MERGER _______________', layerPaths);
   return new Promise((resolve, reject) => {
     exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 1024 * 102400}, (err:ExecException, stdout:string) => {
       if (err) console.error(err);
@@ -193,7 +193,7 @@ export const addCoordinateData  = (coordPath:string, prodCode:string, prodOption
 }
 
 // base64 컨버터
-export const imageConverter = async (path:string) => {
+export const imageconverter = async (path:string) => {
   return new Promise((resolve, reject) => {
     exec(`convert '${path}' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
 
@@ -226,4 +226,22 @@ export const changeTexture = (productPath:string, productCode:string, texturePat
       resolve(stdout);
     })
   })
+}
+
+// 추가 레이어 색상 변경 => 후드티 끈 || 후드티 모자
+export const changeExtraLayerColor = (targetName:string, productPath:string, productCode:string, colorInfo:string) => {
+  const changeByColorCode = `convert inline:apiResources/resources/patternImage.txt \\( ${productPath}/${productCode}_${targetName}.png \\( +clone +level-colors '${colorInfo}' \\) -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+  const changeByTexture = `convert inline:apiResources/resources/patternImage.txt \\( ${productPath}/${productCode}_${targetName}.png ${colorInfo}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+  const finalCommand = (colorInfo[0] === '#') ? changeByColorCode : changeByTexture;
+
+  return new Promise((resolve, reject) => {
+    exec(`${finalCommand}`, { maxBuffer: 1024 * 102400}, (err:ExecException, stdout:string) => {
+      if (err) console.error(err);
+
+      imageTextSaver(stdout, 'patternImage')
+
+      resolve(stdout);
+    })
+  })
+
 }

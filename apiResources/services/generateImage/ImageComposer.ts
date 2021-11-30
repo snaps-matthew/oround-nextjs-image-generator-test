@@ -1,7 +1,7 @@
 import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import { Canvas, createCanvas, Image } from 'canvas';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import SizeCode from 'apiResources/constants/SizeCode'
+import { SizeCode } from 'apiResources/constants/SizeInfo'
 import { ColorStringCode } from 'apiResources/constants/ColorCode';
 import TargetType from 'apiResources/constants/TargetType';
 
@@ -49,7 +49,11 @@ class ImageComposer {
   async init(data:{
     thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
   }) {
-    if ((data.target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(data.productEditInfo.groupDelimiterName)) await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
+    if ((data.target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(data.productEditInfo.groupDelimiterName)) {
+      await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
+    } else if ((data.target === TargetType.STORE_LIST_1) && ['smartTok'].includes(data.productEditInfo.groupDelimiterName)) {
+      await imageTextSaver(data.thumbnailImage.toDataURL(), 'patternImage');
+    }
 
     // 이미지 매직에 사용될 인자들
     // (1) 아트워크 소스 이미지 좌표 [배열] => width/height 값 이용해서 만든다

@@ -12,7 +12,6 @@ const LayeringRef:any = {
   '1050050002': {
     'front': ['patternImage', 'string']
   },
-  '1050050003': ['hoodie'],
   '1050060001': {
     'front': ['patternImage', 'string']
   },

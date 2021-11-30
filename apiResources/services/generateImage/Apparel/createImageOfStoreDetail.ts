@@ -1,13 +1,13 @@
 import {
   getArtworkReszied,
   getArtworkOnModel,
-  multiLayerMerger, getImageWrinkled, changeColor, changeTexture,
+  multiLayerMerger, getImageWrinkled, changeColor, changeTexture, imageDstOut, changeExtraLayerColor,
 } from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import CommonCode from 'apiResources/constants/CommonCode';
-import SizeCode from 'apiResources/constants/SizeCode';
+import { SizeCode, SizeList } from 'apiResources/constants/SizeInfo';
 import { ColorHexCode, TextureCode } from 'apiResources/constants/ColorCode';
 
 export const createImageOfStoreDetail = async (props:any) => {
@@ -18,7 +18,7 @@ export const createImageOfStoreDetail = async (props:any) => {
   let patternDstCoords = coordinateData[productCode];
   let productPath = `${Config.RESOURCE_CDN_URL}/Apparel/${productCode}`;
   let productOption = '';
-  let extraLayer = [];
+  let extraLayer:any = [];
 
   if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
     productOption = 'front';
@@ -44,14 +44,11 @@ export const createImageOfStoreDetail = async (props:any) => {
   } else {
     patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
-
-
-
   // 추가 레이어 확인하고 올려준다
   const extraLayerLength = LayeringRef[productCode];
 
   if (extraLayerLength) {
-    extraLayer = (productOption) ?  LayeringRef[productCode].productOption : LayeringRef[productCode];
+    extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
   }
 
   // (1) 아트워크 좌표에 맞춰 리사이징
@@ -65,17 +62,20 @@ export const createImageOfStoreDetail = async (props:any) => {
   if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
 
     if (ColorHexCode[optionInfo.colorCode]) {
-      await changeColor(productPath, productCode, ColorHexCode[optionInfo.colorCode]);
+      const colorInfo = ColorHexCode[optionInfo.colorCode];
+      await changeColor(productPath, productCode, colorInfo);
+      if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, productCode, colorInfo);
     } else {
-
-      const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}.png`;
-
+      const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}`;
       await changeTexture(productPath, productCode, texturePath);
+      if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, productCode, texturePath);
     }
   }
 
   // (4) 추가 레이어 확인하기 => 어패럴 몇 상품들은, [후드/ 후드 끈/ 파우치 위 손가락] 등을 올려주어야 하는 는우가 있다
-  if (extraLayer.length) await multiLayerMerger(extraLayer, productCode, productPath);
+  // if (extraLayer.includes('finger')) await multiLayerMerger(extraLayer, productCode, productPath);
+
+  // return await imageDstOut('finalImage', productPath, 'list', productCode);
 
   // (5) 아트워크 상품 위에 올리기
   return await getArtworkOnModel(productPath, productCode);
