@@ -1,11 +1,11 @@
 const LayeringRef:any = {
-  '1040110001': ['back', 'patternImageBack', 'patternImage', 'pin', 'glare'],
-  '1040110002': ['back', 'patternImageBack', 'patternImage', 'pin', 'glare'],
-  '1040110003': ['back', 'patternImageBack', 'patternImage', 'pin', 'glare'],
-  '1040120001': ['back', 'patternImageBack', 'patternImage', 'mirror', 'glare'],
-  '1040130001': ['back', 'patternImageBack', 'patternImage', 'magnet', 'glare'],
-  '1040130002': ['back', 'patternImageBack', 'patternImage', 'magnet', 'glare'],
-  '1040130003': ['back', 'patternImageBack', 'patternImage', 'magnet', 'glare'],
+  '1040110001': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040110002': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040110003': ['back', 'patternImageBack', 'patternImageFront', 'pin', 'glare'],
+  '1040120001': ['back', 'patternImageBack', 'patternImageFront', 'mirror', 'glare'],
+  '1040130001': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
+  '1040130002': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
+  '1040130003': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1050050001': {
     'front': ['patternImage', 'string']
   },

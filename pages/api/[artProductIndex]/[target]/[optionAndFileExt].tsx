@@ -110,7 +110,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
-
     // 리스트1 이미지 임시로 내림
     //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
     if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {

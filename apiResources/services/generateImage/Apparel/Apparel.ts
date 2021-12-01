@@ -27,7 +27,7 @@ class Apparel extends ImageComposer {
     let templateImage = thumbnailImage;
     if (this.target === TargetType.STORE_DETAIL_2) {
 
-      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo })
+      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage })
 
     } else if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 

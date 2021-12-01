@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import 'ag-psd/initialize-canvas.js';
 import { readPsd } from 'ag-psd';
 import { ExecException } from 'child_process';
+import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 const { exec } = require('child_process');
 const { imageTextSaver } = require('apiResources/utils/imageTextSaver');
 
@@ -15,14 +16,9 @@ const { imageTextSaver } = require('apiResources/utils/imageTextSaver');
 // pattern/final image text file path => 쉘에 입력 철자수 제한 때문에 이미지를 base64 로 변화해서 텍스트 파일에 저장한다
 // productColor => 색상 값 받아서 crop 이미지 색상 변경 후 패턴 이미지 올려서 반환
 
-export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], categoryName:string, saveName:string) => {
+export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], categoryName:string, inputFilePath:string, saveFilePath:string) => {
   // 위치조정 많이 필요하지 않으면 isApparel => true/false 로 만들기
-  const adjustment:any = {
-    'tinCase': {x:0, y:0},
-    'smartTok': {x:0, y:0},
-    'apparel': {x:-12, y:20},
-    'button': {x:0, y:0}
-  }
+  const adjustment = ImageProcessingRef.IMAGE_COORD_ADJUSTMENT;
   const perspectiveCoords: number[] = [];
 
   for (let i = 0; i < dstCoords.length; i += 2) {
@@ -31,13 +27,14 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
   }
 
   return new Promise((resolve, reject) => {
-    exec(`convert inline:apiResources/resources/patternImage.txt -matte -virtual-pixel transparent -background transparent -extent 2000x2000 \
+    console.log();
+    exec(`convert inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 2000x2000 \
         -distort Perspective \
         "${perspectiveCoords}" PNG:- | base64
-    `, { maxBuffer: 5000 * 5000 }, async (err:ExecException, stdout:string) => {
+    `, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, saveName)
+      await imageTextSaver(stdout, saveFilePath)
 
       resolve(stdout);
     })
@@ -45,13 +42,14 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
 }
 
 // 리사이징된 아트워크에 주름을 입힌다
-export const getImageWrinkled = (productImgPath:string, productCode:string) => {
+export const getImageWrinkled = (productImgPath:string, productCode:string, patternImgPath:string) => {
+  console.log(patternImgPath);
   return new Promise((resolve, reject) => {
-    exec(`convert inline:apiResources/resources/patternImage.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -20x20 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
+    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -20x20 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, 'patternImage')
+      await imageTextSaver(stdout, patternImgPath)
 
       resolve(stdout);
     })
@@ -59,13 +57,13 @@ export const getImageWrinkled = (productImgPath:string, productCode:string) => {
 }
 
 // 아트워크 마스킹
-export const imageDstOut = (target:string, productPath:string, maskImgName:string, productCode:string) => {
+export const imageDstOut = (targetPath:string, productPath:string, maskImgName:string, productCode:string) => {
 
   return new Promise((resolve, reject) => {
-    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:apiResources/resources/${target}.txt -alpha Set PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
+    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:${targetPath}.txt -alpha Set PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, 'patternImage')
+      await imageTextSaver(stdout, targetPath)
 
       resolve(stdout);
     })
@@ -73,12 +71,10 @@ export const imageDstOut = (target:string, productPath:string, maskImgName:strin
 }
 
 // 최종 가공 된 아트워크 이미지 상품 위에 올리기
-export const getArtworkOnModel = (productPath:string, productCode:string) => {
+export const getArtworkOnModel = (productPath:string, productCode:string, imageFileName:string) => {
   return new Promise((resolve, reject) => {
-    exec(`composite 'inline:apiResources/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
+    exec(`composite 'inline:${imageFileName}.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
-
-      await imageTextSaver(stdout, 'finalImage');
 
       resolve(stdout);
     })
@@ -103,20 +99,20 @@ export const artworkGeneralMerger = async (artworkImages:string[]) => {
 }
 
 // 다중 레이어 머징
-export const multiLayerMerger = async (layers:string[], productCode:string, productPath:string) => {
+export const multiLayerMerger = async (layers:string[], productCode:string, productPath:string, savePath:string, imageUniqueKey:string) => {
   let layerPaths:string = '';
 
   for (let i=0; i < layers.length; i++) {
     const currentLayer = layers[i];
 
-    layerPaths += currentLayer.includes('pattern') ? `inline:apiResources/resources/${currentLayer}.txt ` : `${productPath}/${productCode}_${currentLayer}.png `
+    layerPaths += currentLayer.includes('pattern') ? `inline:${ImageProcessingRef.BASE_RESOURCE_PATH}/${currentLayer}_${imageUniqueKey}.txt ` : `${productPath}/${productCode}_${currentLayer}.png `
   }
 
   return new Promise((resolve, reject) => {
     exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, 'patternImage')
+      await imageTextSaver(stdout, savePath)
 
       resolve(stdout);
     })
@@ -130,7 +126,7 @@ export const artworkImageMerger = async (artworkImageData:any, productImgPath:st
   return new Promise((resolve, reject) => {
     const { x, y, width, height, path } = artworkImageData;
 
-    exec(`composite -geometry ${width}x${height}+${x}+${y} 'inline:apiResources/resources/patternImage.txt' ${productImgPath} PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
+    exec(`composite -geometry ${width}x${height}+${x}+${y} '${ImageProcessingRef.PATTERN_IMAGE}.txt' ${productImgPath} PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       // imageTextSaver(stdout, 'finalImage');
@@ -204,11 +200,11 @@ export const imageconverter = async (path:string) => {
 }
 
 // 한번에 색상 변경 + 만들어진 패턴 얹어서 보여주기
-export const changeColor = (productPath:string, productCode:string, productColor:string) => {
+export const changeColor = (productPath:string, productCode:string, productColor:string, patternImgPath:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:apiResources/resources/patternImage.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
+    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
 
-      await imageTextSaver(stdout, 'patternImage');
+      await imageTextSaver(stdout, patternImgPath);
 
       resolve(stdout)
     })
@@ -218,7 +214,7 @@ export const changeColor = (productPath:string, productCode:string, productColor
 // 텍스처 변경
 export const changeTexture = (productPath:string, productCode:string, texturePath:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:apiResources/resources/patternImage.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
+    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${ImageProcessingRef.PATTERN_IMAGE}.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       await imageTextSaver(stdout, 'patternImage');
@@ -229,9 +225,9 @@ export const changeTexture = (productPath:string, productCode:string, texturePat
 }
 
 // 추가 레이어 색상 변경 => 후드티 끈 || 후드티 모자
-export const changeExtraLayerColor = (targetName:string, productPath:string, productCode:string, colorInfo:string) => {
-  const changeByColorCode = `convert inline:apiResources/resources/patternImage.txt \\( ${productPath}/${productCode}_${targetName}.png \\( +clone +level-colors '${colorInfo}' \\) -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
-  const changeByTexture = `convert inline:apiResources/resources/patternImage.txt \\( ${productPath}/${productCode}_${targetName}.png ${colorInfo}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+export const changeExtraLayerColor = (targetName:string, productPath:string, patternImgPath:string, productCode:string, colorInfo:string) => {
+  const changeByColorCode = `convert inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png \\( +clone +level-colors '${colorInfo}' \\) -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+  const changeByTexture = `convert inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png ${colorInfo}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
   const finalCommand = (colorInfo[0] === '#') ? changeByColorCode : changeByTexture;
 
   return new Promise((resolve, reject) => {
