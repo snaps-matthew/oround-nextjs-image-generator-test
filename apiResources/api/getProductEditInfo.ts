@@ -12,7 +12,7 @@ export const getProductEditInfo = async (artProductIndex:string, sizeCode:string
     "x-oround-language": "KO",
     "x-oround-token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJtZW1iZXJObyI6NSwiY2VsZWIiOmZhbHNlLCJqb2luQXJlYUNvZGUiOiIxMDUwMDEiLCJleHAiOjE2MzgxNjUxMDgsImlzcyI6Im9yb3VuZC5jb20iLCJzdWIiOiJBIn0.OaL1gB2S_2EWnmPhMg7KOJFRJSQLtvVLNjj1PnT3BibanO8fRQ8s9VzPJbzLUO0r8E_nvxoptg7YVyErIHWW9w"
   }
-  const {data} = await axios.get(`${API_URL.DOMAIN_API}artwork/product/edit-info`, {
+  const {data} = await axios.get(`${API_URL.DOMAIN_API}/artwork/product/edit-info`, {
     params,
     headers
   }).catch((err) => {
