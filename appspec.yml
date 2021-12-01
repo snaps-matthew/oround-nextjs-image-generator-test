@@ -9,7 +9,15 @@ permissions:
     group: snapsadmin
     mode: 755
 hooks:
+  ApplicationStop:
+    - location: bin/stop-server.sh
+      timeout: 30
+        runas: snapsadmin
   BeforeInstall:
     - location: bin/before-install.sh
       timeout: 30
       runas: snapsadmin
+  ApplicationStart:
+    - location: bin/start-server.sh
+      timeout: 30
+        runas: snapsadmin
