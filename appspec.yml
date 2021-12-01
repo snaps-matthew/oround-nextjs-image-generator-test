@@ -1,7 +1,7 @@
 version: 0.0
 os: linux
 files:
-  - source: /oround-image-generator
+  - source: /
     destination: /snaps/servers/oround-image-generator
 permissions:
   - object: /snaps/servers/oround-image-generator
