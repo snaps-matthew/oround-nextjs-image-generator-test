@@ -10,6 +10,6 @@ permissions:
     mode: 755
 hooks:
   BeforeInstall:
-    - location: /snaps/bin/before-install.sh
+    - location: bin/before-install.sh
       timeout: 30
       runas: snapsadmin
