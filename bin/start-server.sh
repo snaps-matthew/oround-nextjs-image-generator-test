@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 
 echo "Start Server"
 source /home/snapsadmin/.bashrc

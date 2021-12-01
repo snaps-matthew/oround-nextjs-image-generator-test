@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 
 echo "build in progress";
 source /home/snapsadmin/.bashrc

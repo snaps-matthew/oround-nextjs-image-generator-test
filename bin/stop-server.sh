@@ -1,4 +1,4 @@
-# /bin/sh
+#!/bin/sh
 
 echo "Stop Server with : $(whoami)"
 source /home/snapsadmin/.bashrc
