@@ -1,34 +1,40 @@
-import ImageComposer from "../ImageComposer";
-import {ExecException} from "child_process";
-import {getArtworkReszied, getImageWrinkled, imageDstOut} from "../../../utils/artworkImageCreator";
-import {imageTextSaver} from "../../../utils/imageTextSaver";
-const { exec } = require('child_process');
+import TargetType from 'apiResources/constants/TargetType';
+import ImageComposer from "apiResources/services/generateImage/ImageComposer";
+import { createImageOfStoreList } from 'apiResources/services/generateImage/TinCase/createImageOfStoreList';
+import { createImageOfStoreDetail } from 'apiResources/services/generateImage/TinCase/createImageOfStoreDetail';
 
 class TinCase extends ImageComposer {
   constructor() {
     super();
   }
 
-  async compositeArtwork() {
+  async composite() {
+    const {
+      target,
+      productCode,
+      productEditInfo,
+      thumbnailImage,
+      categoryName,
+      productColor,
+      directionCode,
+      artworkHeight,
+      artworkWidth,
+      productSize,
+      optionInfo,
+      canvas } = this;
 
-    const { categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath } = this;
+    // 리스트의 경우 하나의 이미지만 사용한다.
+    let templateImage = thumbnailImage;
 
-    // 아트워크 리사이징
-    await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryCode);
+    if (this.target === TargetType.STORE_DETAIL_2) {
 
-    // 마스킹으로 잘라내기
-    await imageDstOut(`${productPath}/${productCode}_mask.png`)
+      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage })
 
-    return new Promise((resolve, reject) => {
-      // exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
-        exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
-        if (err) console.error(err);
+    } else if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
-        imageTextSaver(stdout, 'final');
+      await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
 
-        resolve(stdout);
-      })
-    })
+    }
   }
 }
 

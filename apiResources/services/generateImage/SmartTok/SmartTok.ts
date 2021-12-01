@@ -1,34 +1,40 @@
-import ImageComposer from "../ImageComposer";
-import {ExecException} from "child_process";
-import {getArtworkReszied, getImageWrinkled, imageDstOut} from "../../../utils/artworkImageCreator";
-import {imageTextSaver} from "../../../utils/imageTextSaver";
-const { exec } = require('child_process');
+import ImageComposer from "apiResources/services/generateImage/ImageComposer";
+import TargetType from 'apiResources/constants/TargetType';
+import { createImageOfStoreList } from 'apiResources/services/generateImage/SmartTok/createImageOfStoreList';
+import { createImageOfStoreDetail } from 'apiResources/services/generateImage/SmartTok/createImageOfStoreDetail';
 
 class SmartTok extends ImageComposer {
   constructor() {
     super();
   }
 
-  async compositeArtwork() {
-    const { categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath } = this;
-    console.log(categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath)
-    // 아트워크 리사이징
-    await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryCode);
+  async composite() {
+    const {
+      target,
+      productCode,
+      productEditInfo,
+      thumbnailImage,
+      categoryName,
+      productColor,
+      directionCode,
+      artworkHeight,
+      artworkWidth,
+      productSize,
+      optionInfo,
+      canvas } = this;
 
-    // 마스킹으로 잘라내기
-    console.log(`마스킹하기 ${productPath}/${productCode}_mask.png`)
-    await imageDstOut(`${productPath}/${productCode}_mask.png`)
+    // 리스트의 경우 하나의 이미지만 사용한다.
+    let templateImage = thumbnailImage;
 
-    return new Promise((resolve, reject) => {
-      exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
-        // exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}' PNG:- | base64`, { maxBuffer: 2000 * 2000 }, (err:ExecException, stdout:string) => {
-        if (err) console.error(err);
+    if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
 
-        imageTextSaver(stdout, 'final');
+      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage })
 
-        resolve(stdout);
-      })
-    })
+    } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
+
+      await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
+
+    }
   }
 }
 

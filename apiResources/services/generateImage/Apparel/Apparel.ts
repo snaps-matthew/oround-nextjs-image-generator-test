@@ -1,33 +1,39 @@
-import ImageComposer from "../ImageComposer";
-import {ExecException} from "child_process";
-import {getArtworkReszied, getImageWrinkled} from "../../../utils/artworkImageCreator";
-import {imageTextSaver} from "../../../utils/imageTextSaver";
-const { exec } = require('child_process');
+import TargetType from "apiResources/constants/TargetType";
+import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
+import { createImageOfStoreList } from "apiResources/services/generateImage/Apparel/createImageOfStoreList";
+import { createImageOfStoreDetail } from 'apiResources/services/generateImage/Apparel/createImageOfStoreDetail';
 
 class Apparel extends ImageComposer {
   constructor() {
     super();
   }
 
-  async compositeArtwork() {
+  async composite() {
+    const {
+      target,
+      productCode,
+      productEditInfo,
+      thumbnailImage,
+      categoryName,
+      productColor,
+      directionCode,
+      artworkHeight,
+      artworkWidth,
+      productSize,
+      optionInfo,
+      canvas } = this;
 
-    const { categoryCode, productCode, patternSrcCoords, patternDstCoords, productPath } = this;
+    // 리스트의 경우 하나의 이미지만 사용한다.
+    let templateImage = thumbnailImage;
+    if (this.target === TargetType.STORE_DETAIL_2) {
 
-    // 아트워크 리사이징
-    await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryCode);
+      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage })
 
-    // 주름 및 그림자 생성하기
-    // await getImageWrinkled(productPath, productCode);
-    //
-    // return new Promise((resolve, reject) => {
-    //   exec(`composite 'inline:src/resources/patternImage.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 5000 * 5000 }, (err:ExecException, stdout:string) => {
-    //     if (err) console.error(err);
-    //
-    //     imageTextSaver(stdout, 'final');
-    //
-    //     resolve(stdout);
-    //   })
-    // })
+    } else if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
+
+      await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
+
+    }
   }
 }
 

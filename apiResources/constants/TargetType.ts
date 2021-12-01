@@ -1,5 +1,6 @@
 export default {
-  STORE_LIST: 'store_list',
-  STORE_DETAIL_0: 'store_detail_0',
-  STORE_DETAIL_1: 'store_detail_1',
+  STORE_LIST_1: '1',
+  STORE_DETAIL_2: '2',
+  STORE_DETAIL_3: '3',
+  STORE_DETAIL_4: '4',
 }
