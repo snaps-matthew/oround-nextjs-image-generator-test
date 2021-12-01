@@ -1,6 +1,6 @@
 # /bin/sh
 
-echo "Stop Server"
-echo $(whoami);
+echo "Stop Server with : $(whoami)"
 source /home/snapsadmin/.bashrc
-pm2 stop all
+
+/home/snapsadmin/.nvm/versions/node/v12.22.7/bin/pm2 stop all
