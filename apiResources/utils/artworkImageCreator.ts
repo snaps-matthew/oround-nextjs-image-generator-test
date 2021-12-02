@@ -235,7 +235,7 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
       if (err) console.error(err);
 
       await imageTextSaver(stdout, patternImgPath)
-
+      console.log('CHANGE EXTRA LAYER COMPLETED :::::::::::');
       resolve(stdout);
     })
   })
