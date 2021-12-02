@@ -212,12 +212,12 @@ export const changeColor = (productPath:string, productCode:string, productColor
 }
 
 // 텍스처 변경
-export const changeTexture = (productPath:string, productCode:string, texturePath:string) => {
+export const changeTexture = (productPath:string, productCode:string, texturePath:string, patternImgPath:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${ImageProcessingRef.PATTERN_IMAGE}.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
+    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:${patternImgPath}.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, 'patternImage');
+      await imageTextSaver(stdout, patternImgPath);
 
       resolve(stdout);
     })
@@ -234,7 +234,7 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
     exec(`${finalCommand}`, { maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, 'patternImage')
+      await imageTextSaver(stdout, patternImgPath)
 
       resolve(stdout);
     })

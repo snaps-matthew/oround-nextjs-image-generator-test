@@ -61,32 +61,31 @@ export const createImageOfStoreDetail = async (props:any) => {
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
 
   // (1) 아트워크 좌표에 맞춰 리사이징
-  await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
+  // await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 주름 생성하기
   await getImageWrinkled(productPath, productCode, patternImageFileName);
 
   // (3) 색상 옵션들어왔는지 확인하고 옷 색상 변경해주기 => 텍스처가 있는 경우에는 텍스처로 대신해서 넣어주어야 한다
     // 화이트의 경우 색상변경 하지 않고 기본 이미지에 올려 준다
-  if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
-
-    if (ColorHexCode[optionInfo.colorCode]) {
-      const colorInfo = ColorHexCode[optionInfo.colorCode];
-      await changeColor(productPath, productCode, colorInfo, patternImageFileName);
-
-      if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, patternImageFileName, productCode, colorInfo);
-
-    } else {
-
-      const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}`;
-      await changeTexture(productPath, productCode, texturePath);
-      if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, patternImageFileName, productCode, texturePath);
-
-    }
-  }
+  // if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
+  //
+  //   if (ColorHexCode[optionInfo.colorCode]) {
+  //     const colorInfo = ColorHexCode[optionInfo.colorCode];
+  //     await changeColor(productPath, productCode, colorInfo, patternImageFileName);
+  //     if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, patternImageFileName, productCode, colorInfo);
+  //
+  //   } else {
+  //
+  //     const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}`;
+  //     await changeTexture(productPath, productCode, texturePath, patternImageFileName);
+  //     if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, patternImageFileName, productCode, texturePath);
+  //
+  //   }
+  // }
 
   // (4) 추가 레이어 확인하기 => 어패럴 몇 상품들은, [후드/ 후드 끈/ 파우치 위 손가락] 등을 올려주어야 하는 는우가 있다
-  if (extraLayer.includes('finger')) await multiLayerMerger(extraLayer, productCode, productPath, patternImageFileName, imageUniqueKey);
+  // if (extraLayer.includes('finger')) await multiLayerMerger(extraLayer, productCode, productPath, patternImageFileName, imageUniqueKey);
 
   // return await imageDstOut('finalImage', productPath, 'list', productCode);
 
