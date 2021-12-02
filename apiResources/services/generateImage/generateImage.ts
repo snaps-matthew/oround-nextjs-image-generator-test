@@ -82,8 +82,10 @@ export const generateImage = async (props: {
   await imageComposer.init(props);
   // 리스트 1 이미지 임시로 내림
   //if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
-  if ((props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
+  if ((props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
+  } else if (props.target == TargetType.STORE_DETAIL_2 && props.productEditInfo.groupDelimiterName === 'button') {
+    await imageComposer.composite();
   } else if ((props.target == TargetType.STORE_LIST_1) && ['smartTok'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
   } else {

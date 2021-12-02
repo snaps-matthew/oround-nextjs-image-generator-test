@@ -201,11 +201,12 @@ export const imageconverter = async (path:string) => {
 
 // 한번에 색상 변경 + 만들어진 패턴 얹어서 보여주기
 export const changeColor = (productPath:string, productCode:string, productColor:string, patternImgPath:string) => {
+  console.log('CHANGE COLOR :::::: ____', productColor, productCode, productPath, patternImgPath.split('/').slice(-1));
   return new Promise((resolve, reject) => {
     exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
 
       await imageTextSaver(stdout, patternImgPath);
-
+      console.log('CHANGE COLOR COMPLETED!!');
       resolve(stdout)
     })
   })
