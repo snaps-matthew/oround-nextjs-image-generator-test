@@ -28,7 +28,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
 
   return new Promise((resolve, reject) => {
 
-    exec(`convert inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 2000x2000 \
+    exec(`magick inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 2000x2000 \
         -distort Perspective \
         "${perspectiveCoords}" PNG:- | base64
     `, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
@@ -45,7 +45,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
 export const getImageWrinkled = (productImgPath:string, productCode:string, patternImgPath:string) => {
   console.log(patternImgPath);
   return new Promise((resolve, reject) => {
-    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -20x20 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
+    exec(`magick inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -20x20 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
 
@@ -109,7 +109,7 @@ export const multiLayerMerger = async (layers:string[], productCode:string, prod
   }
 
   return new Promise((resolve, reject) => {
-    exec(`convert ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
+    exec(`magick ${layerPaths.trim()} -background None -layers Flatten PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       await imageTextSaver(stdout, savePath)
@@ -189,9 +189,9 @@ export const addCoordinateData  = (coordPath:string, prodCode:string, prodOption
 }
 
 // base64 컨버터
-export const imageconverter = async (path:string) => {
+export const imagemagicker = async (path:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert '${path}' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
+    exec(`magick '${path}' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, (err:ExecException, stdout:string) => {
 
       resolve(stdout);
     })
@@ -203,8 +203,8 @@ export const imageconverter = async (path:string) => {
 export const changeColor = (productPath:string, productCode:string, productColor:string, patternImgPath:string) => {
   console.log('CHANGE COLOR :::::: ____', productColor, productCode, productPath, patternImgPath.split('/').slice(-1));
   return new Promise((resolve, reject) => {
-    exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
-      console.log(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`);
+    exec(`magick '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
+      console.log(`magick '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`);
       await imageTextSaver(stdout, patternImgPath);
       console.log('CHANGE COLOR COMPLETED && SAVED TO !!', [`${patternImgPath}`]);
       resolve(stdout)
@@ -215,7 +215,7 @@ export const changeColor = (productPath:string, productCode:string, productColor
 // 텍스처 변경
 export const changeTexture = (productPath:string, productCode:string, texturePath:string, patternImgPath:string) => {
   return new Promise((resolve, reject) => {
-    exec(`convert ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:${patternImgPath}.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
+    exec(`magick ${productPath}/${productCode}_crop.png ${texturePath}.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite ${productPath}/${productCode}_crop.png -compose multiply -composite inline:${patternImgPath}.txt -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       await imageTextSaver(stdout, patternImgPath);
@@ -227,8 +227,8 @@ export const changeTexture = (productPath:string, productCode:string, texturePat
 
 // 추가 레이어 색상 변경 => 후드티 끈 || 후드티 모자
 export const changeExtraLayerColor = (targetName:string, productPath:string, patternImgPath:string, productCode:string, colorInfo:string) => {
-  const changeByColorCode = `convert inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png \\( +clone +level-colors '${colorInfo}' \\) -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
-  const changeByTexture = `convert inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png ${colorInfo}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+  const changeByColorCode = `magick inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png \\( +clone +level-colors '${colorInfo}' \\) -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
+  const changeByTexture = `magick inline:${patternImgPath}.txt \\( ${productPath}/${productCode}_${targetName}.png ${colorInfo}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png -compose multiply -composite ${productPath}/${productCode}_${targetName}.png \\) -compose over -composite PNG:- | base64`;
   const finalCommand = (colorInfo[0] === '#') ? changeByColorCode : changeByTexture;
 
   return new Promise((resolve, reject) => {
@@ -242,3 +242,4 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
   })
 
 }
+
