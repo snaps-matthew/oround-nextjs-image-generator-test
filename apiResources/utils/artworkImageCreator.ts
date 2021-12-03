@@ -75,7 +75,7 @@ export const getArtworkOnModel = (productPath:string, productCode:string, imageF
   return new Promise((resolve, reject) => {
     exec(`composite 'inline:${imageFileName}.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
-
+      console.log([`${imageFileName}`]);
       resolve(stdout);
     })
   })
@@ -204,9 +204,9 @@ export const changeColor = (productPath:string, productCode:string, productColor
   console.log('CHANGE COLOR :::::: ____', productColor, productCode, productPath, patternImgPath.split('/').slice(-1));
   return new Promise((resolve, reject) => {
     exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
-
+      console.log(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`);
       await imageTextSaver(stdout, patternImgPath);
-      console.log('CHANGE COLOR COMPLETED!!');
+      console.log('CHANGE COLOR COMPLETED && SAVED TO !!', [`${patternImgPath}`]);
       resolve(stdout)
     })
   })
