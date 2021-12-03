@@ -69,9 +69,9 @@ export const createImageOfStoreDetail = async (props:any) => {
   // (3) 색상 옵션들어왔는지 확인하고 옷 색상 변경해주기 => 텍스처가 있는 경우에는 텍스처로 대신해서 넣어주어야 한다
     // 화이트의 경우 색상변경 하지 않고 기본 이미지에 올려 준다
 
-  console.log('APPAREL __=====>>', optionInfo.colorCode, ColorHexCode[optionInfo.colorCode]);
+  console.log('APPAREL __ optionInfo.colorCode __ =====>>', optionInfo.colorCode, ColorHexCode[optionInfo.colorCode]);
 
-  if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
+  if (optionInfo.colorCode) {
       console.log('______ INSIDE COLOR ______ ');
 
     if (ColorHexCode[optionInfo.colorCode]) {

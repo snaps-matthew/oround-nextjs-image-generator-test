@@ -121,7 +121,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       canvas.createPNGStream().pipe(res);
 
-    } else if (target === TargetType.STORE_DETAIL_2 && productEditInfo.groupDelimiterName === 'button') {
+    } else if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && productEditInfo.groupDelimiterName === 'button') {
       imageComposer.stream().pipe(res);
     } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
 
