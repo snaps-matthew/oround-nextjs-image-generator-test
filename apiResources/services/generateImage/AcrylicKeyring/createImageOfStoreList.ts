@@ -7,15 +7,13 @@ import {
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { loadImage } from 'apiResources/utils/loadImage';
-import { TYPE } from 'apiResources/constants/type';
-import { API_URL } from 'apiResources/constants/apiURL';
+import { loadImage, loadImageErrorAlert } from 'apiResources/utils/loadImage';
 import {
   getKeyringCutLineSize,
   getKeyringHoleSize,
   getKeyringOuterAreaSize
 } from 'apiResources/utils/getKeyringSize';
-import Config from '../../../constants/Config';
+import Config from 'apiResources/constants/Config';
 import CommonCode from 'apiResources/constants/CommonCode';
 
 
@@ -33,12 +31,19 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   }
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
-    console.log('=-=-=',11144555)
     let scene:any = getSelectedScene(productEditInfo);
     const width = scene.width
     const height = scene.height
-    const ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
-    console.log('=-=-=',111)
+    let ratio = 0
+    if(productEditInfo.size.length > 0){
+      ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+    }else{
+      //사이즈가 없는경우 더미이미지로 리턴
+      const dummyOroundImage = await loadImageErrorAlert("size empty")
+      const size = imageFull(width, height, outBox.width, outBox.height, 0);
+      ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+      return
+    }
     const cutLine = getKeyringCutLineSize() * ratio;
     const contour = newCanvas(width, height);   // 칼선 캔버스
     const result = newCanvas(width, height);    // 최종 출력물 캔버스
@@ -70,7 +75,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     } else {
      result.ctx.drawImage(contour.canvas, 0, 0);
     }
-    console.log('=-=-=',3333)
+
     const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
     result.ctx.drawImage(shadowCanvas, 0, 0);
     result.ctx.drawImage(templateImage, 0, 0);

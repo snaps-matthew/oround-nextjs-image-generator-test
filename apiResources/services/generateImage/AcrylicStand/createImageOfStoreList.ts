@@ -10,7 +10,7 @@ import {
 import TargetType from 'apiResources/constants/TargetType';
 import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
-import { loadImage } from '../../../utils/loadImage';
+import { loadImage, loadImageErrorAlert } from 'apiResources/utils/loadImage';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
@@ -21,7 +21,16 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     let scene:any = getSelectedScene(productEditInfo);
     const width = scene.width
     const height = scene.height
-    const ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+    let ratio = 0
+    if(productEditInfo.size.length > 0){
+      ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+    }else{
+      //사이즈가 없는경우 더미이미지로 리턴
+      const dummyOroundImage = await loadImageErrorAlert("size empty")
+      const size = imageFull(width, height, outBox.width, outBox.height, 0);
+      ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+      return
+    }
 
     const cutLine = getStandCutLineSize() * ratio;
     const contour = newCanvas(width, height);   // 칼선 캔버스
