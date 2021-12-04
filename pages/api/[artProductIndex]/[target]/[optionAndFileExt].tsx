@@ -5,8 +5,9 @@ import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { loadImage } from 'apiResources/utils/loadImage'
+import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import { createCanvas } from 'canvas';
+import { newCanvas } from 'apiResources/utils/newCanvas';
 
 
 interface IRequestQuery {
@@ -105,36 +106,46 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const optionInfo = pramCodes.optionAndFileExt
     const sizeCode = pramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
-    let scene = getSelectedScene(productEditInfo, optionInfo);
-    const thumbnailImage = await generateThumbnail(scene)
-    const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
+    const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
-    // 리스트1 이미지 임시로 내림
-    //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
-    if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
+    if(scene){
+      const thumbnailImage = await generateThumbnail(scene)
+      const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
-      const canvas = createCanvas(1000,1000);
-      const ctx = canvas.getContext('2d');
-      const image = await loadImage('data:image/png;base64,'+ imageComposer);
-      ctx.drawImage(image, 0, 0, 1000, 1000);
+      // 리스트1 이미지 임시로 내림
+      //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
+      if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
+        const canvas = createCanvas(1000,1000);
+        const ctx = canvas.getContext('2d');
+        const image = await loadImage('data:image/png;base64,'+ imageComposer);
+        ctx.drawImage(image, 0, 0, 1000, 1000);
+        canvas.createPNGStream().pipe(res);
 
-      canvas.createPNGStream().pipe(res);
+      } else if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && productEditInfo.groupDelimiterName === 'button') {
+        imageComposer.stream().pipe(res);
 
-    } else if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && productEditInfo.groupDelimiterName === 'button') {
-      imageComposer.stream().pipe(res);
-    } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
+      } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
+        const canvas = createCanvas(1000,1000);
+        const ctx = canvas.getContext('2d');
+        const image = await loadImage('data:image/png;base64,'+ imageComposer);
+        ctx.drawImage(image, 0, 0, 1000, 1000);
+        canvas.createPNGStream().pipe(res);
 
-      const canvas = createCanvas(1000,1000);
-      const ctx = canvas.getContext('2d');
-      const image = await loadImage('data:image/png;base64,'+ imageComposer);
-      ctx.drawImage(image, 0, 0, 1000, 1000);
-
-      canvas.createPNGStream().pipe(res);
-
-    } else {
-      imageComposer.stream().pipe(res);
+      } else {
+        imageComposer.stream().pipe(res);
+      }
+    }else{
+      const dummyOroundImage = await loadErrorImage("sizeCode error");
+      const tmp = newCanvas(500, 500);
+      tmp.ctx.drawImage(dummyOroundImage, 0,0,500,500);
+      tmp.canvas.createJPEGStream({
+        quality: 1,
+        progressive: true,
+        chromaSubsampling: false,
+      }).pipe(res);
     }
+
 
   } catch (error) {
 
