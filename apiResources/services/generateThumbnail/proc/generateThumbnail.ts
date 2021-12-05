@@ -1,7 +1,7 @@
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { Canvas, CanvasRenderingContext2D } from 'canvas';
 import { ObjectType } from 'apiResources/constants/objectType';
-import { API_URL } from 'apiResources/constants/apiURL';
+import Config from 'apiResources/constants/Config';
 import { loadImage } from 'apiResources/utils/loadImage';
 
 const generateThumbnail = async (scene: any, scale: number = 1) => {
@@ -86,7 +86,7 @@ class ObjectCanvasBackground extends ObjectCanvas {
 
 class ObjectCanvasImage extends ObjectCanvas {
   async draw () {
-    const url = API_URL.DOMAIN_RESOURCE + this.object.original.middleImagePath;
+    const url = Config.DOMAIN_RESOURCE + this.object.original.middleImagePath;
     let image = await loadImage(url);
     this.drawInnerImage(image);
   }

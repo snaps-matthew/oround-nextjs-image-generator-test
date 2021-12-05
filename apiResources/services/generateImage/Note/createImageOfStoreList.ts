@@ -1,20 +1,14 @@
 import Config from "apiResources/constants/Config";
-import ProductCode from "apiResources/constants/ProductCode";
 import {loadImage} from "apiResources/utils/loadImage";
-import {Image} from "canvas";
 import { SceneType } from 'apiResources/constants/sceneType';
-import { API_URL } from 'apiResources/constants/apiURL';
-import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getSelectedScene,
 } from '../../../utils/getSelectedScene';
 import TargetType from '../../../constants/TargetType';
-import { TYPE } from '../../../constants/type';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 
@@ -22,7 +16,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const productCode:string = productEditInfo.productCode;
   const directionCode = productEditInfo.directionCode
 
-  const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const skinPath = `${domain}/${SceneType.page}/${directionCode}/`;
   const skinPathTop = skinPath+'top.png';
 

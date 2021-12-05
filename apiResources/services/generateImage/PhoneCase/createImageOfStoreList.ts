@@ -1,20 +1,14 @@
 import Config from "apiResources/constants/Config";
-import ProductCode from "apiResources/constants/ProductCode";
 import {loadImage} from "apiResources/utils/loadImage";
-import {Image} from "canvas";
 import { SceneType } from 'apiResources/constants/sceneType';
-import { API_URL } from 'apiResources/constants/apiURL';
-import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import TargetType from 'apiResources/constants/TargetType';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
-import { TYPE } from 'apiResources/constants/type';
-import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
+import { getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { isUVPrintPhoneCase } from 'apiResources/matchProd/isPhoneCaseProd';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
@@ -22,7 +16,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode:string = optionInfo.diviceColorCode;
   const isHardCase = productCode.slice(-1) === '2';
-  const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const device = isHardCase ? '' : `${domain}/${SceneType.page}/1-device/${comparisonColorCode}.png`;
   const caseSkin = isHardCase ? '' : `${domain}/${SceneType.page}/2-case/T00088.png`;
   const skinPath = isHardCase ?

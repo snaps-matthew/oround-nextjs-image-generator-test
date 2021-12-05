@@ -5,12 +5,9 @@ import { getStickerCutLineSize } from 'apiResources/utils/getStickerSize';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import { TYPE } from 'apiResources/constants/type';
-import { API_URL } from 'apiResources/constants/apiURL';
 import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
 
