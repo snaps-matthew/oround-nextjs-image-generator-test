@@ -8,7 +8,7 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { isWoodFrame } from 'apiResources/matchProd/isWoodFrame';
-import { loadImage } from 'apiResources/utils/loadImage';
+import { loadImage, loadImageErrorAlert } from 'apiResources/utils/loadImage';
 import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
 import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
