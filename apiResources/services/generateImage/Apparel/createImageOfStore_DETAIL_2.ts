@@ -143,6 +143,20 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
       }
     }
 
+  } else {
+
+    // 옷 위에 패턴 올리기
+    ctx.globalCompositeOperation = 'source-over';
+    const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
+    ctx.drawImage(artworkImage, 0, 0);
+
+
+    if (extraLayer.length) {
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.drawImage(stringImage, 0, 0);
+    }
+
+
   }
 
   // (4) 상품 위에 올리기

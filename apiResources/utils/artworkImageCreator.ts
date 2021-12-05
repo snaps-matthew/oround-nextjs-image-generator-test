@@ -244,17 +244,20 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
 
 export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:string) => {
   const ctx = canvas.getContext('2d');
+  return new Promise((resolve, reject) => {
+    ctx.globalCompositeOperation = 'multiply';
+    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
 
-  ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+    ctx.fillStyle = colorCode;
+    ctx.fillRect(0, 0, 1000, 1000);
 
-  ctx.fillStyle = colorCode;
-  ctx.fillRect(0, 0, 1000, 1000);
+    ctx.globalCompositeOperation = 'destination-in';
+    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
 
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+    resolve(true);
+  })
 }
 
 export const changeApparelTexture = (canvas:any, textureImage:string, cropImgPath:string) => {
