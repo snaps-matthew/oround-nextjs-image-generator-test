@@ -2,7 +2,7 @@
 // const DOMAIN_API = window.location.host.replace('-editor', '')
 
 
-const API = "dev-api.oround.com/api/v1/"; //DEV
+const API = `${process.env.NEXT_PUBLIC_OROUND_API_DOMAIN}/api/v1`;
 const RESOURCE = "cdn.oround.com/"; //PROD
 
 export const API_URL = {

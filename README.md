@@ -9,15 +9,7 @@ npm run dev
 
 ## Project Dependency
 - Next.js (12.x)
-- node-canvas (2.6.1)
-```
-// package.json (아래 부분 수정하지 말것)
-{
-  ~
-  "install-canvas-dep": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/",
-  ~
-}
-```
+
 
 ## Related Resources
 - Github - current
