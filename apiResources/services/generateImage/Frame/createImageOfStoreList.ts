@@ -8,7 +8,7 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { isWoodFrame } from 'apiResources/matchProd/isWoodFrame';
-import { loadImage, loadImageErrorAlert } from 'apiResources/utils/loadImage';
+import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
 import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
@@ -18,10 +18,11 @@ import { resolve } from 'path';
 import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, paperImage?:any}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target, paperImage} = props;
-  const width = productEditInfo.edit[0].width
-  const height = productEditInfo.edit[0].height
+export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+  const scene = getSelectedScene(productEditInfo, optionInfo)
+  const width = scene.width
+  const height = scene.height
   const productCode = productEditInfo.productCode
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
   let ratio = 0
@@ -29,9 +30,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
-    const dummyOroundImage = await loadImageErrorAlert("size empty")
-    const size = imageFull(width, height, outBox.width, outBox.height, 0);
-    ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+    const dummyOroundImage = await loadErrorImage("size empty")
+    ctx.drawImage(dummyOroundImage, 0,0);
     return
   }
   const margin = getPreviewMargin(productCode);
@@ -61,9 +61,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
        thumbnailCanvas = removeCuttingLine(templateImage, paddingPx);
     }
 
-    const frameWidth = width + (offset * 2);
-    const frameHeight = height + (offset * 2);
-
+    const frameWidth = thumbnailCanvas.width + (offset * 2);
+    const frameHeight = thumbnailCanvas.height + (offset * 2);
     const tmp = newCanvas(frameWidth, frameHeight);
     tmp.ctx.drawImage(thumbnailCanvas, offset, offset);
 

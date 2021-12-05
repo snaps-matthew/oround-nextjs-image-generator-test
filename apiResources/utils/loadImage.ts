@@ -10,9 +10,8 @@ export const loadImage = async (url: string): Promise<any> => {
   });
 }
 
-export const loadImageErrorAlert = async (msg:string): Promise<any> => {
+export const loadErrorImage = async (errorMessage:string): Promise<any> => {
+  console.log(`errorMessage : ${errorMessage}`);
   const dummyOroundImage = `https://cdn.oround.com/artwork/2021/11/25/21436/ED/26eRL3-20211125210905694.jpg`
-  return await Canvas.loadImage(dummyOroundImage).catch(()=> {
-    throw BadRequest('Not found resource image');
-  });
+  return await Canvas.loadImage(dummyOroundImage)
 }
