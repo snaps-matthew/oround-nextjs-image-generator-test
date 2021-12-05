@@ -88,7 +88,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
       // [Type A] => 색상 값이 있는 경우
     if (ColorHexCode[optionInfo.colorCode]) {
       // (3-1) 옷 색상 변경하기
-      await changeApparelColor(canvas, '#104caf', productCropImage);
+      await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
 
       // 옷 위에 패턴 올리기
       ctx.globalCompositeOperation = 'source-over';

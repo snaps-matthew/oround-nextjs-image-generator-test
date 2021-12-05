@@ -100,7 +100,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       let stringImage = await loadImage(`${productPath}/${productCode}_string.png`);
-      await changeApparelColor(secondaryCanvas, '#104caf', stringImage);
+      await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], stringImage);
       ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(secondaryCanvas, 0, 0)
 
