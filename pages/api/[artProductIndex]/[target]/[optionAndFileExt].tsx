@@ -117,14 +117,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       // 리스트1 이미지 임시로 내림
       //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
-      if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
-        const canvas = createCanvas(1000,1000);
-        const ctx = canvas.getContext('2d');
-        const image = await loadImage('data:image/png;base64,'+ imageComposer);
-        ctx.drawImage(image, 0, 0, 1000, 1000);
-        canvas.createPNGStream().pipe(res);
-
-      } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
+      if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
         const canvas = createCanvas(1000,1000);
         const ctx = canvas.getContext('2d');
         const image = await loadImage('data:image/png;base64,'+ imageComposer);
