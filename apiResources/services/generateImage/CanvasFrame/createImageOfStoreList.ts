@@ -7,8 +7,7 @@ import {
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { isWoodFrame } from 'apiResources/matchProd/isWoodFrame';
-import { loadImage, loadImageErrorAlert } from 'apiResources/utils/loadImage';
+import { loadErrorImage, loadImage } from 'apiResources/utils/loadImage';
 import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
 import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
@@ -26,7 +25,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
-    const dummyOroundImage = await loadImageErrorAlert("size empty")
+    const dummyOroundImage = await loadErrorImage("size empty")
     const size = imageFull(width, height, outBox.width, outBox.height, 0);
     ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
     return

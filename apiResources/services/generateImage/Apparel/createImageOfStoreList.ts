@@ -1,10 +1,6 @@
 import Config from "apiResources/constants/Config";
-import ProductCode from "apiResources/constants/ProductCode";
 import {loadImage} from "apiResources/utils/loadImage";
-import {Image} from "canvas";
-import { SceneType, sceneTypeCode } from 'apiResources/constants/sceneType';
-import { API_URL } from 'apiResources/constants/apiURL';
-import { API_PATH } from 'apiResources/constants/apiPath';
+import { sceneTypeCode } from 'apiResources/constants/sceneType';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
@@ -16,7 +12,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const productCode:string = productEditInfo.productCode;
   const colorCode = optionInfo.colorCode
   const scene:any = getSelectedScene(productEditInfo, optionInfo);
-  const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const skinPath = `${domain}/${sceneTypeCode[scene.type]}/${colorCode}`;
   const skinPathBottom = skinPath+'.png';
 

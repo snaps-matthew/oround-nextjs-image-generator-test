@@ -1,15 +1,12 @@
-
+import Config from 'apiResources/constants/Config';
 import {loadImage} from "apiResources/utils/loadImage";
 import { SceneType } from 'apiResources/constants/sceneType';
-import { API_URL } from 'apiResources/constants/apiURL';
-import { API_PATH } from 'apiResources/constants/apiPath';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 
@@ -22,7 +19,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const height = productEditInfo.edit[0].height
   const colorCode = optionInfo.colorCode
 
-  const domain = `${API_URL.DOMAIN_RESOURCE}${API_PATH.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}`;
   const skinPathTop = skinPath+'_top.png';
 

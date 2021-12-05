@@ -1,4 +1,4 @@
-import { API_URL } from 'apiResources/constants/apiURL'
+import Config from 'apiResources/constants/Config';
 
 export const getFrameNinePathUrl = (productCode: string) => {
   return [
@@ -6,7 +6,7 @@ export const getFrameNinePathUrl = (productCode: string) => {
     'middle_left', 'middle_right',
     'bottom_left', 'bottom_center', 'bottom_right'
   ].reduce((acc: any, item) => {
-    acc[item] = `${API_URL.DOMAIN_RESOURCE}artwork-editor/resource/product/${productCode}/${item}.png`;
+    acc[item] = `${Config.DOMAIN_RESOURCE}artwork-editor/resource/product/${productCode}/${item}.png`;
     return acc;
   }, {});
 };

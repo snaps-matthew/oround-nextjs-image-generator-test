@@ -1,14 +1,5 @@
-import TargetType from "apiResources/constants/TargetType";
-
-import {loadImages} from "apiResources/services/loadImages";
-import {setDisplayMM} from "apiResources/services/setDisplayMM";
-import {removeCuttingLine} from "apiResources/services/removeCuttingLine";
 import ImageCanvas from "apiResources/services/generateImage/ImageCanvas";
-import {resizeToCorrectSize} from "apiResources/services/resizeToCorrectSize";
 import {createImageOfStoreList} from "apiResources/services/generateImage/AcrylicStand/createImageOfStoreList";
-// import {createImageOfStoreDetail_1} from "apiResources/services/generateImage/Polaroid/createImageOfStoreDetail_1";
-// import {createImageOfStoreDetail_0} from "apiResources/services/generateImage/Polaroid/createImageOfStoreDetail_0";
-import {loadImage} from "../../../utils/loadImage";
 
 class AcrylicStand extends ImageCanvas {
   constructor() {

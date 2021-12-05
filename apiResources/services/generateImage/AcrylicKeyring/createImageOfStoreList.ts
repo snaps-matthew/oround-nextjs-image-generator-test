@@ -11,7 +11,6 @@ import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import {
   getKeyringCutLineSize,
   getKeyringHoleSize,
-  getKeyringOuterAreaSize
 } from 'apiResources/utils/getKeyringSize';
 import Config from 'apiResources/constants/Config';
 import CommonCode from 'apiResources/constants/CommonCode';
@@ -23,6 +22,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   const acrylicCode = optionInfo.acrylicCode;
   const glitterColorCode = optionInfo.glitterColorCode;
+
   let paperImagePath = "";
   if(acrylicCode===CommonCode.PAPER_ACRYLIC_GLITTER ){
     paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${glitterColorCode}.png`;

@@ -1,10 +1,8 @@
 import CommonCode from 'apiResources/constants/CommonCode';
-import TargetType from 'apiResources/constants/TargetType';
 import { TYPE } from 'apiResources/constants/type';
-import { API_URL } from 'apiResources/constants/apiURL';
+import Config from 'apiResources/constants/Config';
 import { loadImage } from 'apiResources/utils/loadImage';
 import productInfo from 'apiResources/constants/productInfo';
-import { COMMON_NAME } from '../constants/commonName';
 
 export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
   let tempScene
@@ -57,7 +55,7 @@ export const  getArtworkImage = async (productEditInfo:any, optionInfo?:string )
     return type === TYPE.OBJECT_IMAGE
   })
 
-  const artworkImagePath = API_URL.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+  const artworkImagePath = Config.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
   const artworkImage:any  = await loadImage(artworkImagePath);
   const artworkImageWidth = imageObject[0].original.width
   const artworkImageHeight = imageObject[0].original.height
