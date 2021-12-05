@@ -82,7 +82,7 @@ export const createImageOfStoreDetail = async (props:any) => {
 
     } else {
       console.log('< COLOR TEXTURE > :::::::::::: ');
-      const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}`;
+      const texturePath = `${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}.png`;
       await changeTexture(productPath, productCode, texturePath, patternImageFileName);
       if (extraLayer.length) await changeExtraLayerColor(extraLayer.filter((item:any) => item !== 'patternImage' && item !== 'finger')[0], productPath, patternImageFileName, productCode, texturePath);
 

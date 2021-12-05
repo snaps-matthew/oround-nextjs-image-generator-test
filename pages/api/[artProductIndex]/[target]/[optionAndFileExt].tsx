@@ -123,9 +123,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         ctx.drawImage(image, 0, 0, 1000, 1000);
         canvas.createPNGStream().pipe(res);
 
-      } else if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && productEditInfo.groupDelimiterName === 'button') {
-        imageComposer.stream().pipe(res);
-
       } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
         const canvas = createCanvas(1000,1000);
         const ctx = canvas.getContext('2d');
