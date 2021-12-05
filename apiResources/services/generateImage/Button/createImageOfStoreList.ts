@@ -15,10 +15,10 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const width = productEditInfo.edit[0].width
   const height = productEditInfo.edit[0].height
   const colorCode = optionInfo.colorCode
-
+  const sizeCode = optionInfo.sizeCode
   const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
-  const skinPath = `${domain}/${SceneType.page}/${directionCode}`;
-  const skinPathTop = skinPath+'/top.png';
+  const skinPath = `${domain}/${SceneType.page}/${directionCode}/${sizeCode}`;
+  const skinPathTop = skinPath+'_top.png';
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_LIST_1) {

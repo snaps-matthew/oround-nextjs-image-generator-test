@@ -13,9 +13,9 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const productCode:string = productEditInfo.productCode;
   const directionCode = productEditInfo.directionCode
   const colorCode = optionInfo.colorCode
-
+  const sizeCode = optionInfo.sizeCode
   const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
-  const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}`;
+  const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}_${sizeCode}`;
   const skinPathTop = skinPath+'_top.png';
   const skinPathBottom = skinPath+'_bottom.png';
 
