@@ -8,7 +8,7 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { isWoodFrame } from 'apiResources/matchProd/isWoodFrame';
-import { loadImage } from 'apiResources/utils/loadImage';
+import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import { getFrameColorUrl } from './getFrameColorUrl';
 import frameRectangleSkinInfo from './frameRectangleSkinInfo';
 import { getFrameSkinPolygonSize } from 'apiResources/services/generateImage/WoodFrame/getFrameSkinPolygonSize';
@@ -18,12 +18,20 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const {templateImage, productEditInfo, optionInfo, canvas, target, paperImage} = props;
   const productCode = productEditInfo.productCode
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
-  const ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
   const margin = getPreviewMargin(productCode);
   const frameSkinColor = getFrameColorUrl(productCode, optionInfo.colorCode);
   const width = productEditInfo.edit[0].width
   const height = productEditInfo.edit[0].height
-
+  let ratio = 0
+  if(productEditInfo.size.length > 0){
+    ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+  }else{
+    //사이즈가 없는경우 더미이미지로 리턴
+    const dummyOroundImage = await loadErrorImage("size empty")
+    const size = imageFull(width, height, outBox.width, outBox.height, 0);
+    ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+    return
+  }
 
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
@@ -50,18 +58,6 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
     const oroundCV = new OroundCV();
     const canvas = oroundCV.drawShadow(result.canvas, false, 6, 2, 8, 73);
-    const onlySkin = true
-    if (onlySkin) {
-      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      const offset = (result.canvas.width - frameWidth) / 2 + frameThick;
-      const removeWidth = frameWidth - (frameThick * 2);
-      const removeHeight = frameHeight - (frameThick * 2);
-      ctx.save();
-      ctx.fillStyle = '#000';
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillRect(offset, offset, removeWidth, removeHeight);
-      ctx.restore();
-    }
     const size = imageFull(canvas.width, canvas.height, outBox.width, outBox.height, 0);
     ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);
   }else {

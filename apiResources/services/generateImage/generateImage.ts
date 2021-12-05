@@ -3,7 +3,6 @@ import Apparel from 'apiResources/services/generateImage/Apparel/Apparel';
 import TinCase from 'apiResources/services/generateImage/TinCase/TinCase';
 import SmartTok from 'apiResources/services/generateImage/SmartTok/SmartTok';
 import PhoneCase from 'apiResources/services/generateImage/PhoneCase/PhoneCase';
-import CanvasFrame from 'apiResources/services/generateImage/CanvasFrame/CanvasFrame'
 import WoodFrame from 'apiResources/services/generateImage/WoodFrame/WoodFrame'
 import Sticker from 'apiResources/services/generateImage/Sticker/Sticker'
 import AcrylicStand from 'apiResources/services/generateImage/AcrylicStand/AcrylicStand'
@@ -36,10 +35,8 @@ export const generateImage = async (props: {
       imageComposer = new TinCase();
       break;
     case 'frame': // free size
-      imageComposer = new Frame();
-      break;
     case 'canvasFrame': // free size
-      imageComposer = new CanvasFrame();
+      imageComposer = new Frame();
       break;
     case 'woodFrame': // free size
       imageComposer = new WoodFrame();
@@ -82,8 +79,10 @@ export const generateImage = async (props: {
   await imageComposer.init(props);
   // 리스트 1 이미지 임시로 내림
   //if ((props.target == TargetType.STORE_LIST_1 || props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
-  if ((props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(props.productEditInfo.groupDelimiterName)) {
+  if ((props.target == TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
+  } else if (props.target == TargetType.STORE_DETAIL_2 && props.productEditInfo.groupDelimiterName === 'button') {
+    await imageComposer.composite();
   } else if ((props.target == TargetType.STORE_LIST_1) && ['smartTok'].includes(props.productEditInfo.groupDelimiterName)) {
     return await imageComposer.composite();
   } else {

@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const { i18n } = require('./next-i18next.config');
 
+console.log(`DEBUG : NEXT CONFIG`);
+console.log(process.env);
 const securityHeaders = [
   {
     key: 'X-DNS-Prefetch-Control',

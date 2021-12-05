@@ -30,7 +30,7 @@ class TinCase extends ImageComposer {
 
       return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage })
 
-    } else if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
+    } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
       await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
 
