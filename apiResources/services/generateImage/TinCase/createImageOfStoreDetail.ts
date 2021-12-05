@@ -24,7 +24,9 @@ export const createImageOfStoreDetail = async (props:any) => {
   }
 
   // 틴케이스 patternDstCoords => 사이즈만 고려
-  const patternDstCoords = coordinateData[productCode][productSize]
+  const patternDstCoords = coordinateData[productCode][productSize].map((coord:any) => {
+    return coord / 2;
+  })
 
   // (1) 아트워크 리사이징
   await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);

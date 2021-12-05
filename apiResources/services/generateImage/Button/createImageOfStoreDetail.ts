@@ -24,8 +24,8 @@ export const createImageOfStoreDetail = async (props:any) => {
   const backPatternPath = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImageBack_${imageUniqueKey}`;
 
   // 캔버스 생성하기
-  canvas.width = 2000;
-  canvas.height = 2000;
+  canvas.width = 1000;
+  canvas.height = 1000;
   const ctx = canvas.getContext('2d');
 
   // 썸네일 이미지 텍스트 파일로 변환하기
@@ -34,12 +34,16 @@ export const createImageOfStoreDetail = async (props:any) => {
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
 
   // 틴케이스 patternDstCoords => 사이즈만 고려
-  const patternDstCoordsBack = coordinateData[productCode][productSize].back;
-  const patternDstCoordsFront = coordinateData[productCode][productSize].front;
+  const patternDstCoordsBack = coordinateData[productCode][productSize].back.map((coord:any) => {
+    return coord / 2;
+  });
+  const patternDstCoordsFront = coordinateData[productCode][productSize].front.map((coord:any) => {
+    return coord / 2;
+  });
 
     // 아트워크 정보 준비
   // 뒷면
-  const [backPatternX, backPatternY] = [2000 - patternDstCoordsBack[0], patternDstCoordsBack[3]];
+  const [backPatternX, backPatternY] = [1000 - patternDstCoordsBack[0], patternDstCoordsBack[3]];
   const backPatternWidth = patternDstCoordsBack[0] - patternDstCoordsBack[2];
   const backPatternHeight = patternDstCoordsBack[5] - patternDstCoordsBack[3];
   // 앞면
@@ -59,17 +63,17 @@ export const createImageOfStoreDetail = async (props:any) => {
   const artworkFrontMask = await loadImage(`${productPath}/${productCode}_frontmask.png`);
   const glareImage = await loadImage(`${productPath}/${productCode}_glare.png`);
   const buttonBack = await loadImage(`${productPath}/${productCode}_${buttonType}.png`);
-
+  console.log();
 
   // ctx.translate(2000,0);
   // ctx.scale(-1,1);
   // ctx.drawImage(thumbnailImage, backPatternX, backPatternY, backPatternWidth, backPatternHeight);
-  const frontArtworkMasked = await imageMasker(thumbnailImage, artworkFrontMask, frontPatternX, frontPatternY, frontPatternWidth, frontPatternHeight, 2000, 2000);
-  const flippedImage = await flipImage(thumbnailImage, backPatternX, backPatternY, backPatternWidth, backPatternHeight, 2000, 2000);
+  const frontArtworkMasked = await imageMasker(thumbnailImage, artworkFrontMask, frontPatternX, frontPatternY, frontPatternWidth, frontPatternHeight, 1000, 1000);
+  const flippedImage = await flipImage(thumbnailImage, backPatternX, backPatternY, backPatternWidth, backPatternHeight, 1000, 1000);
   const artworkMerged = await canvasLayerMerger([frontArtworkMasked, buttonBack, flippedImage]);
-  const artworkMasked = await imageMasker(artworkMerged, productMaskImage, 0, 0, 2000, 2000, 2000, 2000);
+  const artworkMasked = await imageMasker(artworkMerged, productMaskImage, 0, 0, 1000, 1000, 1000, 1000);
   const finalResult = await canvasLayerMerger([glareImage, artworkMasked, productImage]);
-  ctx.drawImage(finalResult, 0, 0, 2000, 2000);
+  ctx.drawImage(finalResult, 0, 0, 1000, 1000);
 
   // console.log(`<img src='${canvas.toDataURL()}' />`);
   // return canvas
