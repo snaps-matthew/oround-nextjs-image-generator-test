@@ -5,7 +5,7 @@ export const flipImage = async (srcImg:any, xCoord:number, yCoord:number, imgWid
   const canvas = createCanvas(canvasWidth, canvasHeight);
   const ctx = canvas.getContext('2d');
 
-  ctx.translate(2000,0);
+  ctx.translate(1000,0);
   ctx.scale(-1,1);
 
   ctx.drawImage(srcImg, xCoord, yCoord, imgWidth, imgHeight);
@@ -33,7 +33,7 @@ export const imageMasker = async (srcImg:any,
 }
 
 export const canvasLayerMerger = async (layers:any) => {
-  const canvas = createCanvas(2000, 2000);
+  const canvas = createCanvas(1000, 1000);
   const ctx = canvas.getContext('2d');
   for (let i=0; i < layers.length; i++) {
     ctx.drawImage(layers[i], 0,0);
