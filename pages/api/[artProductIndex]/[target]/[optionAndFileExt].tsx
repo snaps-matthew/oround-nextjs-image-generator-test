@@ -112,7 +112,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader("content-type", 'image/png');
     // 리스트1 이미지 임시로 내림
     //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
-    if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
+    if ((target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
 
       const canvas = createCanvas(1000,1000);
       const ctx = canvas.getContext('2d');
@@ -121,8 +121,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
       canvas.createPNGStream().pipe(res);
 
-    } else if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && productEditInfo.groupDelimiterName === 'button') {
-      imageComposer.stream().pipe(res);
     } else if (target === TargetType.STORE_LIST_1 && ['smartTok'].includes(productEditInfo.groupDelimiterName)) {
 
       const canvas = createCanvas(1000,1000);

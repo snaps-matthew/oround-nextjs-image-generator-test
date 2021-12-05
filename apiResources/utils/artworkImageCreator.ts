@@ -28,7 +28,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
 
   return new Promise((resolve, reject) => {
 
-    exec(`convert inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 2000x2000 \
+    exec(`convert inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 1000x1000 \
         -distort Perspective \
         "${perspectiveCoords}" PNG:- | base64
     `, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
@@ -75,7 +75,7 @@ export const getArtworkOnModel = (productPath:string, productCode:string, imageF
   return new Promise((resolve, reject) => {
     exec(`composite 'inline:${imageFileName}.txt' '${productPath}/${productCode}.png' PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
-      console.log([`${imageFileName}`]);
+
       resolve(stdout);
     })
   })
@@ -204,7 +204,6 @@ export const changeColor = (productPath:string, productCode:string, productColor
   console.log('CHANGE COLOR :::::: ____', productColor, productCode, productPath, patternImgPath.split('/').slice(-1));
   return new Promise((resolve, reject) => {
     exec(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`, { maxBuffer: 2000 * 102400 },async (err:ExecException|null, stdout:string) => {
-      console.log(`convert '${productPath}/${productCode}_crop.png' \\( +clone +level-colors '${productColor}' \\) -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite '${productPath}/${productCode}_crop.png' -compose multiply -composite 'inline:${patternImgPath}.txt' -compose over -composite PNG:- | base64`);
       await imageTextSaver(stdout, patternImgPath);
       console.log('CHANGE COLOR COMPLETED && SAVED TO !!', [`${patternImgPath}`]);
       resolve(stdout)
@@ -243,3 +242,19 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
 
 }
 
+export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:string) => {
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = `${colorCode}`;
+  ctx.fillRect(0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+}
