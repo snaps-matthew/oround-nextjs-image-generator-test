@@ -111,6 +111,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     res.setHeader("content-type", 'image/png');
     // 리스트1 이미지 임시로 내림
     if(scene){
+    console.log('뭐야아아아아아', productEditInfo, optionInfo);
       const thumbnailImage = await generateThumbnail(scene)
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 

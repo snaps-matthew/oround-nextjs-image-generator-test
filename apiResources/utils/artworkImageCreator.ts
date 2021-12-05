@@ -261,9 +261,8 @@ export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:str
 
 export const changeApparelTexture = (canvas:any, textureImage:string, cropImgPath:string) => {
   const ctx = canvas.getContext('2d');
-  ctx.drawImage(textureImage, 0, 0);
   ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+  ctx.drawImage(textureImage, 0, 0, 1000, 1000);
 
   ctx.globalCompositeOperation = 'multiply';
   ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
