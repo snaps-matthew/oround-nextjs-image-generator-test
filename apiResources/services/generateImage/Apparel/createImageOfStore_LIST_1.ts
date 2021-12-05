@@ -46,7 +46,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   } else if (CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
 
     if (coordinateData[productCode][productSize]) {
-      ;
+
       productOption = productSize;
     }
 
@@ -100,16 +100,15 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   // (2) 주름 생성하기
   const artworkWrinkled = await getImageWrinkled(productPath, productCode, patternImageFileName);
 
-  ctx.clearRect(0, 0, 1000, 1000);
-
   // (3) 색상 옵션 확인하고 넣어주기
   if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
+    console.log(0);
       // [Type A] => 색상 값이 있는 경우
     if (ColorHexCode[optionInfo.colorCode]) {
-
+      console.log(1);
       // (3-1) 옷 색상 변경하기
       await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
-
+      console.log(2);
       // 옷 위에 패턴 올리기
       ctx.globalCompositeOperation = 'source-over';
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
@@ -117,19 +116,20 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
+        console.log(3);
         await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], stringImage);
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(secondaryCanvas, 0, 0)
       }
-
+      console.log(4);
     } else {
-
+      console.log(5);
       // [Type B] => 텍스처가 들어가야 하는 경우
       // (3-1) 옷 색상 변경하기 ===> TODO
       // await changeApparelTexture(canvas, ColorStringCode[optionInfo.colorCode], productCropImage);
 
       await changeApparelColor(secondaryCanvas, '#525759', productCropImage);
-
+      console.log(6);
       // 옷 위에 패턴 올리기
       ctx.globalCompositeOperation = 'source-over';
 
@@ -144,20 +144,6 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
         ctx.drawImage(secondaryCanvas, 0, 0)
       }
     }
-
-  } else {
-
-    // 옷 위에 패턴 올리기
-    ctx.globalCompositeOperation = 'source-over';
-    const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-    ctx.drawImage(artworkImage, 0, 0);
-
-
-    if (extraLayer.length) {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(stringImage, 0, 0);
-    }
-
 
   }
 

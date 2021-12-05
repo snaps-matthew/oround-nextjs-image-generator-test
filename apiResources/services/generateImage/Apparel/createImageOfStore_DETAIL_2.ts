@@ -7,14 +7,14 @@ import {
   changeTexture,
   imageDstOut,
   changeExtraLayerColor,
-  changeApparelColor,
+  changeApparelColor, changeApparelTexture,
 } from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import CommonCode from 'apiResources/constants/CommonCode';
 import { SizeCode, SizeList } from 'apiResources/constants/SizeInfo';
-import { ColorHexCode, TextureCode } from 'apiResources/constants/ColorCode';
+import { ColorHexCode, ColorStringCode, TextureCode } from 'apiResources/constants/ColorCode';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
@@ -39,12 +39,15 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   let extraLayer:any = [];
 
   if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
+
     productOption = 'front';
     patternDstCoords = patternDstCoords.front;
+
   } else if (CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
 
-    if (coordinateData[productCode].productSize) {
-      productOption = SizeCode[productSize];
+    if (coordinateData[productCode][productSize]) {
+
+      productOption = productSize;
     }
 
   } else {
@@ -57,7 +60,11 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   if (productOption) {
 
     productPath += `/${productOption}`;
+    patternDstCoords = coordinateData[productCode];
+    patternDstCoords = patternDstCoords[productOption];
+
   } else {
+
     patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
 
@@ -80,7 +87,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   let stringImage;
 
-  if (extraLayer.length) {
+  if (extraLayer.length && extraLayer.includes('string')) {
     stringImage = await loadImage(`${productPath}/${productCode}_string.png`);
   }
 
@@ -93,12 +100,11 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   // (2) 주름 생성하기
   const artworkWrinkled = await getImageWrinkled(productPath, productCode, patternImageFileName);
 
-  ctx.clearRect(0, 0, 1000, 1000);
-
   // (3) 색상 옵션 확인하고 넣어주기
   if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
     // [Type A] => 색상 값이 있는 경우
     if (ColorHexCode[optionInfo.colorCode]) {
+
       // (3-1) 옷 색상 변경하기
       await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
 
@@ -108,40 +114,34 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
       ctx.drawImage(artworkImage, 0, 0);
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
-      await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], stringImage);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(secondaryCanvas, 0, 0)
-
-    } else {
-      // [Type B] => 텍스처가 들어가야 하는 경우
-      // (3-1) 옷 색상 변경하기
-      await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
-
-      // 옷 위에 패턴 올리기
-      ctx.globalCompositeOperation = 'source-over';
-      const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-      ctx.drawImage(artworkImage, 0, 0);
-
-      // (3-2) 후드/끈 여부 확인 후 색상 변경
-      if (extraLayer.length) {
+      if (extraLayer.length && extraLayer.includes('string')) {
         await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], stringImage);
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(secondaryCanvas, 0, 0)
       }
-    }
-  } else {
 
-    // 옷 위에 패턴 올리기
-    ctx.globalCompositeOperation = 'source-over';
-    const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-    ctx.drawImage(artworkImage, 0, 0);
+    } else {
 
+      // [Type B] => 텍스처가 들어가야 하는 경우
+      // (3-1) 옷 색상 변경하기 ===> TODO
+      // await changeApparelTexture(canvas, ColorStringCode[optionInfo.colorCode], productCropImage);
 
-    if (extraLayer.length) {
+      await changeApparelColor(secondaryCanvas, '#525759', productCropImage);
+
+      // 옷 위에 패턴 올리기
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(stringImage, 0, 0);
-    }
 
+      const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
+
+      ctx.drawImage(artworkImage, 0, 0);
+
+      // (3-2) 후드/끈 여부 확인 후 색상 변경
+      if (extraLayer.length && extraLayer.includes('string')) {
+        await changeApparelTexture(secondaryCanvas, '#525759', stringImage);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(secondaryCanvas, 0, 0)
+      }
+    }
 
   }
 
