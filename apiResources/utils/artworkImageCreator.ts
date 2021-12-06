@@ -254,8 +254,8 @@ export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:str
     ctx.fillStyle = colorCode;
     ctx.fillRect(0, 0, 1000, 1000);
 
-    ctx.globalCompositeOperation = 'destination-in';
-    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+    // ctx.globalCompositeOperation = 'destination-in';
+    // ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
 
     resolve(true);
   })

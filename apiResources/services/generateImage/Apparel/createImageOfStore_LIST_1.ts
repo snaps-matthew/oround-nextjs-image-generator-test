@@ -84,7 +84,6 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
   const productImage = await loadImage(`${productPath}/${productCode}.png`);
   const productCropImage = await loadImage(`${productPath}/${productCode}_crop.png`);
-  const productListMask = await loadImage(`${productPath}/${productCode}_list.png`);
 
   if (extraLayer.length) {
     extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}.png`);
