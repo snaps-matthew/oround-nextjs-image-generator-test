@@ -244,6 +244,7 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
 
 export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:string) => {
   const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,1000,1000);
   return new Promise((resolve, reject) => {
     ctx.globalCompositeOperation = 'multiply';
     ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);

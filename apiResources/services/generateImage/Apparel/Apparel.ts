@@ -30,10 +30,6 @@ class Apparel extends ImageComposer {
 
       await createImageOfStore_LIST_1({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas })
 
-    } else if (this.target === TargetType.STORE_DETAIL_2) {
-
-      await createImageOfStore_DETAIL_2({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas })
-
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
       await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });

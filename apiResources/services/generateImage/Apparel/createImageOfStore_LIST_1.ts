@@ -106,8 +106,8 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
     if (ColorHexCode[optionInfo.colorCode]) {
 
       // (3-1) 옷 색상 변경하기
-      await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
-
+      await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], productCropImage);
+      ctx.drawImage(secondaryCanvas, 0, 0);
       // 옷 위에 패턴 올리기
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
       ctx.globalCompositeOperation = 'source-over';
@@ -151,12 +151,10 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
     const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
     ctx.drawImage(artworkImage, 0, 0);
 
-
     if (extraLayer.length) {
       ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(extraLayerImage, 0, 0);
     }
-
 
   }
 
