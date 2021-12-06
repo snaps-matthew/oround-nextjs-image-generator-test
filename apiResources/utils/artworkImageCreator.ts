@@ -45,7 +45,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
 export const getImageWrinkled = (productImgPath:string, productCode:string, patternImgPath:string) => {
 
   return new Promise((resolve, reject) => {
-    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -20x20 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
+    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -10x10 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
 

@@ -109,14 +109,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
-    // 리스트1 이미지 임시로 내림
     if(scene){
-    console.log('뭐야아아아아아', productEditInfo, optionInfo);
       const thumbnailImage = await generateThumbnail(scene)
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
 
       // 리스트1 이미지 임시로 내림
-      //if ((target == TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_2) && ['tinCase', 'smartTok', 'button', 'apparel'].includes(productEditInfo.groupDelimiterName)) {
       if ((target === TargetType.STORE_DETAIL_2 || target === TargetType.STORE_LIST_1) && ['tinCase', 'smartTok'].includes(productEditInfo.groupDelimiterName)) {
         const canvas = createCanvas(1000,1000);
         const ctx = canvas.getContext('2d');

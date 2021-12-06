@@ -37,6 +37,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${imageUniqueKey}`;
   let productOption = '';
   let extraLayer:any = [];
+  let extraLayerImage;
 
   if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
 
@@ -85,10 +86,8 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const productCropImage = await loadImage(`${productPath}/${productCode}_crop.png`);
   const productListMask = await loadImage(`${productPath}/${productCode}_list.png`);
 
-  let stringImage;
-
-  if (extraLayer.length && extraLayer.includes('string')) {
-    stringImage = await loadImage(`${productPath}/${productCode}_string.png`);
+  if (extraLayer.length) {
+    extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}.png`);
   }
 
   // (0) 썸네일 이미지 텍스트 파일로 변환
@@ -110,16 +109,16 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
       await changeApparelColor(canvas, ColorHexCode[optionInfo.colorCode], productCropImage);
 
       // 옷 위에 패턴 올리기
-      ctx.globalCompositeOperation = 'source-over';
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
+      ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(artworkImage, 0, 0);
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
-        console.log(3);
-        await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], stringImage);
-        ctx.globalCompositeOperation = 'source-over';
+        await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
         ctx.drawImage(secondaryCanvas, 0, 0)
+      } else if (extraLayer.includes('finger')) {
+        ctx.drawImage(extraLayerImage, 0, 0);
       }
 
     } else {
@@ -139,13 +138,13 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
-        await changeApparelTexture(secondaryCanvas, '#525759', stringImage);
+        await changeApparelTexture(secondaryCanvas, '#525759', extraLayerImage);
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(secondaryCanvas, 0, 0)
       }
     }
 
-  } else {
+  } else if (optionInfo.colorCode === 'T00002') {
 
     // 옷 위에 패턴 올리기
     ctx.globalCompositeOperation = 'source-over';
@@ -155,7 +154,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
     if (extraLayer.length) {
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(stringImage, 0, 0);
+      ctx.drawImage(extraLayerImage, 0, 0);
     }
 
 
