@@ -27,8 +27,8 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
   [canvas.width, canvas.height] = [1000, 1000];
   const ctx = canvas.getContext('2d');
-  const secondaryCanvas = createCanvas(1000, 1000);
-  const secondCtx = secondaryCanvas.getContext('2d');
+  const tempCanvas = createCanvas(1000, 1000);
+  const tempCtx = tempCanvas.getContext('2d');
   let printPosition = '';
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
   let patternDstCoords = coordinateData[productCode];
@@ -96,7 +96,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 주름 생성하기
-  const artworkWrinkled = await getImageWrinkled(productPath, productCode, patternImageFileName);
+  const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
 
   // (3) 색상 옵션 확인하고 넣어주기
   if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
@@ -105,28 +105,28 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
     if (ColorHexCode[optionInfo.colorCode]) {
 
       // (3-1) 옷 색상 변경하기
-      await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], productCropImage);
-      ctx.drawImage(secondaryCanvas, 0, 0);
+      await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], productCropImage);
       // 옷 위에 패턴 올리기
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(artworkImage, 0, 0);
+      tempCtx.globalCompositeOperation = 'source-over';
+      tempCtx.drawImage(artworkImage, 0, 0);
+      ctx.drawImage(tempCanvas, 0, 0);
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
-        await changeApparelColor(secondaryCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
-        ctx.drawImage(secondaryCanvas, 0, 0)
+
+        await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
+        ctx.drawImage(tempCanvas, 0, 0)
       } else if (extraLayer.includes('finger')) {
         ctx.drawImage(extraLayerImage, 0, 0);
       }
 
     } else {
-
       // [Type B] => 텍스처가 들어가야 하는 경우
       // (3-1) 옷 색상 변경하기 ===> TODO
       // await changeApparelTexture(canvas, ColorStringCode[optionInfo.colorCode], productCropImage);
 
-      await changeApparelColor(secondaryCanvas, '#525759', productCropImage);
+      await changeApparelColor(tempCanvas, '#525759', productCropImage);
 
       // 옷 위에 패턴 올리기
       ctx.globalCompositeOperation = 'source-over';
@@ -137,9 +137,10 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
-        await changeApparelTexture(secondaryCanvas, '#525759', extraLayerImage);
+
+        await changeApparelTexture(tempCanvas, '#525759', extraLayerImage);
         ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(secondaryCanvas, 0, 0)
+        ctx.drawImage(tempCanvas, 0, 0)
       }
     }
 
@@ -151,6 +152,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
     ctx.drawImage(artworkImage, 0, 0);
 
     if (extraLayer.length) {
+
       ctx.globalCompositeOperation = 'source-over';
       ctx.drawImage(extraLayerImage, 0, 0);
     }

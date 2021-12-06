@@ -49,7 +49,7 @@ export const getImageWrinkled = (productImgPath:string, productCode:string, patt
 
       if (err) console.error(err);
 
-      await imageTextSaver(stdout, patternImgPath)
+      // await imageTextSaver(stdout, patternImgPath)
 
       resolve(stdout);
     })
@@ -242,23 +242,19 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
 
 }
 
-export const changeApparelColor = (canvas:any, colorCode:string, cropImgPath:string) => {
+export const changeApparelColor = async (canvas:any, colorCode:string, cropImg:string) => {
   const ctx = canvas.getContext('2d');
-  ctx.clearRect(0,0,1000,1000);
-  return new Promise((resolve, reject) => {
-    ctx.globalCompositeOperation = 'multiply';
-    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-    ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+  ctx.clearRect(0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(cropImg, 0, 0);
+  ctx.drawImage(cropImg, 0, 0);
+  ctx.drawImage(cropImg, 0, 0);
 
-    ctx.fillStyle = colorCode;
-    ctx.fillRect(0, 0, 1000, 1000);
+  ctx.fillStyle = colorCode;
+  ctx.fillRect(0, 0, 1000, 1000);
 
-    // ctx.globalCompositeOperation = 'destination-in';
-    // ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-
-    resolve(true);
-  })
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
 }
 
 export const changeApparelTexture = (canvas:any, textureImage:string, cropImgPath:string) => {
