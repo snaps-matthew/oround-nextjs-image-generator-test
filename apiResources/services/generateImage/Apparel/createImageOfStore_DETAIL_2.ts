@@ -122,14 +122,14 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
       // (3-1) 옷 색상 변경하기 ===> TODO
       // 텍스처 가지고 오기
       const textureImage = await loadImage(`${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}.png`);
-      await changeApparelTexture(canvas, textureImage, productCropImage);
+      await changeApparelTexture(tempCanvas, textureImage, productCropImage);
 
       // 옷 위에 패턴 올리기
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
       tempCtx.globalCompositeOperation = 'source-over';
       tempCtx.drawImage(artworkImage, 0, 0);
       await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
-
+      
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
 
