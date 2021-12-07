@@ -104,12 +104,12 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
       tempCtx.globalCompositeOperation = 'source-over';
       tempCtx.drawImage(artworkImage, 0, 0);
       await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
+
       ctx.globalCompositeOperation = 'source-over';
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
 
         await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
-        // ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(tempCanvas, 0, 0)
 
       } else if (extraLayer.includes('finger')) {
@@ -148,12 +148,12 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
     // 옷 위에 패턴 올리기
     ctx.globalCompositeOperation = 'source-over';
     const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-    ctx.drawImage(artworkImage, 0, 0);
+    applyInnerWrinkle(canvas, artworkImage, productCropImage);
 
     if (extraLayer.length) {
-
       ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(extraLayerImage, 0, 0);
+      ctx.drawImage(extraLayerImage, 0, 0)
+
     }
 
   }
