@@ -101,6 +101,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
       // (3-1) 옷 색상 변경하기
       await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], productCropImage);
       // 옷 위에 패턴 올리기
+      // TODO => 아트워크 변수 위로 올리기!!
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
       tempCtx.globalCompositeOperation = 'source-over';
       tempCtx.drawImage(artworkImage, 0, 0);
@@ -147,9 +148,10 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   } else {
 
     // 옷 위에 패턴 올리기
-    ctx.globalCompositeOperation = 'source-over';
+    // tempCtx.globalCompositeOperation = 'source-over';
     const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-    applyInnerWrinkle(canvas, artworkImage, productCropImage);
+    tempCtx.drawImage(artworkImage, 0, 0);
+    await applyInnerWrinkle(canvas, tempCanvas, productCropImage);
 
     if (extraLayer.length) {
       ctx.globalCompositeOperation = 'source-over';

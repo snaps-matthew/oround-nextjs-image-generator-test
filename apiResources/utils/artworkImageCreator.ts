@@ -277,4 +277,8 @@ export const applyInnerWrinkle = (canvas:any, patternImage:any, cropImg:string) 
   ctx.drawImage(patternImage, 0, 0, 1000, 1000);
   ctx.drawImage(cropImg, 0, 0, 1000, 1000);
   ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(patternImage, 0, 0);
+
 }
