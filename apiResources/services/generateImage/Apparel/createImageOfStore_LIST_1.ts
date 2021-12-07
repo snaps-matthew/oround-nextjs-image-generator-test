@@ -14,6 +14,7 @@ import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
 import { createCanvas } from 'canvas';
+import ListImageOffset from '../../../constants/ListImageOffset';
 
 export const createImageOfStore_LIST_1 = async (props:any) => {
   const { categoryName, productCode, productSize, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
@@ -161,6 +162,15 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   // (4) 상품 위에 올리기
   ctx.globalCompositeOperation = 'destination-over';
   ctx.drawImage(productImage, 0, 0, 1000, 1000);
+
+  tempCtx.drawImage(canvas, 0, 0);
+  [canvas.width, canvas.height] = [ListImageOffset[productCode].width, ListImageOffset[productCode].height];
+  ctx.globalCompositeOperation = 'source-over'
+  ctx.drawImage(
+    tempCanvas,
+    ListImageOffset[productCode].x, ListImageOffset[productCode].y, ListImageOffset[productCode].width, ListImageOffset[productCode].height,
+    0, 0, ListImageOffset[productCode].width, ListImageOffset[productCode].height);
+
 
   patternImageRemover([patternImageFileName]);
 
