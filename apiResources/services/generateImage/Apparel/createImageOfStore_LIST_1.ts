@@ -1,20 +1,13 @@
 import {
   getArtworkReszied,
-  getArtworkOnModel,
-  multiLayerMerger,
   getImageWrinkled,
-  changeColor,
-  changeTexture,
-  imageDstOut,
-  changeExtraLayerColor,
-  changeApparelColor, changeApparelTexture,
+  changeApparelColor, changeApparelTexture, applyInnerWrinkle,
 } from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import CommonCode from 'apiResources/constants/CommonCode';
-import { SizeCode, SizeList } from 'apiResources/constants/SizeInfo';
-import { ColorHexCode, ColorStringCode, TextureCode } from 'apiResources/constants/ColorCode';
+import { CheckOriginalColor, ColorHexCode, TextureCode } from 'apiResources/constants/ColorCode';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
@@ -99,7 +92,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
 
   // (3) 색상 옵션 확인하고 넣어주기
-  if (optionInfo.colorCode && optionInfo.colorCode !== 'T00002') {
+  if (optionInfo.colorCode && CheckOriginalColor[productCode] !== optionInfo.colorCode) {
 
       // [Type A] => 색상 값이 있는 경우
     if (ColorHexCode[optionInfo.colorCode]) {
@@ -110,41 +103,47 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
       tempCtx.globalCompositeOperation = 'source-over';
       tempCtx.drawImage(artworkImage, 0, 0);
-      ctx.drawImage(tempCanvas, 0, 0);
-
+      await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
+      ctx.globalCompositeOperation = 'source-over';
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
 
         await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
+        // ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(tempCanvas, 0, 0)
+
       } else if (extraLayer.includes('finger')) {
         ctx.drawImage(extraLayerImage, 0, 0);
       }
 
-    } else {
+    } else if (TextureCode[optionInfo.colorCode]) {
+
       // [Type B] => 텍스처가 들어가야 하는 경우
       // (3-1) 옷 색상 변경하기 ===> TODO
-      // await changeApparelTexture(canvas, ColorStringCode[optionInfo.colorCode], productCropImage);
-
-      await changeApparelColor(tempCanvas, '#525759', productCropImage);
+      // 텍스처 가지고 오기
+      const textureImage = await loadImage(`${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}.png`);
+      await changeApparelTexture(canvas, textureImage, productCropImage);
 
       // 옷 위에 패턴 올리기
-      ctx.globalCompositeOperation = 'source-over';
-
       const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-
-      ctx.drawImage(artworkImage, 0, 0);
+      tempCtx.globalCompositeOperation = 'source-over';
+      tempCtx.drawImage(artworkImage, 0, 0);
+      await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
 
       // (3-2) 후드/끈 여부 확인 후 색상 변경
       if (extraLayer.length && extraLayer.includes('string')) {
 
-        await changeApparelTexture(tempCanvas, '#525759', extraLayerImage);
         ctx.globalCompositeOperation = 'source-over';
         ctx.drawImage(tempCanvas, 0, 0)
+        await changeApparelTexture(tempCanvas, textureImage, extraLayerImage);
+        ctx.drawImage(tempCanvas, 0, 0)
+
+      } else if (extraLayer.includes('finger')) {
+        ctx.drawImage(extraLayerImage, 0, 0);
       }
     }
 
-  } else if (optionInfo.colorCode === 'T00002') {
+  } else {
 
     // 옷 위에 패턴 올리기
     ctx.globalCompositeOperation = 'source-over';

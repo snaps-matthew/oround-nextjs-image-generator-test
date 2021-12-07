@@ -258,14 +258,23 @@ export const changeApparelColor = async (canvas:any, colorCode:string, cropImg:s
   ctx.drawImage(cropImg, 0, 0, 1000, 1000);
 }
 
-export const changeApparelTexture = (canvas:any, textureImage:string, cropImgPath:string) => {
+export const changeApparelTexture = (canvas:any, textureImage:string, cropImg:string) => {
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(textureImage, 0, 0, 1000, 1000);
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+}
+
+export const applyInnerWrinkle = (canvas:any, patternImage:any, cropImg:string) => {
   const ctx = canvas.getContext('2d');
 
   ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(textureImage, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
-
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.drawImage(cropImgPath, 0, 0, 1000, 1000);
+  ctx.drawImage(patternImage, 0, 0, 1000, 1000);
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
 }
