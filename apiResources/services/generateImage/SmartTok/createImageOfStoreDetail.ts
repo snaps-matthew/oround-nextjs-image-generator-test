@@ -5,7 +5,6 @@ import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
-import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfStoreDetail = async (props:any) => {
   const { categoryName, productCode, productColor, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
@@ -34,12 +33,6 @@ export const createImageOfStoreDetail = async (props:any) => {
 
   // (4) 임시 생성된 파일들 삭제하기
   patternImageRemover([patternImageFileName])
-  //
-  return finalResult;
 
-    // 아트워크 마스킹
-  // const productMaskImage = await loadImage(`data:image/png;base64,${artworkResized}`);
-  //
-  // ctx.globalCompositeOperation = 'destination-out';
-  // ctx.drawImage(productMaskImage);
+  return finalResult;
 }
