@@ -40,36 +40,6 @@ const optionInfo:any = [
   {112021 :"diviceColorCode"}
 ]
 
-//EX) apparel- http://localhost:3000/api/21192/1/112002:T00011,112003:T00033,112020:T00129,112004:T00056.jpg
-//woodFrame- http://localhost:3000/api/21206/1/112003:T00035.jpg
-//card- http://localhost:3000/api/21239/1/112003:T00041.112010:T00073.jpg
-//airPodProCase http://localhost:3000/api/21243/1/112003:T00033,112002:T00008.jpg
-//airPodCase http://localhost:3000/api/21244/1/112003:T00033,112002:T00001.jpg
-//buds Case http://localhost:3000/api/21245/1/112003:T00033,112002:T00005.jpg
-
-//canvasFrame http://localhost:3000/api/21207/1/112003:T00035.jpg
-//hood http://localhost:3000/api/21195/1/112002:T00014,112003:T00036,112020:T00129,112004:T00056.jpg
-
-//zopUpHoodie http://localhost:3000/api/27550/1/112002:T00024,112003:T00036,112020:T00129,112004:T00056.jpg
-//sticker- http://localhost:3000/api/27549/1/112003:T00034,112006:T00064.jpg
-//acrylicKeyring- http://localhost:3000/api/27593/1/112005:T00058,112017:T00114,112003:T00034,112008:T00065,112016:T00107,112019:T00122.jpg
-//hardphoneCase- http://localhost:3000/api/27573/1/112014:T00090,112001:T00094,112003:T00033,112021:T00153.jpg
-//acrylicStand- http://localhost:3000/api/27594/1/112003:T00033.jpg
-//note- http://localhost:3000/api/27596/1/112003:T00040.112015:T00092.jpg
-//pouch http://localhost:3000/api/27563/1/112002:T00003,112004:T00056,112020:T00129,112003:T00034.jpg
-//smartTok http://localhost:3000/api/27600/4/112003:T00033,112002:T00003.jpg
-//round pinButton http://localhost:3000/api/27604/1/112010:T00070,112018:T00120,112003:T00044.jpg
-//simpleEcoBag http://localhost:3000/api/27607/1/112002:T00004,112003:T00034,112020:T00129,112004:T00056.jpg
-
-// [TINCASE] //
-
-// SILVER + S => http://localhost:3000/api/27599/1/112003:T00033,112002:T00010.jpg
-// SILVER + M => http://localhost:3000/api/27599/1/112003:T00034,112002:T00010.jpg
-// SILVER + L => http://localhost:3000/api/27599/1/112003:T00035,112002:T00010.jpg
-
-// BLACK + S => http://localhost:3000/api/27599/1/112003:T00033,112002:T00003.jpg
-// BLACK + M => http://localhost:3000/api/27599/1/112003:T00034,112002:T00003.jpg
-// BLACK + L => http://localhost:3000/api/27599/1/112003:T00035,112002:T00003.jpg
 
 
 const getPathParams = (requestQuery: { [key: string]: string | string[] }): IRequestQuery => {
@@ -100,11 +70,11 @@ const getPathParams = (requestQuery: { [key: string]: string | string[] }): IReq
 // interface IRequest
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const pramCodes = getPathParams(req.query);
-    const artProductIndex = pramCodes.artProductIndex
-    const target = pramCodes.target
-    const optionInfo = pramCodes.optionAndFileExt
-    const sizeCode = pramCodes.optionAndFileExt.sizeCode
+    const paramCodes = getPathParams(req.query);
+    const artProductIndex = paramCodes.artProductIndex
+    const target = paramCodes.target
+    const optionInfo = paramCodes.optionAndFileExt
+    const sizeCode = paramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
