@@ -12,6 +12,9 @@ const LayeringRef:any = {
   '1050050002': {
     'front': ['string']
   },
+  '1050050003': {
+    'back': ['hood']
+  },
   '1050060001': {
     'front': ['string']
   },
