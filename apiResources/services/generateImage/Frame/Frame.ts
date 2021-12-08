@@ -7,10 +7,10 @@ class Frame extends ImageCanvas {
   }
 
   async composite() {
-    const { canvas, productEditInfo, optionInfo, target} = this;
+    const { canvas, productEditInfo, optionInfo, target, drawObject} = this;
     // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = this.thumbnailImage
-    await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
+    await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target, drawObject });
   }
 }
 
