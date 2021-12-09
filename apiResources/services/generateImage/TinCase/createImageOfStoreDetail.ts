@@ -30,7 +30,7 @@ export const createImageOfStoreDetail = async (props:any) => {
 
   // (1) 아트워크 리사이징
   const hi = await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
-  console.log(hi);
+
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
   await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
 

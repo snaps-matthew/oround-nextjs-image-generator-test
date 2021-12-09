@@ -68,9 +68,8 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   });
 
   // 추가 레이어 확인하고 올려준다
-  const extraLayerLength = LayeringRef[productCode];
 
-  if (extraLayerLength) {
+  if (LayeringRef[productCode][productOption]) {
 
     extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
   }

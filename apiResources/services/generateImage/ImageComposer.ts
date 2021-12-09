@@ -4,6 +4,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import { SizeCode } from 'apiResources/constants/SizeInfo'
 import { ColorStringCode } from 'apiResources/constants/ColorCode';
 import TargetType from 'apiResources/constants/TargetType';
+import CommonCode from 'apiResources/constants/CommonCode';
 
 class ImageComposer {
   protected categoryName: string;
@@ -59,8 +60,6 @@ class ImageComposer {
     const ext = data.optionInfo.ext;
     this.productCode = data.productEditInfo.productCode;
     this.categoryName = data.productEditInfo.groupDelimiterName;
-    this.artworkWidth = data.productEditInfo.edit[0].width;
-    this.artworkHeight = data.productEditInfo.edit[0].height;
     this.directionCode = data.productEditInfo.directionCode || '';
     this.thumbnailImage = data.thumbnailImage;
     this.productEditInfo = data.productEditInfo;
@@ -70,6 +69,10 @@ class ImageComposer {
     this.productColor = ColorStringCode[data.optionInfo.colorCode];
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
     this.ext = ext;
+
+    this.artworkWidth = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].width : data.productEditInfo.edit[1].width;
+    this.artworkHeight = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].height : data.productEditInfo.edit[1].height;
+
 
     // 주름 넣는 강도??
     this.wrinkleMag = -20;
