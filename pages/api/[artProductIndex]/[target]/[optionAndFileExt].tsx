@@ -105,6 +105,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }).pipe(res);
     }
 
+    console.log([`${productEditInfo.productCode}`]);
 
   } catch (error) {
     console.log("on server error");

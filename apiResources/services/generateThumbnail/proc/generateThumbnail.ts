@@ -86,7 +86,7 @@ class ObjectCanvasBackground extends ObjectCanvas {
 
 class ObjectCanvasImage extends ObjectCanvas {
   async draw () {
-    const url = Config.DOMAIN_RESOURCE + this.object.original.middleImagePath;
+    const url = Config.DOMAIN_RESOURCE +"/"+ this.object.original.middleImagePath;
     let image = await loadImage(url);
     this.drawInnerImage(image);
   }
