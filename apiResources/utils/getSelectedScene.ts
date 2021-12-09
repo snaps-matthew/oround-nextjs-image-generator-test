@@ -5,9 +5,10 @@ import { loadImage } from 'apiResources/utils/loadImage';
 import productInfo from 'apiResources/constants/productInfo';
 
 export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
+  const groupName = productEditInfo.groupDelimiterName;
   let tempScene
   if(productEditInfo.edit.length>1){
-    if(productEditInfo.groupDelimiterName === "apparel"){
+    if(groupName === "apparel"){
       let printPosition:string;
       const printPositionCode = optionInfo.printPositionCode
       if(printPositionCode===CommonCode.PRINT_POSITION_FRONT){
@@ -18,7 +19,7 @@ export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
       tempScene = productEditInfo.edit.find((obj:any) => {
         return  obj.type === printPosition
       })
-    }else if(productEditInfo.groupDelimiterName === "canvasFrame"){
+    }else if(groupName === "canvasFrame" || groupName === "sticker"){
       let sizeCode = optionInfo.sizeCode
       tempScene = productEditInfo.edit.find((obj:any) => {
         return  obj.sizeCode === sizeCode
