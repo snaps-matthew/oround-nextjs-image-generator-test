@@ -56,7 +56,7 @@ export const  getArtworkImage = async (productEditInfo:any, optionInfo?:string )
     return type === TYPE.OBJECT_IMAGE
   })
 
-  const artworkImagePath = Config.DOMAIN_RESOURCE+imageObject[0].original.middleImagePath
+  const artworkImagePath = Config.DOMAIN_RESOURCE+"/"+imageObject[0].original.middleImagePath
   const artworkImage:any  = await loadImage(artworkImagePath);
   const artworkImageWidth = imageObject[0].original.width
   const artworkImageHeight = imageObject[0].original.height
