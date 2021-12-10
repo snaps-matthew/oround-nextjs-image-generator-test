@@ -1,17 +1,8 @@
-import {
-  getArtworkReszied,
-  imageDstOut,
-  getArtworkOnModel,
-  multiLayerMerger,
-} from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
-import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
-import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
-import { createCanvas } from 'canvas';
 import { loadImage } from 'apiResources/utils/loadImage'
 import { canvasLayerMerger, flipImage, imageMasker } from 'apiResources/utils/imageProcessor';
 
@@ -63,7 +54,6 @@ export const createImageOfStoreDetail = async (props:any) => {
   const artworkFrontMask = await loadImage(`${productPath}/${productCode}_frontmask.png`);
   const glareImage = await loadImage(`${productPath}/${productCode}_glare.png`);
   const buttonBack = await loadImage(`${productPath}/${productCode}_${buttonType}.png`);
-  console.log();
 
   // ctx.translate(2000,0);
   // ctx.scale(-1,1);

@@ -5,10 +5,12 @@ import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
+import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfStoreDetail = async (props:any) => {
   const { categoryName, productCode, productColor, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
   const ctx = canvas.getContext('2d');
+  [canvas.width, canvas.height] = [1000, 1000];
 
   const productPath = `${Config.RESOURCE_CDN_URL}/SmartTok/${productCode}/${productColor}`;
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
@@ -26,13 +28,15 @@ export const createImageOfStoreDetail = async (props:any) => {
   const artworkResized = await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
-  await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
+  const artworkMasked = await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
 
   // (3) 상품 위에 올리기
-  const finalResult =  await getArtworkOnModel(productPath, productCode, patternImageFileName);
+  const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
+  const productImage = await loadImage(`${productPath}/${productCode}.png`);
+
+  ctx.drawImage(productImage, 0, 0);
+  ctx.drawImage(finalImage, 0, 0);
 
   // (4) 임시 생성된 파일들 삭제하기
   patternImageRemover([patternImageFileName])
-
-  return finalResult;
 }

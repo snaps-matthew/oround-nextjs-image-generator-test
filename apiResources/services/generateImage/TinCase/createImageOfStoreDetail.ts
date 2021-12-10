@@ -6,12 +6,15 @@ import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
+import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfStoreDetail = async (props:any) => {
-  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage } = props;
+  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
   const productPath = `${Config.RESOURCE_CDN_URL}/TinCase/${productCode}/${productSize}/${productColor}`;
   let patternSrcCoords = [];
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
+  const ctx = canvas.getContext('2d');
+  [canvas.width, canvas.height] = [1000, 1000];
 
   // (0) 썸네일 이미지 텍스트 파일로 변환하기
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
@@ -29,15 +32,18 @@ export const createImageOfStoreDetail = async (props:any) => {
   })
 
   // (1) 아트워크 리사이징
-  const hi = await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
+  await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
-  await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
+  const artworkMasked = await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
 
   // (3) 상품 위에 올리기
-  const finalResult =  await getArtworkOnModel(productPath, productCode, patternImageFileName);
+  const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
+  const productImage = await loadImage(`${productPath}/${productCode}.png`);
 
+  ctx.drawImage(productImage, 0, 0);
+  ctx.drawImage(finalImage, 0, 0);
+
+  // 임시 생성한 이미지 텍스트 파일 삭제
   patternImageRemover([patternImageFileName]);
-
-  return finalResult;
 }
