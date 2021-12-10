@@ -1,23 +1,23 @@
-import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
-import { newCanvas } from 'apiResources/utils/newCanvas';
+import Config from 'apiResources/constants/Config';
 import { OroundCV } from 'apiResources/utils/OroundCV';
-import {
-  getArtworkImage,
-  getCreateImageInitInfo,
-  getSelectedScene,
-} from 'apiResources/utils/getSelectedScene';
+import { newCanvas } from 'apiResources/utils/newCanvas';
 import TargetType from 'apiResources/constants/TargetType';
+import CommonCode from 'apiResources/constants/CommonCode';
+import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import {
   getKeyringCutLineSize,
   getKeyringHoleSize,
 } from 'apiResources/utils/getKeyringSize';
-import Config from 'apiResources/constants/Config';
-import CommonCode from 'apiResources/constants/CommonCode';
+import {
+  getArtworkImage,
+  getCreateImageInitInfo,
+  getSelectedScene,
+} from 'apiResources/utils/getSelectedScene';
 
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+  const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   const acrylicCode = optionInfo.acrylicCode;
@@ -51,7 +51,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const holeObject = scene.object.find((obj: { type: string; }) => obj.type === 'hole');
     const holeX = holeObject.x;
     const holeY = holeObject.y;
-    contour.ctx.drawImage(templateImage, 0, 0);
+    contour.ctx.drawImage(thumbnailImage, 0, 0);
 
     const oroundCV = new OroundCV();
     oroundCV.alphaBinarization(contour.canvas);
@@ -78,7 +78,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
     const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
     result.ctx.drawImage(shadowCanvas, 0, 0);
-    result.ctx.drawImage(templateImage, 0, 0);
+    result.ctx.drawImage(thumbnailImage, 0, 0);
 
     const keyInlineRadius = holeSize / 2;
     const keyInlineCanvas = oroundCV.drawCircle(keyInlineRadius, 242, 244, 247);

@@ -7,8 +7,8 @@ import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { getArtworkImage, getCreateImageInitInfo, getSelectedScene } from '../../../utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+  const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const colorCode = optionInfo.colorCode
   const scene:any = getSelectedScene(productEditInfo, optionInfo);
@@ -25,7 +25,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const temp = newCanvas(wrapper.width, wrapper.height);
 
     temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
-    temp.ctx.drawImage(templateImage, offset.left, offset.top);
+    temp.ctx.drawImage(thumbnailImage, offset.left, offset.top);
 
     const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);

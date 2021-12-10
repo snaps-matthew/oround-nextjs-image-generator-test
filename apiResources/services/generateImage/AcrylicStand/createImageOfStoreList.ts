@@ -1,19 +1,17 @@
-import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
-import { newCanvas } from 'apiResources/utils/newCanvas';
 import { OroundCV } from 'apiResources/utils/OroundCV';
-import {  getStandCutLineSize, getStandHelperWidth, getStandStickSize  } from 'apiResources/utils/getStandSize';
+import { newCanvas } from 'apiResources/utils/newCanvas';
+import TargetType from 'apiResources/constants/TargetType';
+import { loadErrorImage } from 'apiResources/utils/loadImage';
+import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
+import {  getStandCutLineSize  } from 'apiResources/utils/getStandSize';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
-import TargetType from 'apiResources/constants/TargetType';
-import CommonCode from 'apiResources/constants/CommonCode';
-import Config from 'apiResources/constants/Config';
-import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+  const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
   if (target !== TargetType.STORE_DETAIL_4) {
@@ -45,7 +43,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const stickY = stickObject.y;
     const stickWidth = stickObject.width;
     const stickHeight = stickObject.height;
-    contour.ctx.drawImage(templateImage, 0, 0);
+    contour.ctx.drawImage(thumbnailImage, 0, 0);
 
     const oroundCV = new OroundCV();
     oroundCV.alphaBinarization(contour.canvas);
@@ -61,7 +59,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 1, 3);
 
     result.ctx.drawImage(shadowCanvas, 0, 0);
-    result.ctx.drawImage(templateImage, 0, 0);
+    result.ctx.drawImage(thumbnailImage, 0, 0);
 
     const size = imageFull(width, height, outBox.width, outBox.height, 0);
     ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);

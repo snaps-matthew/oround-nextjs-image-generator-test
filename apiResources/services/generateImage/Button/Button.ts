@@ -24,15 +24,13 @@ class Button extends ImageComposer {
       canvas } = this;
 
     // 리스트의 경우 하나의 이미지만 사용한다.
-    let templateImage = thumbnailImage;
-
     if (this.target === TargetType.STORE_DETAIL_2 || this.target === TargetType.STORE_LIST_1) {
 
       return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
-      await createImageOfStoreList({ templateImage, productEditInfo, optionInfo, canvas, target });
+      await createImageOfStoreList({ thumbnailImage, productEditInfo, optionInfo, canvas, target });
 
     }
   }

@@ -10,9 +10,9 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target: string}) => {
+export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target: string}) => {
 
-  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+  const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const directionCode = productEditInfo.directionCode
   const width = productEditInfo.edit[0].width
@@ -33,7 +33,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const offset = getOffset(productCode, SceneType.page)
     const temp = newCanvas(wrapper.width, wrapper.height);
 
-    temp.ctx.drawImage(templateImage, offset.left, offset.top);
+    temp.ctx.drawImage(thumbnailImage, offset.left, offset.top);
     temp.ctx.drawImage(skinImage_top, 0, 0,wrapper.width, wrapper.height);
 
     const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
