@@ -1,4 +1,4 @@
-import { imageFull } from 'apiResources/utils/imageAlign';
+import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import {
   getArtworkImage,
@@ -26,6 +26,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const productCode = productEditInfo.productCode
   const directionCode = productEditInfo.directionCode
   const colorCode = optionInfo.colorCode
+  const glossyCode = optionInfo.glossyCode
   const themeImagePath = `${Config.RESOURCE_CDN_URL}/Frame/theme/frame`;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
@@ -53,7 +54,13 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     const metalImage = await loadImage(metalBrushColorPath);
     thumbnailCanvas = compositeMultiplyFromCanvas(thumbnailCanvas, metalImage);
   }
-
+  if (glossyCode===CommonCode.EFFECT_LARGE_PRINT_GLOSSY) {
+    const glossyPath = `${Config.RESOURCE_CDN_URL}/Texture/${glossyCode}.png`;
+    const effectImage = await loadImage(glossyPath);
+    const fullSize = paperFull(effectImage.width, effectImage.height, width, height, 0);
+    const thumbnailCanvasCtx = thumbnailCanvas.getContext('2d');
+    thumbnailCanvasCtx.drawImage(effectImage, fullSize.x, fullSize.y, fullSize.width, fullSize.height);
+  }
   if(target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3) {
 
     const frameWidth = thumbnailCanvas.width + (offset * 2);

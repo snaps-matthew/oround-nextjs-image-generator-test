@@ -1,10 +1,4 @@
 import PRODUCT_CODE from 'apiResources/constants/ProductCode'
-import CATEGORY_CODE from 'apiResources/constants/CategoryCode'
-export const isPhoneCaseProd = (productCode:string) => {
-  return (
-    productCode.slice(0,3) === CATEGORY_CODE.PHONE_CASE
-  )
-}
 
 export const isUVPrintPhoneCase = (productCode:string) => {
   return (
