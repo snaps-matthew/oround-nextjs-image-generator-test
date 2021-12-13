@@ -79,6 +79,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
+    console.log([':: STARTED ::']);
     if(scene){
       const thumbnailImage = await generateThumbnail(scene)
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
