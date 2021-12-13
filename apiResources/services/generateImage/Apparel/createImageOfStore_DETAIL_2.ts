@@ -7,7 +7,6 @@ import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import CommonCode from 'apiResources/constants/CommonCode';
-import { CheckOriginalColor, ColorHexCode, TextureCode } from 'apiResources/constants/ColorCode';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
@@ -58,7 +57,6 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     patternDstCoords = patternDstCoords[productOption];
 
   } else {
-
     patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
 
@@ -69,17 +67,13 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   // 추가 레이어 확인하고 올려준다
 
-  if (LayeringRef[productCode][productOption]) {
+  if (LayeringRef[productCode]) {
 
     extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
   }
 
-  const productImage = await loadImage(`${productPath}/${productCode}.png`);
+  const productImage = await loadImage(`${productPath}/${productCode}_${optionInfo.colorCode}.png`);
   const productCropImage = await loadImage(`${productPath}/${productCode}_crop.png`);
-
-  if (extraLayer.length) {
-    extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}.png`);
-  }
 
   // (0) 썸네일 이미지 텍스트 파일로 변환
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
@@ -89,72 +83,19 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   // (2) 주름 생성하기
   const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
+  const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
+  tempCtx.globalCompositeOperation = 'source-over';
+  tempCtx.drawImage(artworkImage, 0, 0);
+  await applyInnerWrinkle(canvas, tempCanvas, productCropImage);
 
-  // (3) 색상 옵션 확인하고 넣어주기
-  if (optionInfo.colorCode && CheckOriginalColor[productCode] !== optionInfo.colorCode) {
-
-    // [Type A] => 색상 값이 있는 경우
-    if (ColorHexCode[optionInfo.colorCode]) {
-
-      // (3-1) 옷 색상 변경하기
-      await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], productCropImage);
-      // 옷 위에 패턴 올리기
-      const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-      tempCtx.globalCompositeOperation = 'source-over';
-      tempCtx.drawImage(artworkImage, 0, 0);
-      await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
-
-      ctx.globalCompositeOperation = 'source-over';
-      // (3-2) 후드/끈 여부 확인 후 색상 변경
-      if (extraLayer.length && extraLayer.includes('string')) {
-
-        await changeApparelColor(tempCanvas, ColorHexCode[optionInfo.colorCode], extraLayerImage);
-        ctx.drawImage(tempCanvas, 0, 0)
-
-      } else if (extraLayer.includes('finger')) {
-        ctx.drawImage(extraLayerImage, 0, 0);
-      }
-
-    } else if (TextureCode[optionInfo.colorCode]) {
-
-      // [Type B] => 텍스처가 들어가야 하는 경우
-      // (3-1) 옷 색상 변경하기 ===> TODO
-      // 텍스처 가지고 오기
-      const textureImage = await loadImage(`${Config.RESOURCE_CDN_URL}/Texture/${TextureCode[optionInfo.colorCode]}.png`);
-      await changeApparelTexture(tempCanvas, textureImage, productCropImage);
-
-      // 옷 위에 패턴 올리기
-      const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-      tempCtx.globalCompositeOperation = 'source-over';
-      tempCtx.drawImage(artworkImage, 0, 0);
-      await applyInnerWrinkle(canvas, tempCanvas, productCropImage)
-      
-      // (3-2) 후드/끈 여부 확인 후 색상 변경
-      if (extraLayer.length && extraLayer.includes('string')) {
-
-        ctx.globalCompositeOperation = 'source-over';
-        ctx.drawImage(tempCanvas, 0, 0)
-        await changeApparelTexture(tempCanvas, textureImage, extraLayerImage);
-        ctx.drawImage(tempCanvas, 0, 0)
-
-      } else if (extraLayer.includes('finger')) {
-        ctx.drawImage(extraLayerImage, 0, 0);
-      }
+  if (extraLayer.length) {
+    if (extraLayer.includes('finger')) {
+      extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}.png`);
+    } else {
+      extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}_${optionInfo.colorCode}.png`);
     }
-
-  } else {
-
-    // 옷 위에 패턴 올리기
-    ctx.globalCompositeOperation = 'source-over';
-    const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-    applyInnerWrinkle(canvas, artworkImage, productCropImage);
-
-    if (extraLayer.length) {
-      ctx.globalCompositeOperation = 'source-over';
-      ctx.drawImage(extraLayerImage, 0, 0)
-
-    }
-
+    ctx.globalCompositeOperation = 'source-over'
+    ctx.drawImage(extraLayerImage, 0, 0);
   }
 
   // (4) 상품 위에 올리기
