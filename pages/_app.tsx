@@ -5,6 +5,7 @@ import 'styles/globals.css';
 import 'tailwindcss/tailwind.css';
 
 function SnapsApp({ Component, pageProps }: AppProps) {
+  console.log('CHANGED');
   return (
     <Component {...pageProps} />
   );
