@@ -23,10 +23,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const paperCode = optionInfo.paperCode;
   const sizeCode = optionInfo.sizeCode;
   const directionCode = productEditInfo.directionCode;
-  let paperImagePath = "";
-  if(paperCode===CommonCode.PAPER_STICKER_GLOSSY ){
-    paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${paperCode}.png`;
-  }
+
   let ratio = 0
   if(productEditInfo.size.length > 0){
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
@@ -40,6 +37,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const cutLine = getStickerCutLineSize() * ratio;
   const contour = newCanvas(width, height);   // 칼선 캔버스
   const result = newCanvas(width, height);    // 최종 출력물 캔버스
+  contour.ctx.drawImage(templateImage, 0, 0);
 
   const oroundCV = new OroundCV();
   oroundCV.alphaBinarization(contour.canvas);
@@ -47,18 +45,28 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   oroundCV.findObjectContour(contour.canvas);
   oroundCV.contourPaintColor(contour.canvas);
 
-  const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 1, 3);
 
-  result.ctx.drawImage(contour.canvas, 0, 0);
+  const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 1, 2, '4d');
+
   result.ctx.drawImage(shadowCanvas, 0, 0);
+  if(paperCode===CommonCode.PAPER_STICKER_TRANSPARENCY ){
+    result.ctx.save()
+    result.ctx.globalCompositeOperation = 'destination-out';
+    result.ctx.drawImage(contour.canvas, 0, 0);
+    result.ctx.restore();
+  }
   result.ctx.drawImage(templateImage, 0, 0);
 
-  if (paperImagePath) {
+  if(paperCode===CommonCode.PAPER_STICKER_GLOSSY ){
+    const paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${paperCode}.png`;
     const paperImage = await loadImage(paperImagePath);
     const fullSize = paperFull(paperImage.width, paperImage.height, width, height, 0);
     result.ctx.drawImage(paperImage, fullSize.x, fullSize.y, fullSize.width, fullSize.height);
+    result.ctx.save();
+    result.ctx.globalCompositeOperation = 'destination-in';
+    result.ctx.drawImage(contour.canvas, 0, 0);
+    result.ctx.restore();
   }
-
 
   if (target === TargetType.STORE_DETAIL_2) {
     const themeImagePath = `${Config.RESOURCE_CDN_URL}/Sticker`;

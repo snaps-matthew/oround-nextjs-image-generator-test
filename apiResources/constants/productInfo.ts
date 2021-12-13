@@ -53,6 +53,7 @@ const productInfo: ProductGroupInfoState = {
 
   /** sticker */
   '1021010001': { // 스티커
+    margin: 30
   },
 
   /** phone */
@@ -180,12 +181,11 @@ const productInfo: ProductGroupInfoState = {
     wrapperSize: { width: 380, height: 650 }
   },
 
-  /** goods */
   '1040010001': { // acrylicKeyring
-
+    margin: 30
   },
   '1040020001': { // acrylicStand
-
+    margin: 30
   },
   '1040030001': { // note
     wrapperSize: { width: 389, height: 465 },
@@ -416,6 +416,12 @@ const productInfo: ProductGroupInfoState = {
       front: { top: 414, left: 280 }
     }
   },
+  '1050070010': { // 스탠다드 에코백 L
+    wrapperSize: { width: 1000, height: 1000 },
+    offset: {
+      front: { top: 451, left: 280 }
+    }
+  },
 
   '1050070001': { //오프린트미 베이직 에코백
     wrapperSize: { width: 1000, height: 1000 },
@@ -453,7 +459,18 @@ const productInfo: ProductGroupInfoState = {
       front: { top: 353, left: 272 }
     }
   },
-
+  '1050080003': { //스탠다드 파우치 L
+    wrapperSize: { width: 1000, height: 1000 },
+    offset: {
+      front: { top: 353, left: 272 }
+    }
+  },
+  '1050070009': { // 베이직 에코백 L
+    wrapperSize: { width: 1000, height: 1000 },
+    offset: {
+      front: { top: 435, left: 272 }
+    }
+  },
   '1050070008': { //오프린트미 베이직 에코백
     wrapperSize: { width: 1000, height: 1000 },
     offset: {

@@ -1,4 +1,10 @@
 import {COMMON_NAME} from "apiResources/constants/commonName";
+import { getStickerCutLineSize } from '../utils/getStickerSize';
+import { newCanvas } from '../utils/newCanvas';
+import { OroundCV } from '../utils/OroundCV';
+import Config from './Config';
+import { loadImage } from '../utils/loadImage';
+import { paperFull } from '../utils/imageAlign';
 
 export default {
   FRAME_WOOD: "023001",
@@ -107,7 +113,9 @@ export default {
   PAPER_ACRYLIC_GLITTER_GREEN: "T00116",
   PAPER_ACRYLIC_GLITTER_RED: "T00117",
   PAPER_ACRYLIC_GLITTER_PURPLE: "T00118",
+
   PAPER_STICKER_GLOSSY: "T00063",
+  PAPER_STICKER_TRANSPARENCY: "T00064",
 
   COLOR_METAL_BRUSH: "T00174",
   EFFECT_LARGE_PRINT_GLOSSY: "T00120",

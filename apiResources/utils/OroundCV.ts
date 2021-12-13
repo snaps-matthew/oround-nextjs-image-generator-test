@@ -393,7 +393,7 @@ export class OroundCV {
     x: number = 0,
     y: number = 0,
     blur: number = 5,
-    opacity: number = 30
+    opacity: string = '30'
   ) {
     const result = newCanvas(imageCanvas.width, imageCanvas.height);
 
@@ -434,6 +434,25 @@ export class OroundCV {
       result.ctx.drawImage(imageCanvas, 0, 0);
       result.ctx.restore();
     }
+
+    return result.canvas;
+  }
+  drawShadowColor (
+    imageCanvas: any,
+    x: number = 0,
+    y: number = 0,
+    blur: number = 5,
+    color: string = ''
+  ) {
+    const result = newCanvas(imageCanvas.width, imageCanvas.height);
+
+      result.ctx.save();
+      result.ctx.shadowColor = color;
+      result.ctx.shadowBlur = blur;
+      result.ctx.shadowOffsetX = x;
+      result.ctx.shadowOffsetY = y;
+      result.ctx.drawImage(imageCanvas, 0, 0);
+      result.ctx.restore();
 
     return result.canvas;
   }

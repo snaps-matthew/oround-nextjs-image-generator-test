@@ -62,9 +62,9 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
   if(target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3) {
     const oroundCV = new OroundCV();
-    const tempCanvas = oroundCV.drawShadow(result.canvas, false, 6, 2, 8, 73);
+    const tempCanvas = oroundCV.drawShadow(result.canvas, false, 6, 2, 8, '73');
     const size = imageFull(tempCanvas.width, tempCanvas.height, outBox.width, outBox.height, 0);
-    ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);
+    ctx.drawImage(tempCanvas, size.x, size.y, size.width, size.height);
 
   }else if (target === TargetType.STORE_DETAIL_2) {
     const themeListInfo:any = frame_wood_theme;

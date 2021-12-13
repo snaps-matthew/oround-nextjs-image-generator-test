@@ -22,7 +22,18 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
 
   const acrylicCode = optionInfo.acrylicCode;
   const glitterColorCode = optionInfo.glitterColorCode;
-
+  let paperShadowColor = "";
+  if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_GOLD){
+    paperShadowColor= "#A594747F"
+  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_GREEN){
+    paperShadowColor= "#0C7F8380"
+  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_RED){
+    paperShadowColor= "#88000D80"
+  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_PURPLE){
+    paperShadowColor= "#401565e6"
+  }else{
+    paperShadowColor= "#e3e3e380"
+  }
   let paperImagePath = "";
   if(acrylicCode===CommonCode.PAPER_ACRYLIC_GLITTER ){
     paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${glitterColorCode}.png`;
@@ -75,9 +86,12 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
     } else {
      result.ctx.drawImage(contour.canvas, 0, 0);
     }
-
-    const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
+    // const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
+    const shadowCanvas = oroundCV.drawShadowColor(result.canvas, 2, 10, 0, paperShadowColor);
     result.ctx.drawImage(shadowCanvas, 0, 0);
+    const outShadowCanvas = oroundCV.drawShadowColor(result.canvas, 8, 8, 8, "#00000059");
+    result.ctx.drawImage(outShadowCanvas, 0, 0);
+    
     result.ctx.drawImage(thumbnailImage, 0, 0);
 
     const keyInlineRadius = holeSize / 2;
