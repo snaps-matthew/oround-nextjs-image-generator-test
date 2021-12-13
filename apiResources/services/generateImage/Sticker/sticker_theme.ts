@@ -5,8 +5,8 @@ export default {
   "S": {
     width: 1000,
     height: 1000,
-    maxMM: 60,
-    minMM: 40,
+    maxMM: 70,
+    minMM: 30,
     maxPX: 232,
     minPX: 139,
     object: [
@@ -32,8 +32,8 @@ export default {
   "M": {
     width: 1000,
     height: 1000,
-    maxMM: 150,
-    minMM: 60,
+    maxMM: 140,
+    minMM: 71,
     maxPX: 375,
     minPX: 224,
     object: [
@@ -60,7 +60,7 @@ export default {
     width: 1000,
     height: 1000,
     maxMM: 220,
-    minMM: 150,
+    minMM: 141,
     maxPX: 611,
     minPX: 364,
     object: [
