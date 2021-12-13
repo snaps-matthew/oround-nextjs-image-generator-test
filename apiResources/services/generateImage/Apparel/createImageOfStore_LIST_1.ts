@@ -69,14 +69,12 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   });
 
   // 추가 레이어 확인하고 올려준다
-  const extraLayerLength = LayeringRef[productCode];
-
-  if (extraLayerLength) {
+  if (LayeringRef[productCode]) {
 
     extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
   }
 
-  const productImage = await loadImage(`${productPath}/${productCode}.png`);
+  const productImage = await loadImage(`${productPath}/${productCode}_${optionInfo.colorCode}.png`);
   const productCropImage = await loadImage(`${productPath}/${productCode}_crop.png`);
 
   if (extraLayer.length) {
