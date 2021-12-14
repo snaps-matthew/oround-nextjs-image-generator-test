@@ -25,7 +25,8 @@ const LayeringRef:any = {
   '1050080002': {
     'L': ['finger'],
     'M': ['finger']
-  }
+  },
+  '1050080003': ['finger']
 }
 
 export default LayeringRef

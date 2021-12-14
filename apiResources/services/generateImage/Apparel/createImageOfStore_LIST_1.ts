@@ -1,20 +1,19 @@
 import {
   getArtworkReszied,
   getImageWrinkled,
-  changeApparelColor, changeApparelTexture, applyInnerWrinkle,
+  applyInnerWrinkle,
 } from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import CommonCode from 'apiResources/constants/CommonCode';
-import { CheckOriginalColor, ColorHexCode, TextureCode } from 'apiResources/constants/ColorCode';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
 import { createCanvas } from 'canvas';
-import ListImageOffset from '../../../constants/ListImageOffset';
+import ListImageOffset from 'apiResources/constants/ListImageOffset';
 
 export const createImageOfStore_LIST_1 = async (props:any) => {
   const { categoryName, productCode, productSize, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
@@ -70,8 +69,11 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
 
   // 추가 레이어 확인하고 올려준다
   if (LayeringRef[productCode]) {
-
-    extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
+    if (LayeringRef[productCode][productOption]) {
+      extraLayer = LayeringRef[productCode][productOption]
+    } else {
+      extraLayer = LayeringRef[productCode];
+    }
   }
 
   const productImage = await loadImage(`${productPath}/${productCode}_${optionInfo.colorCode}.png`);

@@ -67,8 +67,11 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   // 추가 레이어 확인하고 올려준다
   if (LayeringRef[productCode]) {
-
-    extraLayer = (productOption) ?  LayeringRef[productCode][productOption] : LayeringRef[productCode];
+    if (LayeringRef[productCode][productOption]) {
+      extraLayer = LayeringRef[productCode][productOption]
+    } else {
+      extraLayer = LayeringRef[productCode];
+    }
   }
 
   const productImage = await loadImage(`${productPath}/${productCode}_${optionInfo.colorCode}.png`);
@@ -79,7 +82,6 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   // (1) 아트워크 좌표에 맞춰 리사이징
   await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
-
   // (2) 주름 생성하기
   const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
   const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
@@ -93,6 +95,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     } else {
       extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}_${optionInfo.colorCode}.png`);
     }
+
     ctx.globalCompositeOperation = 'source-over'
     ctx.drawImage(extraLayerImage, 0, 0);
   }

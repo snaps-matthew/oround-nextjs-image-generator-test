@@ -272,10 +272,8 @@ export const changeApparelTexture = (canvas:any, textureImage:string, cropImg:st
 
 export const applyInnerWrinkle = (canvas:any, patternImage:any, cropImg:string) => {
   const ctx = canvas.getContext('2d');
-
   ctx.globalCompositeOperation = 'multiply';
   ctx.drawImage(patternImage, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
   ctx.drawImage(cropImg, 0, 0, 1000, 1000);
 
   ctx.globalCompositeOperation = 'destination-in';
