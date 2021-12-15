@@ -92,15 +92,22 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
     // const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
     const shadowCanvas = oroundCV.drawShadowColor(result.canvas, 2, 10, 0, paperShadowColor);
     result.ctx.drawImage(shadowCanvas, 0, 0);
+
     const outShadowCanvas = oroundCV.drawShadowColor(result.canvas, 8, 8, 8, "#00000059");
     result.ctx.drawImage(outShadowCanvas, 0, 0);
-    
+
     result.ctx.drawImage(thumbnailImage, 0, 0);
 
     const keyInlineRadius = holeSize / 2;
     const keyInlineCanvas = oroundCV.drawCircle(keyInlineRadius, 242, 244, 247);
     const inShadow = oroundCV.drawShadow(keyInlineCanvas, true, 0, 0, 3);
-    result.ctx.drawImage(inShadow, holeX - cutLine + cutLine, holeY - cutLine + cutLine);
+    const inLineHoleShadow = oroundCV.drawShadow(inShadow, true, 9, 6, 4,"26");
+    const innerLineHoleShadow = oroundCV.drawShadow(inLineHoleShadow, true, -4, 2, 2,"1a");
+    result.ctx.drawImage(innerLineHoleShadow, holeX - cutLine + cutLine, holeY - cutLine + cutLine);
+
+    const inLineShadow = oroundCV.drawShadow(result.canvas, true, 9, 6, 4,"26");
+    const innerLineShadow = oroundCV.drawShadow(inLineShadow, true, -4, 2, 2,"1a");
+    result.ctx.drawImage(innerLineShadow, 0, 0);
 
     const size = imageFull(width, height, outBox.width, outBox.height, 0);
     ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);
