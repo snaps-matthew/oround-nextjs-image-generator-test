@@ -3,7 +3,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getPreviewMargin,
+  getPreviewMargin, getScale,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
@@ -21,8 +21,10 @@ import { getFrameNinePathUrl } from '../../../api/getFrameNinePathUrl';
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
   const scene = getSelectedScene(productEditInfo, optionInfo)
-  const width = scene.width
-  const height = scene.height
+  const groupDelimiterName = productEditInfo.groupDelimiterName
+  const scale = getScale(groupDelimiterName)
+  const width = scene.width * scale
+  const height = scene.height * scale
   const productCode = productEditInfo.productCode
   const directionCode = productEditInfo.directionCode
   const colorCode = optionInfo.colorCode
@@ -33,6 +35,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   let ratio = 0
   if(productEditInfo.size.length > 0){
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+    ratio = ratio * scale
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
     const dummyOroundImage = await loadErrorImage("size empty")

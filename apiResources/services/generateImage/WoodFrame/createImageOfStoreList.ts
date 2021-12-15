@@ -3,7 +3,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import {
   getArtworkImage,
   getCreateImageInitInfo,
-  getPreviewMargin,
+  getPreviewMargin, getScale,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
@@ -26,8 +26,12 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
   const margin = getPreviewMargin(productCode);
   const frameSkinColor = getFrameColorUrl(productCode, optionInfo.colorCode);
-  const width = productEditInfo.edit[0].width
-  const height = productEditInfo.edit[0].height
+
+  const groupDelimiterName = productEditInfo.groupDelimiterName
+  const scale = getScale(groupDelimiterName)
+  const width = productEditInfo.edit[0].width * scale
+  const height = productEditInfo.edit[0].height * scale
+
   let ratio = 0
   if(productEditInfo.size.length > 0){
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;

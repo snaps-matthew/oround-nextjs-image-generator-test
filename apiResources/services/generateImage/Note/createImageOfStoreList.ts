@@ -6,7 +6,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import {
   getArtworkImage,
-  getCreateImageInitInfo,
+  getCreateImageInitInfo, getScale,
 } from '../../../utils/getSelectedScene';
 import TargetType from '../../../constants/TargetType';
 
@@ -28,12 +28,19 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
 
     const wrapper = getWrapperSize(productCode)
     const offset = getOffset(productCode, SceneType.page)
-    const temp = newCanvas(wrapper.width, wrapper.height);
+    const groupDelimiterName = productEditInfo.groupDelimiterName
+    const scale = getScale(groupDelimiterName)
+    const wrapperWidth = wrapper.width * scale
+    const wrapperHeight = wrapper.height * scale
+    const offsetLeft = offset.left * scale
+    const offsetTop = offset.top * scale
 
-    temp.ctx.drawImage(templateImage, offset.left, offset.top);
-    temp.ctx.drawImage(skinImage_top, 0, 0,wrapper.width, wrapper.height);
+    const temp = newCanvas(wrapperWidth, wrapperHeight);
 
-    const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
+    temp.ctx.drawImage(templateImage, offsetLeft, offsetTop);
+    temp.ctx.drawImage(skinImage_top, 0, 0,wrapperWidth, wrapperHeight);
+
+    const size = imageFull(wrapperWidth, wrapperHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
 
   }else{

@@ -4,7 +4,7 @@ import { SceneType } from 'apiResources/constants/sceneType';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
-import { getCreateImageInitInfo, getArtworkImage } from '../../../utils/getSelectedScene';
+import { getCreateImageInitInfo, getArtworkImage, getScale } from '../../../utils/getSelectedScene';
 import TargetType from '../../../constants/TargetType';
 
 export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
@@ -21,20 +21,27 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
   const skinPathTop = skinPath+'_top.png';
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_LIST_1) {
+  const wrapper = getWrapperSize(productCode)
+  const offset = getOffset(productCode, SceneType.page)
+  const groupDelimiterName = productEditInfo.groupDelimiterName
+  const scale = getScale(groupDelimiterName)
+  const wrapperWidth = wrapper.width * scale
+  const wrapperHeight = wrapper.height * scale
+  const offsetLeft = offset.left * scale
+  const offsetTop = offset.top * scale
+
+  if (target === TargetType.STORE_DETAIL_3) {
     //target 3의 경우
     // const skinImage_bottom = await loadImage(skinPathBottom);
     const skinImage_top = await loadImage(skinPathTop);
 
-    const wrapper = getWrapperSize(productCode)
-    const offset = getOffset(productCode, SceneType.page)
-    const temp = newCanvas(wrapper.width, wrapper.height);
+    const temp = newCanvas(wrapperWidth, wrapperHeight);
 
     // temp.ctx.drawImage(skinImage_bottom, 0, 0,wrapper.width, wrapper.height);
-    temp.ctx.drawImage(thumbnailImage, offset.left, offset.top);
-    temp.ctx.drawImage(skinImage_top, 0, 0,wrapper.width, wrapper.height);
+    temp.ctx.drawImage(thumbnailImage, offsetLeft, offsetTop);
+    temp.ctx.drawImage(skinImage_top, 0, 0,wrapperWidth, wrapperHeight);
 
-    const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
+    const size = imageFull(wrapperWidth, wrapperHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
 
 

@@ -6,7 +6,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import TargetType from 'apiResources/constants/TargetType';
 import {
   getArtworkImage,
-  getCreateImageInitInfo,
+  getCreateImageInitInfo, getScale,
 } from 'apiResources/utils/getSelectedScene';
 import { getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { isUVPrintPhoneCase } from 'apiResources/matchProd/isPhoneCaseProd';
@@ -15,6 +15,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode:string = optionInfo.diviceColorCode;
+  const groupDelimiterName = productEditInfo.groupDelimiterName
+  const scale = getScale(groupDelimiterName)
   const isHardCase = productCode.slice(-1) === '2';
   const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const device = isHardCase ? '' : `${domain}/${SceneType.page}/1-device/${comparisonColorCode}.png`;
@@ -22,29 +24,31 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   const skinPath = isHardCase ?
     `${domain}/${SceneType.page}/3-skin/T00090.png` :
     `${domain}/${SceneType.page}/3-skin/${comparisonColorCode}_T00088.png`; // 젤리 케이스로 고정 (등록시 상품 코드가 같음- 사용자는 옵션으로 선택)
-  const width = productEditInfo.edit[0].width
-  const height = productEditInfo.edit[0].height
+  const width = productEditInfo.edit[0].width * scale
+  const height = productEditInfo.edit[0].height * scale
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
     const wrapper = getWrapperSize(productCode)
-    const offsetLeft = Math.round((wrapper.width - width) / 2);
-    const offsetTop = Math.round((wrapper.height - height) / 2);
-    const temp = newCanvas(wrapper.width, wrapper.height);
+    const wrapperWidth = wrapper.width * scale
+    const wrapperHeight = wrapper.height * scale
+    const offsetLeft = Math.round((wrapperWidth - width) / 2);
+    const offsetTop = Math.round((wrapperHeight - height) / 2);
+    const temp = newCanvas(wrapperWidth, wrapperHeight);
     if(isUVPrintPhoneCase(productCode)){
       const deviceSkinImage = await loadImage(device);
-      temp.ctx.drawImage(deviceSkinImage, 0, 0, wrapper.width, wrapper.height);
+      temp.ctx.drawImage(deviceSkinImage, 0, 0, wrapperWidth, wrapperHeight);
       const caseSkinImage = await loadImage(caseSkin);
-      temp.ctx.drawImage(caseSkinImage, 0, 0, wrapper.width, wrapper.height);
+      temp.ctx.drawImage(caseSkinImage, 0, 0, wrapperWidth, wrapperHeight);
     }
 
     temp.ctx.drawImage(templateImage, offsetLeft, offsetTop);
     const skinImage = await loadImage(skinPath);
-    temp.ctx.drawImage(skinImage, 0, 0, wrapper.width, wrapper.height);
+    temp.ctx.drawImage(skinImage, 0, 0, wrapperWidth, wrapperHeight);
 
-    const size = imageFull(wrapper.width, wrapper.height, outBox.width, outBox.height, 0);
+    const size = imageFull(wrapperWidth, wrapperHeight, outBox.width, outBox.height, 0);
     ctx.drawImage(temp.canvas, size.x, size.y, size.width, size.height);
 
   }else {

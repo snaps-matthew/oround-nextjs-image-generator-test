@@ -11,7 +11,7 @@ import {
 } from 'apiResources/utils/getKeyringSize';
 import {
   getArtworkImage,
-  getCreateImageInitInfo,
+  getCreateImageInitInfo, getScale,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 
@@ -42,12 +42,15 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
   }
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
+    const groupDelimiterName = productEditInfo.groupDelimiterName
+    const scale = getScale(groupDelimiterName)
     let scene:any = getSelectedScene(productEditInfo);
-    const width = scene.width
-    const height = scene.height
+    const width = scene.width * scale
+    const height = scene.height * scale
     let ratio = 0
     if(productEditInfo.size.length > 0){
       ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
+      ratio = ratio * scale
     }else{
       //사이즈가 없는경우 더미이미지로 리턴
       const dummyOroundImage = await loadErrorImage("size empty")
@@ -60,8 +63,8 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
     const result = newCanvas(width, height);    // 최종 출력물 캔버스
 
     const holeObject = scene.object.find((obj: { type: string; }) => obj.type === 'hole');
-    const holeX = holeObject.x;
-    const holeY = holeObject.y;
+    const holeX = holeObject.x * scale;
+    const holeY = holeObject.y * scale;
     contour.ctx.drawImage(thumbnailImage, 0, 0);
 
     const oroundCV = new OroundCV();

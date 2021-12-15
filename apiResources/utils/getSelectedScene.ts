@@ -50,23 +50,23 @@ export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
 export const getScale = (groupDelimiterName: string) => {
   let scale:number = 1
   switch (groupDelimiterName) {
-    // case 'apparel':
-    // case 'smartTok':
-    // case 'tinCase':
-    // case 'frame': // free size
-    // case 'canvasFrame': // free size
-    // case 'woodFrame': // free size
-    // case 'sticker': // free size
-    // case 'acrylicStand': // free size
-    // case 'acrylicKeyring': // free size
-    // case 'hardPhoneCase':
-    // case 'clearPhoneCase':
-    // case 'airpods':
+    case 'apparel':
+    case 'smartTok':
+    case 'tinCase':
+    case 'frame': // free size
+    case 'canvasFrame': // free size
+    case 'woodFrame': // free size
+    case 'sticker': // free size
+    case 'acrylicStand': // free size
+    case 'acrylicKeyring': // free size
+    case 'hardPhoneCase':
+    case 'clearPhoneCase':
+    case 'airpods':
     case 'airpodsPro':
-    // case 'buzCase':
-    // case 'button':
+    case 'buzCase':
+    case 'button':
     case 'note':
-    // case 'card':
+    case 'card':
       scale = 2
       break;
     default:

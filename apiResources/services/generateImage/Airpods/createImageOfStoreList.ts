@@ -26,13 +26,6 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
   const scale = getScale(groupDelimiterName)
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  // const paddingPx = padding * ratio;
-  // const totalOffset = offset * 2;
-  // const newWidth = Math.round(thumbnailImage.width - totalOffset);
-  // const newHeight = Math.round(thumbnailImage.height - totalOffset);
-  // const temp = newCanvas(newWidth, newHeight);
-  // temp.ctx.drawImage(thumbnailCanvas, -offset, -offset);
-
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
     const skinImage_bottom = await loadImage(skinPathBottom);

@@ -117,6 +117,7 @@ const productInfo: ProductGroupInfoState = {
   '1030100002': { // 갤럭시노트10
     wrapperSize: { width: 380, height: 650 }
   },
+
   '1030110001': { // 아이폰X
     wrapperSize: { width: 380, height: 650 }
   },
@@ -169,6 +170,9 @@ const productInfo: ProductGroupInfoState = {
     wrapperSize: { width: 380, height: 650 }
   },
   '1030200001': { // 아이폰12mini
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030220001': { // 아이폰Se
     wrapperSize: { width: 380, height: 650 }
   },
   '1030200002': { // 아이폰12mini

@@ -4,7 +4,7 @@ import { OroundCV } from 'apiResources/utils/OroundCV';
 import { getStickerCutLineSize } from 'apiResources/utils/getStickerSize';
 import {
   getArtworkImage,
-  getCreateImageInitInfo, getSelectedScene,
+  getCreateImageInitInfo, getScale, getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
@@ -16,9 +16,11 @@ import { getSizeToTargetImage } from '../../../utils/getSizeToTargetImage';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
+  const groupDelimiterName = productEditInfo.groupDelimiterName
+  const scale = getScale(groupDelimiterName)
   const scene = getSelectedScene(productEditInfo, optionInfo);
-  const width = scene.width;
-  const height = scene.height;
+  const width = scene.width * scale;
+  const height = scene.height * scale;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
   const paperCode = optionInfo.paperCode;
   const sizeCode = optionInfo.sizeCode;
