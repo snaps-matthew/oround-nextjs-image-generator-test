@@ -33,7 +33,7 @@ const productInfo: ProductGroupInfoState = {
     margin: 50
   },
   '1010040001': { // 캔버스 액자
-    margin: 50
+    margin: 25
   },
   '1010050001': { // 프리미엄 아크릴액자
     margin: 50

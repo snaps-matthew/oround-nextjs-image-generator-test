@@ -31,6 +31,16 @@ export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
   }
   return tempScene
 }
+
+export const getScale = (groupDelimiterName: string) => {
+  let scale:number = 1
+  if(groupDelimiterName==="airpods"){
+    scale = 2
+  }
+  return scale
+};
+
+
 export const getCreateImageInitInfo = (target:string, canvas:any) =>{
   let outBox:any = {};
   // if (target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {

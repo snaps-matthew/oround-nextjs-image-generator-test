@@ -47,7 +47,7 @@ class ObjectCanvas {
   constructor (object: any, scale: number, canvas: Canvas) {
     this.scale = scale;
     this.object = object;
-    this.self = newCanvas(object.width, object.height);
+    this.self = newCanvas(object.width* this.scale, object.height* this.scale);
     this.canvas = canvas;
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
   }
@@ -79,7 +79,7 @@ class ObjectCanvasBackground extends ObjectCanvas {
     this.ctx.save();
     this.ctx.globalAlpha = this.object.alpha;
     this.ctx.fillStyle = this.object.bgColor;
-    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.fillRect(0, 0, this.canvas.width* this.scale, this.canvas.height* this.scale);
     this.ctx.restore();
   }
 }
@@ -100,7 +100,7 @@ class ObjectCanvasImage extends ObjectCanvas {
     this.drawObject(image, this.self.ctx, innerX, innerY, innerWidth, innerHeight, innerImage.angle, innerImage.alpha);
 
     const { x, y, width, height, angle, alpha } = this.object;
-    this.drawObject(this.self.canvas, this.ctx, x, y, width, height, angle, alpha);
+    this.drawObject(this.self.canvas, this.ctx, x* this.scale, y* this.scale, width* this.scale, height* this.scale, angle, alpha);
   }
 }
 

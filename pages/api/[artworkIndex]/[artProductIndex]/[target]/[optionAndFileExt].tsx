@@ -3,7 +3,7 @@ import HttpResponseStatusCode from "apiResources/constants/HttpResponseStatusCod
 import {generateImage} from "apiResources/services/generateImage/generateImage";
 import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
-import { getSelectedScene } from 'apiResources/utils/getSelectedScene';
+import { getScale, getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage'
 import { createCanvas } from 'canvas';
@@ -74,11 +74,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const optionInfo = paramCodes.optionAndFileExt
     const sizeCode = paramCodes.optionAndFileExt.sizeCode
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
+    const groupDelimiterName = productEditInfo.groupDelimiterName
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
+
     if(scene){
-      const thumbnailImage = await generateThumbnail(scene)
+      const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName))
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
         imageComposer.stream().pipe(res);
     }else{
