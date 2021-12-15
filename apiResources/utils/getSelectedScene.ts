@@ -3,6 +3,21 @@ import { TYPE } from 'apiResources/constants/type';
 import Config from 'apiResources/constants/Config';
 import { loadImage } from 'apiResources/utils/loadImage';
 import productInfo from 'apiResources/constants/productInfo';
+import Apparel from '../services/generateImage/Apparel/Apparel';
+import SmartTok from '../services/generateImage/SmartTok/SmartTok';
+import TinCase from '../services/generateImage/TinCase/TinCase';
+import Frame from '../services/generateImage/Frame/Frame';
+import WoodFrame from '../services/generateImage/WoodFrame/WoodFrame';
+import Sticker from '../services/generateImage/Sticker/Sticker';
+import AcrylicStand from '../services/generateImage/AcrylicStand/AcrylicStand';
+import AcrylicKeyring from '../services/generateImage/AcrylicKeyring/AcrylicKeyring';
+import PhoneCase from '../services/generateImage/PhoneCase/PhoneCase';
+import Airpods from '../services/generateImage/Airpods/Airpods';
+import AirPodsPro from '../services/generateImage/AirPodsPro/AirPodsPro';
+import BuzCase from '../services/generateImage/BuzCase/BuzCase';
+import Button from '../services/generateImage/Button/Button';
+import Note from '../services/generateImage/Note/Note';
+import Card from '../services/generateImage/Card/Card';
 
 export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
   const groupName = productEditInfo.groupDelimiterName;
@@ -34,8 +49,28 @@ export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
 
 export const getScale = (groupDelimiterName: string) => {
   let scale:number = 1
-  if(groupDelimiterName==="airpods"){
-    scale = 2
+  switch (groupDelimiterName) {
+    // case 'apparel':
+    // case 'smartTok':
+    // case 'tinCase':
+    // case 'frame': // free size
+    // case 'canvasFrame': // free size
+    // case 'woodFrame': // free size
+    // case 'sticker': // free size
+    // case 'acrylicStand': // free size
+    // case 'acrylicKeyring': // free size
+    // case 'hardPhoneCase':
+    // case 'clearPhoneCase':
+    // case 'airpods':
+    case 'airpodsPro':
+    // case 'buzCase':
+    // case 'button':
+    case 'note':
+    // case 'card':
+      scale = 2
+      break;
+    default:
+      break;
   }
   return scale
 };
