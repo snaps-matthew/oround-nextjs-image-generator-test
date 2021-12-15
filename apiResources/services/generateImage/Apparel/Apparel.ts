@@ -27,6 +27,7 @@ class Apparel extends ImageComposer {
 
     // 리스트의 경우 하나의 이미지만 사용한다.
     if (this.target === TargetType.STORE_LIST_1) {
+      // 잡화의 경우에는 탑뷰로 보여준다
       if (isEcoBag.includes(productCode)) {
         await createImageOfStoreList({ thumbnailImage, productEditInfo, optionInfo, canvas, target });
       } else {
