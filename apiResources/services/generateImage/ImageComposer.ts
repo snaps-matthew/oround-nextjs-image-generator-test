@@ -70,8 +70,8 @@ class ImageComposer {
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
     this.ext = ext;
 
-    this.artworkWidth = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].width : data.productEditInfo.edit[1].width;
-    this.artworkHeight = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].height : data.productEditInfo.edit[1].height;
+    this.artworkWidth = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].width * 2 : data.productEditInfo.edit[1].width * 2;
+    this.artworkHeight = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].height * 2 : data.productEditInfo.edit[1].height * 2;
 
 
     // 주름 넣는 강도??
