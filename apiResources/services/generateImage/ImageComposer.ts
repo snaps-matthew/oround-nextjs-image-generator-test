@@ -66,7 +66,7 @@ class ImageComposer {
     this.optionInfo = data.optionInfo;
     this.target = data.target;
     this.productSize = SizeCode[data.optionInfo.sizeCode];
-    this.productColor = ColorStringCode[data.optionInfo.colorCode];
+    this.productColor = data.optionInfo.colorCode;
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
     this.ext = ext;
 

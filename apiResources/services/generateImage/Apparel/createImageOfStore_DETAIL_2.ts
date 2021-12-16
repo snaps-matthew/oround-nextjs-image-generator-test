@@ -14,7 +14,7 @@ import { loadImage } from 'apiResources/utils/loadImage';
 import { createCanvas } from 'canvas';
 
 export const createImageOfStore_DETAIL_2 = async (props:any) => {
-  const { categoryName, productCode, productSize, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
+  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
   [canvas.width, canvas.height] = [1000, 1000];
   const ctx = canvas.getContext('2d');
   const tempCanvas = createCanvas(1000, 1000);
@@ -28,7 +28,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   let productOption = '';
   let extraLayer:any = [];
   let extraLayerImage;
-  console.log(productCode)
+
   if (coordinateData[productCode]['T00129'] && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
     // productOption = 'front';
     productOption = 'T00129';
@@ -69,7 +69,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     }
   }
 
-  const productImage = await loadImage(`${productPath}/${optionInfo.colorCode}.png`);
+  const productImage = await loadImage(`${productPath}/${productColor}.png`);
   const productCropImage = await loadImage(`${productPath}/crop.png`);
 
   // (0) 썸네일 이미지 텍스트 파일로 변환
@@ -88,8 +88,7 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     if (extraLayer.includes('finger')) {
       extraLayerImage = await loadImage(`${productPath}/${extraLayer[0]}.png`);
     } else {
-      extraLayerImage = await loadImage(`${productPath}/${extraLayer[0]}_${optionInfo.colorCode}.png`);
-      console.log(`${productPath}/${extraLayer[0]}_${optionInfo.colorCode}.png`);
+      extraLayerImage = await loadImage(`${productPath}/${extraLayer[0]}_${productColor}.png`);
     }
 
     ctx.globalCompositeOperation = 'source-over'
