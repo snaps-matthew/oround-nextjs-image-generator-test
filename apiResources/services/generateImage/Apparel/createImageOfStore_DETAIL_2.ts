@@ -48,11 +48,12 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   // 옵션이 있는 경우 [이미지경로, 아트워크 들어 갈 좌표 변경해준다]
   if (productOption) {
 
-    productPath += `/${productOption}`;
+    productPath += `/${productOption}/model`;
     patternDstCoords = coordinateData[productCode];
     patternDstCoords = patternDstCoords[productOption];
 
   } else {
+    productPath += '/model';
     patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
   // ** ____ 임시로 psd 좌표 나누기 2 해서 사용 ____ ** //

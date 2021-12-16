@@ -36,7 +36,7 @@ export const createImageOfModelView = async (props:any) => {
 
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
   const artworkMasked = await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
-
+  
   // (3) 상품 위에 올리기
   const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
   const productImage = await loadImage(`${productPath}/${productCode}.png`);

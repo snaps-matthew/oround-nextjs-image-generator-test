@@ -12,7 +12,7 @@ export const createImageOfModelView = async (props:any) => {
   const ctx = canvas.getContext('2d');
   [canvas.width, canvas.height] = [1000, 1000];
 
-  const productPath = `${Config.RESOURCE_CDN_URL}/SmartTok/${productCode}/${productColor}`;
+  const productPath = `${Config.RESOURCE_CDN_URL}/SmartTok/${productCode}/${productColor}/model`;
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
   // 틴케이스 patternDstCoords => 사이즈만 고려
   const patternDstCoords = coordinateData[productCode].map((coord:any) => {
