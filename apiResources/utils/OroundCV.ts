@@ -439,13 +439,42 @@ export class OroundCV {
   }
   drawShadowColor (
     imageCanvas: any,
+    isInset = false,
     x: number = 0,
     y: number = 0,
     blur: number = 5,
     color: string = ''
   ) {
     const result = newCanvas(imageCanvas.width, imageCanvas.height);
+    if (isInset) {
+      const canvasWidth = imageCanvas.width + 10;
+      const canvasHeight = imageCanvas.height + 10;
+      const tmpOutShadow = newCanvas(canvasWidth, canvasHeight);
+      const tmpShadow = newCanvas(canvasWidth, canvasHeight);
 
+      // 배경 색을 깐다.
+      tmpOutShadow.ctx.fillStyle = '#f2f4f7';
+      tmpOutShadow.ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      // (배경 색) + 구멍을 뚷는다
+      tmpOutShadow.ctx.globalCompositeOperation = 'destination-out';
+      tmpOutShadow.ctx.drawImage(imageCanvas, 5, 5);
+
+      // 임시 쉐도우 캔버스에 (배걍 + 구멍) 캔버스를 그리면서 그림자를 생성한다.
+      tmpShadow.ctx.shadowColor = color;
+      tmpShadow.ctx.shadowBlur = blur;
+      tmpShadow.ctx.shadowOffsetX = x;
+      tmpShadow.ctx.shadowOffsetY = y;
+      tmpShadow.ctx.drawImage(tmpOutShadow.canvas, 0, 0);
+
+      // 타깃에 이미지를 그린다.
+      result.ctx.drawImage(imageCanvas, 0, 0);
+      // 그위에 그림자를 그린다.
+      result.ctx.drawImage(tmpShadow.canvas, -5, -5);
+      // (이미지 + 그림자) 에 이미지 만큼 뺀다.
+      result.ctx.globalCompositeOperation = 'destination-in';
+      result.ctx.drawImage(imageCanvas, 0, 0);
+
+    }else{
       result.ctx.save();
       result.ctx.shadowColor = color;
       result.ctx.shadowBlur = blur;
@@ -453,6 +482,7 @@ export class OroundCV {
       result.ctx.shadowOffsetY = y;
       result.ctx.drawImage(imageCanvas, 0, 0);
       result.ctx.restore();
+    }
 
     return result.canvas;
   }

@@ -59,14 +59,17 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
     contour.ctx.fillRect(stickX, stickY, stickWidth, stickHeight);
 
     result.ctx.drawImage(contour.canvas, 0, 0);
-    const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 6, 6, "33");
+    const tempColorCanvas = oroundCV.fillColor(result.canvas, result.canvas.width, result.canvas.height,  "#00000008")
+    result.ctx.drawImage(tempColorCanvas, 0, 0);
+    const shadowCanvas = oroundCV.drawShadowColor(result.canvas, false, 0, 6, 6, "#00000033");
     result.ctx.drawImage(shadowCanvas, 0, 0);
     result.ctx.drawImage(thumbnailImage, 0, 0);
 
-    const inLineShadow = oroundCV.drawShadow(result.canvas, true, 0, 6, 2,"26");
-    const innerLineShadow = oroundCV.drawShadow(inLineShadow, true, -1, 1, 1,"4d");
-    result.ctx.drawImage(innerLineShadow, 0, 0);
-
+    const inLineShadow = oroundCV.drawShadowColor(result.canvas, true, 0, 6, 2,"#00000026");
+    const innerLineShadow = oroundCV.drawShadowColor(inLineShadow, true, -1, 1, 1,"#0000004d");
+    const innerLineShadow2 = oroundCV.drawShadowColor(innerLineShadow, true, -1, 0, 1,"#ffffff");
+    const innerLineShadow3 = oroundCV.drawShadowColor(innerLineShadow2, true, 1, 1, 1,"#ffffff");
+    result.ctx.drawImage(innerLineShadow3, 0, 0);
 
     const size = imageFull(width, height, outBox.width, outBox.height, 0);
     ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);

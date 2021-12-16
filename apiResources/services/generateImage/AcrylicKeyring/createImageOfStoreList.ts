@@ -90,10 +90,12 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
      result.ctx.drawImage(contour.canvas, 0, 0);
     }
     // const shadowCanvas = oroundCV.drawShadow(result.canvas, false, 0, 1, 3);
-    const shadowCanvas = oroundCV.drawShadowColor(result.canvas, 2, 10, 0, paperShadowColor);
+    const tempColorCanvas = oroundCV.fillColor(result.canvas, result.canvas.width, result.canvas.height,  "#00000008")
+    result.ctx.drawImage(tempColorCanvas, 0, 0);
+    const shadowCanvas = oroundCV.drawShadowColor(result.canvas, false,2, 10, 0, paperShadowColor);
     result.ctx.drawImage(shadowCanvas, 0, 0);
 
-    const outShadowCanvas = oroundCV.drawShadowColor(result.canvas, 8, 8, 8, "#00000059");
+    const outShadowCanvas = oroundCV.drawShadowColor(result.canvas, false, 8, 8, 8, "#00000059");
     result.ctx.drawImage(outShadowCanvas, 0, 0);
 
     result.ctx.drawImage(thumbnailImage, 0, 0);
