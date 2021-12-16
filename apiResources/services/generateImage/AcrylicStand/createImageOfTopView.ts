@@ -10,7 +10,7 @@ import {
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 
-export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
   const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
@@ -66,8 +66,8 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
     result.ctx.drawImage(thumbnailImage, 0, 0);
 
     const inLineShadow = oroundCV.drawShadowColor(result.canvas, true, 0, 6, 2,"#00000026");
-    const innerLineShadow = oroundCV.drawShadowColor(inLineShadow, true, -1, 1, 1,"#0000004d");
-    const innerLineShadow2 = oroundCV.drawShadowColor(innerLineShadow, true, -1, 0, 1,"#ffffff");
+    const innerLineShadow1 = oroundCV.drawShadowColor(inLineShadow, true, -1, 1, 1,"#0000004d");
+    const innerLineShadow2 = oroundCV.drawShadowColor(innerLineShadow1, true, -1, 0, 1,"#ffffff");
     const innerLineShadow3 = oroundCV.drawShadowColor(innerLineShadow2, true, 1, 1, 1,"#ffffff");
     result.ctx.drawImage(innerLineShadow3, 0, 0);
 

@@ -49,7 +49,7 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
   oroundCV.contourPaintColor(contour.canvas);
 
 
-  const shadowCanvas = oroundCV.drawShadow(contour.canvas, false, 0, 1, 2, '4d');
+  const shadowCanvas = oroundCV.drawShadowColor(contour.canvas, false, 0, 1, 2, "#000000b3");
 
   result.ctx.drawImage(shadowCanvas, 0, 0);
   if(paperCode===CommonCode.PAPER_STICKER_TRANSPARENCY ){

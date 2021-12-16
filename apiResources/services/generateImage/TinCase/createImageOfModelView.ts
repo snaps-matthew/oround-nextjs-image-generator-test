@@ -8,7 +8,7 @@ import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
 
-export const createImageOfStoreDetail = async (props:any) => {
+export const createImageOfModelView = async (props:any) => {
   const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
   const productPath = `${Config.RESOURCE_CDN_URL}/TinCase/${productCode}/${productSize}/${productColor}`;
   let patternSrcCoords = [];

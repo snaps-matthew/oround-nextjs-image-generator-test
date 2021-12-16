@@ -1,7 +1,7 @@
-import ImageCanvas from "apiResources/services/generateImage/ImageCanvas";
-import {createImageOfStoreList} from "apiResources/services/generateImage/Airpods/createImageOfStoreList";
+import {createImageOfTopView} from "apiResources/services/generateImage/Airpods/createImageOfTopView";
+import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
 
-class AirPods extends ImageCanvas {
+class AirPods extends ImageComposer {
   constructor() {
     super();
   }
@@ -9,8 +9,7 @@ class AirPods extends ImageCanvas {
   async composite() {
     const {canvas, productEditInfo, optionInfo, target, thumbnailImage} = this;
 
-    // 리스트의 경우 하나의 이미지만 사용한다.
-    await createImageOfStoreList({thumbnailImage, productEditInfo, optionInfo, canvas, target });
+    await createImageOfTopView({thumbnailImage, productEditInfo, optionInfo, canvas, target });
   }
 }
 

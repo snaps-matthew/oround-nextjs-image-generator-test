@@ -1,25 +1,22 @@
-import ImageCanvas from "apiResources/services/generateImage/ImageCanvas";
-import {createImageOfStoreList} from "apiResources/services/generateImage/WoodFrame/createImageOfStoreList";
+import {createImageOfInteriorView} from "apiResources/services/generateImage/WoodFrame/createImageOfInteriorView";
+import {createImageOfTopView} from "apiResources/services/generateImage/WoodFrame/createImageOfTopView";
+import TargetType from 'apiResources/constants/TargetType';
+import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
 
-class WoodFrame extends ImageCanvas {
+class WoodFrame extends ImageComposer {
   constructor() {
     super();
   }
 
   async composite() {
     const { canvas, productEditInfo, optionInfo, target, drawObject} = this;
-    // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = this.thumbnailImage
-    await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target, drawObject });
-    // if (this.target === TargetType.STORE_LIST_1) {
-    //   await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    // } else if (this.target === TargetType.STORE_DETAIL_2) {
-    //   await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    // } else if (this.target === TargetType.STORE_DETAIL_3) {
-    //   await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    // } else if (this.target === TargetType.STORE_DETAIL_4) {
-    //   await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas });
-    // }
+
+    if (target === TargetType.STORE_DETAIL_2) {
+      await createImageOfInteriorView({templateImage, productEditInfo, optionInfo, canvas, target, drawObject });
+    }else{
+      await createImageOfTopView({templateImage, productEditInfo, optionInfo, canvas, target, drawObject });
+    }
   }
 }
 

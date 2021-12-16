@@ -1,7 +1,7 @@
 import TargetType from 'apiResources/constants/TargetType';
 import ImageComposer from "apiResources/services/generateImage/ImageComposer";
-import { createImageOfStoreList } from 'apiResources/services/generateImage/TinCase/createImageOfStoreList';
-import { createImageOfStoreDetail } from 'apiResources/services/generateImage/TinCase/createImageOfStoreDetail';
+import { createImageOfTopView } from 'apiResources/services/generateImage/TinCase/createImageOfTopView';
+import { createImageOfModelView } from 'apiResources/services/generateImage/TinCase/createImageOfModelView';
 
 class TinCase extends ImageComposer {
   constructor() {
@@ -27,11 +27,11 @@ class TinCase extends ImageComposer {
 
     if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
 
-      return await createImageOfStoreDetail({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas })
+      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 
-      await createImageOfStoreList({ thumbnailImage, productEditInfo, optionInfo, canvas, target });
+      await createImageOfTopView({ thumbnailImage, productEditInfo, optionInfo, canvas, target });
 
     }
   }

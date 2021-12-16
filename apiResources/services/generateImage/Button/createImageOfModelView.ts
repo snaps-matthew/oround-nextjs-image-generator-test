@@ -4,7 +4,7 @@ import LayeringRef from 'apiResources/constants/LayeringRef';
 import coordinateData from 'apiResources/constants/coordinateData';
 import { canvasLayerMerger, flipImage, imageMasker } from 'apiResources/utils/imageProcessor';
 
-export const createImageOfStoreDetail = async (props:any) => {
+export const createImageOfModelView = async (props:any) => {
   const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
   const productPath = `${Config.RESOURCE_CDN_URL}/Button/${productCode}/${productSize}`;
 

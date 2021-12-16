@@ -1,17 +1,16 @@
-import ImageCanvas from "apiResources/services/generateImage/ImageCanvas";
-import {createImageOfStoreList} from "apiResources/services/generateImage/BuzCase/createImageOfStoreList";
+import {createImageOfTopView} from "apiResources/services/generateImage/BuzCase/createImageOfTopView";
+import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
 
-class BuzCase extends ImageCanvas {
+class BuzCase extends ImageComposer {
   constructor() {
     super();
   }
 
   async composite() {
     const {canvas, productEditInfo, optionInfo, target} = this;
-    // 리스트의 경우 하나의 이미지만 사용한다.
     let templateImage = this.thumbnailImage
 
-    await createImageOfStoreList({templateImage, productEditInfo, optionInfo, canvas, target });
+    await createImageOfTopView({templateImage, productEditInfo, optionInfo, canvas, target });
 
   }
 }

@@ -11,7 +11,7 @@ import {
 import { getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { isUVPrintPhoneCase } from 'apiResources/matchProd/isPhoneCaseProd';
 
-export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
+export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode:string = optionInfo.diviceColorCode;

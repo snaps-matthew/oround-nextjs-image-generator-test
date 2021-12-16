@@ -16,7 +16,7 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 
 
-export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
+export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
   const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
