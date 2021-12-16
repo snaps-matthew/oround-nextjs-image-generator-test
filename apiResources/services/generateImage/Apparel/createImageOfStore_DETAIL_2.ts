@@ -1,7 +1,6 @@
 import {
   getArtworkReszied,
   getImageWrinkled,
-  changeApparelColor, changeApparelTexture, applyInnerWrinkle,
 } from 'apiResources/utils/artworkImageCreator';
 import Config from "apiResources/constants/Config";
 import coordinateData from 'apiResources/constants/coordinateData';
@@ -16,7 +15,6 @@ import { createCanvas } from 'canvas';
 
 export const createImageOfStore_DETAIL_2 = async (props:any) => {
   const { categoryName, productCode, productSize, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
-
   [canvas.width, canvas.height] = [1000, 1000];
   const ctx = canvas.getContext('2d');
   const tempCanvas = createCanvas(1000, 1000);
@@ -24,29 +22,27 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   let printPosition = '';
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
   let patternDstCoords = coordinateData[productCode];
-  let productPath = `${Config.RESOURCE_CDN_URL}/Apparel/${productCode}`;
+  let productPath = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const imageUniqueKey = uniqueKey();
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${imageUniqueKey}`;
   let productOption = '';
   let extraLayer:any = [];
   let extraLayerImage;
-
-  if (coordinateData[productCode].front && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
-
-    productOption = 'front';
-    patternDstCoords = patternDstCoords.front;
+  console.log(productCode)
+  if (coordinateData[productCode]['T00129'] && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
+    // productOption = 'front';
+    productOption = 'T00129';
+    patternDstCoords = patternDstCoords[productOption];
 
   } else if (CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
 
-    if (coordinateData[productCode][productSize]) {
-
-      productOption = productSize;
-    }
+    productOption = '';
 
   } else {
 
-    productOption = 'back';
-    patternDstCoords = coordinateData[productCode].back;
+    // productOption = 'back';
+    productOption = 'T00130';
+    patternDstCoords = coordinateData[productCode][productOption];
   }
 
   // 옵션이 있는 경우 [이미지경로, 아트워크 들어 갈 좌표 변경해준다]
@@ -59,7 +55,6 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   } else {
     patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
-
   // ** ____ 임시로 psd 좌표 나누기 2 해서 사용 ____ ** //
   patternDstCoords = patternDstCoords.map((coord:number) => {
     return coord / 2;
@@ -74,8 +69,8 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     }
   }
 
-  const productImage = await loadImage(`${productPath}/${productCode}_${optionInfo.colorCode}.png`);
-  const productCropImage = await loadImage(`${productPath}/${productCode}_crop.png`);
+  const productImage = await loadImage(`${productPath}/${optionInfo.colorCode}.png`);
+  const productCropImage = await loadImage(`${productPath}/crop.png`);
 
   // (0) 썸네일 이미지 텍스트 파일로 변환
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
@@ -91,9 +86,10 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
 
   if (extraLayer.length) {
     if (extraLayer.includes('finger')) {
-      extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}.png`);
+      extraLayerImage = await loadImage(`${productPath}/${extraLayer[0]}.png`);
     } else {
-      extraLayerImage = await loadImage(`${productPath}/${productCode}_${extraLayer[0]}_${optionInfo.colorCode}.png`);
+      extraLayerImage = await loadImage(`${productPath}/${extraLayer[0]}_${optionInfo.colorCode}.png`);
+      console.log(`${productPath}/${extraLayer[0]}_${optionInfo.colorCode}.png`);
     }
 
     ctx.globalCompositeOperation = 'source-over'

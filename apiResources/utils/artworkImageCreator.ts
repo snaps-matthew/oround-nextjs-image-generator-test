@@ -46,7 +46,7 @@ export const getImageWrinkled = (productImgPath:string, productCode:string, patt
 
   return new Promise((resolve, reject) => {
     // exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -10x10 -composite \\( +clone ${productImgPath}/${productCode}_crop.png -compose multiply -composite \\) -delete 0 PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
-    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/${productCode}_blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -10x10 -composite PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
+    exec(`convert inline:${patternImgPath}.txt ${productImgPath}/blur.png -alpha set -virtual-pixel transparent -compose displace -set option:compose:args -10x10 -composite PNG:- | base64`, {maxBuffer: 1024 * 102400}, async (err:ExecException, stdout:string) => {
 
       if (err) console.error(err);
 
@@ -61,7 +61,7 @@ export const getImageWrinkled = (productImgPath:string, productCode:string, patt
 export const imageDstOut = (targetPath:string, productPath:string, maskImgName:string, productCode:string) => {
 
   return new Promise((resolve, reject) => {
-    exec(`composite -compose Dst_Out -gravity center ${productPath}/${productCode}_${maskImgName}.png inline:${targetPath}.txt -alpha Set PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
+    exec(`composite -compose Dst_Out -gravity center ${productPath}/${maskImgName}.png inline:${targetPath}.txt -alpha Set PNG:- | base64`, { maxBuffer: 1024 * 102400 }, async (err:ExecException, stdout:string) => {
       if (err) console.error(err);
 
       await imageTextSaver(stdout, targetPath)
@@ -106,7 +106,7 @@ export const multiLayerMerger = async (layers:string[], productCode:string, prod
   for (let i=0; i < layers.length; i++) {
     const currentLayer = layers[i];
 
-    layerPaths += currentLayer.includes('pattern') ? `inline:${ImageProcessingRef.BASE_RESOURCE_PATH}/${currentLayer}_${imageUniqueKey}.txt ` : `${productPath}/${productCode}_${currentLayer}.png `
+    layerPaths += currentLayer.includes('pattern') ? `inline:${ImageProcessingRef.BASE_RESOURCE_PATH}/${currentLayer}_${imageUniqueKey}.txt ` : `${productPath}/${currentLayer}.png `
   }
 
   return new Promise((resolve, reject) => {

@@ -7,25 +7,22 @@ const LayeringRef:any = {
   '1040130002': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1040130003': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1050050001': {
-    'front': ['string']
+    'T00129': ['string']
   },
   '1050050002': {
-    'front': ['string']
+    'T00129': ['string']
   },
   '1050050003': {
-    'back': ['hood']
+    'T00130': ['hood']
   },
   '1050060001': {
-    'front': ['string']
+    'T00129': ['string']
   },
   '1050060002': {
-    'front': ['string']
+    'T00129': ['string']
   },
   "1050080001": ['finger'],
-  '1050080002': {
-    'L': ['finger'],
-    'M': ['finger']
-  },
+  '1050080002': ['finger'],
   '1050080003': ['finger']
 }
 
