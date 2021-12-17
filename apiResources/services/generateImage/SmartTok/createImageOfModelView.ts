@@ -31,10 +31,10 @@ export const createImageOfModelView = async (props:any) => {
 
   // (3) 상품 위에 올리기
   const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
-  // const productImage = await loadImage(`${productPath}/${productColor}.png`);
-  // ctx.drawImage(productImage, 0, 0);
-  ctx.fillRect(0, 0, 1000, 1000);
-  ctx.drawImage(finalImage, 0, 0);
+  const productImage = await loadImage(`${productPath}/${productColor}.png`);
+  ctx.drawImage(productImage, 0, 0, 1000, 1000);
+  ctx.drawImage(finalImage, 0, 0, 1000, 1000);
+  console.log(`${productPath}/${productColor}.png`);
 
   // (4) 임시 생성된 파일들 삭제하기
   patternImageRemover([patternImageFileName])
