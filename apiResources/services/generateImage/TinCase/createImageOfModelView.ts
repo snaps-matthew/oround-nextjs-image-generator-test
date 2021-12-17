@@ -9,8 +9,8 @@ import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfModelView = async (props:any) => {
-  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
-  const productPath = `${Config.RESOURCE_CDN_URL}/TinCase/${productCode}/${productSize}/${productColor}`;
+  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
+  const productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}/${printPosition}/model`;
   let patternSrcCoords = [];
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
   const ctx = canvas.getContext('2d');
@@ -35,12 +35,11 @@ export const createImageOfModelView = async (props:any) => {
   await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
-  const artworkMasked = await imageDstOut(patternImageFileName, productPath, 'mask', productCode);
+  const artworkMasked = await imageDstOut(patternImageFileName, productPath, `${productSize}_mask`, productCode);
   
   // (3) 상품 위에 올리기
   const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
-  const productImage = await loadImage(`${productPath}/${productCode}.png`);
-
+  const productImage = await loadImage(`${productPath}/${productColor}_${productSize}.png`);
   ctx.drawImage(productImage, 0, 0);
   ctx.drawImage(finalImage, 0, 0);
 

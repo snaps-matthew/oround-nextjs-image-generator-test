@@ -21,13 +21,14 @@ class TinCase extends ImageComposer {
       artworkWidth,
       productSize,
       optionInfo,
+      printPosition,
       canvas } = this;
 
     // 리스트의 경우 하나의 이미지만 사용한다.
 
     if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
 
-      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas })
+      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 

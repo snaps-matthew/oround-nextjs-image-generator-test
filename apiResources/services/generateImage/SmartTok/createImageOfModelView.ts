@@ -8,11 +8,10 @@ import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfModelView = async (props:any) => {
-  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
+  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
   const ctx = canvas.getContext('2d');
   [canvas.width, canvas.height] = [1000, 1000];
-
-  const productPath = `${Config.RESOURCE_CDN_URL}/SmartTok/${productCode}/${productColor}/model`;
+  const productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}/${printPosition}/model`;
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
   // 틴케이스 patternDstCoords => 사이즈만 고려
   const patternDstCoords = coordinateData[productCode].map((coord:any) => {
@@ -32,9 +31,9 @@ export const createImageOfModelView = async (props:any) => {
 
   // (3) 상품 위에 올리기
   const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
-  const productImage = await loadImage(`${productPath}/${productCode}.png`);
-
-  ctx.drawImage(productImage, 0, 0);
+  // const productImage = await loadImage(`${productPath}/${productColor}.png`);
+  // ctx.drawImage(productImage, 0, 0);
+  ctx.fillRect(0, 0, 1000, 1000);
   ctx.drawImage(finalImage, 0, 0);
 
   // (4) 임시 생성된 파일들 삭제하기

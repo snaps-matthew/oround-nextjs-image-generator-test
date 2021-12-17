@@ -21,11 +21,13 @@ class SmartTok extends ImageComposer {
       artworkWidth,
       productSize,
       optionInfo,
-      canvas } = this;
+      printPosition,
+      canvas,
+    } = this;
 
     if (this.target === TargetType.STORE_LIST_1 || this.target === TargetType.STORE_DETAIL_2) {
 
-      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas })
+      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 

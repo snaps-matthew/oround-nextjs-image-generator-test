@@ -5,8 +5,8 @@ import coordinateData from 'apiResources/constants/coordinateData';
 import { canvasLayerMerger, flipImage, imageMasker } from 'apiResources/utils/imageProcessor';
 
 export const createImageOfModelView = async (props:any) => {
-  const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas } = props;
-  const productPath = `${Config.RESOURCE_CDN_URL}/Button/${productCode}/${productSize}`;
+  const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
+  const productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}/${printPosition}/model`;
 
   // 캔버스 생성하기
   canvas.width = 1000;
@@ -37,11 +37,11 @@ export const createImageOfModelView = async (props:any) => {
   const frontPatternHeight = patternDstCoordsFront[5] - patternDstCoordsFront[3];
 
   const buttonType = LayeringRef[productCode][3];
-  const productImage = await loadImage(`${productPath}/${productCode}.png`);
-  const productMaskImage = await loadImage(`${productPath}/${productCode}_mask.png`);
-  const artworkFrontMask = await loadImage(`${productPath}/${productCode}_frontmask.png`);
-  const glareImage = await loadImage(`${productPath}/${productCode}_glare.png`);
-  const buttonBack = await loadImage(`${productPath}/${productCode}_${buttonType}.png`);
+  const productImage = await loadImage(`${productPath}/${productSize}.png`);
+  const productMaskImage = await loadImage(`${productPath}/${productSize}_mask.png`);
+  const artworkFrontMask = await loadImage(`${productPath}/${productSize}_frontmask.png`);
+  const glareImage = await loadImage(`${productPath}/${productSize}_glare.png`);
+  const buttonBack = await loadImage(`${productPath}/${productSize}_${buttonType}.png`);
 
   const frontArtworkMasked = await imageMasker(thumbnailImage, artworkFrontMask, frontPatternX, frontPatternY, frontPatternWidth, frontPatternHeight, 1000, 1000);
   const flippedImage = await flipImage(thumbnailImage, backPatternX, backPatternY, backPatternWidth, backPatternHeight, 1000, 1000);
