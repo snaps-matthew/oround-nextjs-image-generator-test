@@ -6,6 +6,7 @@ import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import TargetType from 'apiResources/constants/TargetType';
 import { getArtworkImage, getCreateImageInitInfo, getScale } from '../../../utils/getSelectedScene';
+import { getOffsetWrapper } from 'apiResources/utils/getOffsetWrapper';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
 
@@ -22,8 +23,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
     //target 1, 2, 3의 경우
     const skinImage_top = await loadImage(skinPathTop);
 
-    const wrapper = getWrapperSize(productCode)
-    const offset = getOffset(productCode, SceneType.page)
+    const {wrapper, offset}  = getOffsetWrapper(productCode, SceneType.page, directionCode, "Y")
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scale = getScale(groupDelimiterName)
     const wrapperWidth = wrapper.width * scale

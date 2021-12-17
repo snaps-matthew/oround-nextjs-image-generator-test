@@ -13,7 +13,7 @@ import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
 import { compositeMultiplyFromCanvas } from 'apiResources/utils/compositeMultiplyFromCanvas';
 import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
-import { getFrameNinePathUrl } from '../../../api/getFrameNinePathUrl';
+import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
 import { largePrintGlossy, metalBrush } from './framePaperEffect';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
@@ -33,7 +33,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   let ratio = 0
   if(productEditInfo.size.length > 0){
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
-    ratio = ratio * scale
+    // ratio = ratio * scale
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
     const dummyOroundImage = await loadErrorImage("size empty")

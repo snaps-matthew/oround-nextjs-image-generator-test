@@ -6,6 +6,7 @@ import TargetType from 'apiResources/constants/TargetType';
 import { SceneType } from 'apiResources/constants/sceneType';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { getArtworkImage, getCreateImageInitInfo, getScale } from 'apiResources/utils/getSelectedScene';
+import { getOffsetWrapper } from 'apiResources/utils/getOffsetWrapper';
 
 export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 
@@ -18,7 +19,6 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
   const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}_${sizeCode}`;
   const skinPathTop = skinPath+'_top.png';
   const skinPathBottom = skinPath+'_bottom.png';
-
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   if (target === TargetType.STORE_DETAIL_3 ) {
@@ -26,9 +26,7 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
     const skinImage_bottom = await loadImage(skinPathBottom);
     const skinImage_top = await loadImage(skinPathTop);
 
-    const wrapper = getWrapperSize(productCode)
-    const offset = getOffset(productCode, SceneType.page)
-
+    const {wrapper, offset}  = getOffsetWrapper(productCode, SceneType.page, directionCode, "Y")
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scale = getScale(groupDelimiterName)
     const wrapperWidth = wrapper.width * scale
