@@ -4,8 +4,8 @@ import CommonCode from "apiResources/constants/CommonCode";
 export const getSizeToTargetImage:any = (themeInfo: any, directionCode:string, horizontalSizeMm: any, verticalSizeMm: any) => {
   let inputWidthMM = horizontalSizeMm;
   let inputHeightMM = verticalSizeMm;
-  // const isVertical = inputWidthMM < inputHeightMM;
-  const isVertical = directionCode===CommonCode.DIRECTION_VERTICAL
+  const isVertical = inputWidthMM < inputHeightMM;
+  // const isVertical = directionCode===CommonCode.DIRECTION_VERTICAL
   const maxMM = themeInfo.maxMM;
   const minMM = themeInfo.minMM;
   let maxPX = themeInfo.maxPX;
