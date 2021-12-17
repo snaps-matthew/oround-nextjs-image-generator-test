@@ -24,31 +24,31 @@ export interface ProductGroupInfoState {
 const productInfo: ProductGroupInfoState = {
   /** frame */
   '1010010001': { // 원목 액자
-    margin: 50
+    margin: 110
   },
   '1010020001': { // 알루미늄 액자
-    margin: 50
+    margin: 110
   },
   '1010030001': { // 메탈액자
-    margin: 50
+    margin: 65
   },
   '1010040001': { // 캔버스 액자
     margin: 25
   },
   '1010050001': { // 프리미엄 아크릴액자
-    margin: 50
+    margin: 65
   },
   '1010060001': { // 포스터
-    margin: 50
+    margin: 65
   },
   '1010070001': { // 대형사진인화
-    margin: 50
+    margin: 65
   },
   '1010080001': { // 포백스액자
-    margin: 50
+    margin: 65
   },
   '1010090001': { // 보드액자
-    margin: 50
+    margin: 65
   },
 
   /** sticker */
