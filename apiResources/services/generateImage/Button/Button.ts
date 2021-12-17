@@ -27,7 +27,7 @@ class Button extends ImageComposer {
     // 리스트의 경우 하나의 이미지만 사용한다.
     if (this.target === TargetType.STORE_DETAIL_2 || this.target === TargetType.STORE_LIST_1) {
 
-      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition })
+      return await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition, optionInfo })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 

@@ -23,7 +23,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const tempCtx = tempCanvas.getContext('2d');
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
   let patternDstCoords = coordinateData[productCode];
-  let productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  let productPath = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const imageUniqueKey = uniqueKey();
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${imageUniqueKey}`;
   let productOption = '';

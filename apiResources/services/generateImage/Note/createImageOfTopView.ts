@@ -16,7 +16,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const productCode:string = productEditInfo.productCode;
   const directionCode = productEditInfo.directionCode
 
-  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const skinPath = `${domain}/${SceneType.page}/${directionCode}/`;
   const skinPathTop = skinPath+'top.png';
 

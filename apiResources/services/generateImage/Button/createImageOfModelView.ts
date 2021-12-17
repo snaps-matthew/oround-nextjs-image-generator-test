@@ -5,8 +5,9 @@ import coordinateData from 'apiResources/constants/coordinateData';
 import { canvasLayerMerger, flipImage, imageMasker } from 'apiResources/utils/imageProcessor';
 
 export const createImageOfModelView = async (props:any) => {
-  const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
-  const productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}/${printPosition}/model`;
+  const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition, optionInfo } = props;
+  const productPath = `${Config.RESOURCE_CDN_URL}/${productCode}/${printPosition}/model`;
+  const isGloss = optionInfo.glossyCode === 'T00120' ? true : false;
 
   // 캔버스 생성하기
   canvas.width = 1000;
@@ -26,7 +27,7 @@ export const createImageOfModelView = async (props:any) => {
     return coord / 2;
   });
 
-    // 아트워크 정보 준비
+  // 아트워크 정보 준비
   // 뒷면
   const [backPatternX, backPatternY] = [1000 - patternDstCoordsBack[0], patternDstCoordsBack[3]];
   const backPatternWidth = patternDstCoordsBack[0] - patternDstCoordsBack[2];
@@ -43,11 +44,13 @@ export const createImageOfModelView = async (props:any) => {
   const glareImage = await loadImage(`${productPath}/${productSize}_glare.png`);
   const buttonBack = await loadImage(`${productPath}/${productSize}_${buttonType}.png`);
 
+
   const frontArtworkMasked = await imageMasker(thumbnailImage, artworkFrontMask, frontPatternX, frontPatternY, frontPatternWidth, frontPatternHeight, 1000, 1000);
   const flippedImage = await flipImage(thumbnailImage, backPatternX, backPatternY, backPatternWidth, backPatternHeight, 1000, 1000);
   const artworkMerged = await canvasLayerMerger([frontArtworkMasked, buttonBack, flippedImage]);
   const artworkMasked = await imageMasker(artworkMerged, productMaskImage, 0, 0, 1000, 1000, 1000, 1000);
-  const finalResult = await canvasLayerMerger([glareImage, artworkMasked, productImage]);
+  const layerOrder = isGloss ? [glareImage, artworkMasked, productImage] : [artworkMasked, productImage];
+  const finalResult = await canvasLayerMerger(layerOrder);
   ctx.drawImage(finalResult, 0, 0, 1000, 1000);
 
 }

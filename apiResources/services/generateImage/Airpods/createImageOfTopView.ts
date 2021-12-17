@@ -19,7 +19,7 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
   const colorCode = optionInfo.colorCode
   const groupDelimiterName = productEditInfo.groupDelimiterName
 
-  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const skinPath = `${domain}/${SceneType.page}/${directionCode}/${colorCode}`;
   const skinPathTop = skinPath+'_top.png';
   const skinPathBottom = skinPath+'_bottom.png';

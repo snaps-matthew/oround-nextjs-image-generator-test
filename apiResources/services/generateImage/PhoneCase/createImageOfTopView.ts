@@ -18,7 +18,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const groupDelimiterName = productEditInfo.groupDelimiterName
   const scale = getScale(groupDelimiterName)
   const isHardCase = productCode.slice(-1) === '2';
-  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const device = isHardCase ? '' : `${domain}/${SceneType.page}/1-device/${comparisonColorCode}.png`;
   const caseSkin = isHardCase ? '' : `${domain}/${SceneType.page}/2-case/T00088.png`;
   const skinPath = isHardCase ?

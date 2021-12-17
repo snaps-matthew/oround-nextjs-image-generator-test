@@ -12,7 +12,7 @@ export const createImageOfStoreList = async (props:{thumbnailImage: any, product
   const productCode:string = productEditInfo.productCode;
   const colorCode = optionInfo.colorCode
   const scene:any = getSelectedScene(productEditInfo, optionInfo);
-  const domain = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
+  const domain = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const skinPath = `${domain}/${sceneTypeCode[scene.type]}/${colorCode}`;
   const skinPathBottom = skinPath+'.png';
 

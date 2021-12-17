@@ -10,7 +10,7 @@ import { loadImage } from 'apiResources/utils/loadImage';
 
 export const createImageOfModelView = async (props:any) => {
   const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
-  const productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}/${printPosition}/model`;
+  const productPath = `${Config.RESOURCE_CDN_URL}/${productCode}/${printPosition}/model`;
   let patternSrcCoords = [];
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
   const ctx = canvas.getContext('2d');
