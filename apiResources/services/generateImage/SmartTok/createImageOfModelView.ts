@@ -34,7 +34,6 @@ export const createImageOfModelView = async (props:any) => {
   const productImage = await loadImage(`${productPath}/${productColor}.png`);
   ctx.drawImage(productImage, 0, 0, 1000, 1000);
   ctx.drawImage(finalImage, 0, 0, 1000, 1000);
-  console.log(`${productPath}/${productColor}.png`);
 
   // (4) 임시 생성된 파일들 삭제하기
   patternImageRemover([patternImageFileName])
