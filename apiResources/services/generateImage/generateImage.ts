@@ -16,7 +16,7 @@ import Button from 'apiResources/services/generateImage/Button/Button'
 import TargetType from 'apiResources/constants/TargetType';
 import ProductCode from '../../constants/ProductCode';
 export const generateImage = async (props: {
-  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
+  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any
 }) => {
 
   let imageComposer: any;

@@ -1,10 +1,7 @@
-import {imageTextSaver} from "apiResources/utils/imageTextSaver";
 import { Canvas, createCanvas, Image } from 'canvas';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { SizeCode } from 'apiResources/constants/SizeInfo'
-import { ColorStringCode } from 'apiResources/constants/ColorCode';
-import TargetType from 'apiResources/constants/TargetType';
 import CommonCode from 'apiResources/constants/CommonCode';
+import { sceneTypeCode } from 'apiResources/constants/sceneType';
 
 class ImageComposer {
   protected categoryName: string;
@@ -23,6 +20,7 @@ class ImageComposer {
   protected paperCode: string;
   protected backCode: string;
   protected ext: string;
+  protected printPosition: string;
   protected productColor: string;
   protected productEditInfo: any;
   public contentType: string;
@@ -44,11 +42,12 @@ class ImageComposer {
     this.contentType = '';
     this.thumbnailImage = createCanvas(10,10);
     this.optionInfo = '';
-    this.productEditInfo = ''
+    this.productEditInfo = '';
+    this.printPosition = '';
   }
 
   async init(data:{
-    thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any
+    thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any
   }) {
 
     // 이미지 매직에 사용될 인자들
@@ -68,6 +67,7 @@ class ImageComposer {
     this.productSize = data.optionInfo.sizeCode;
     this.productColor = data.optionInfo.colorCode;
     this.contentType = ext === 'jpg'? 'image/jpeg' : 'image/png';
+    this.printPosition = sceneTypeCode[data.scene.type];
     this.ext = ext;
 
     this.artworkWidth = (!data.optionInfo.printPositionCode || data.optionInfo.printPositionCode === CommonCode.PRINT_POSITION_FRONT) ? data.productEditInfo.edit[0].width * 2 : data.productEditInfo.edit[1].width * 2;

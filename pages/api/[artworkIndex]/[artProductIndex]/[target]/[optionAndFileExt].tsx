@@ -78,10 +78,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
-
     if(scene){
       const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName))
-      const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo })
+      const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
         imageComposer.stream().pipe(res);
     }else{
       const dummyOroundImage = await loadErrorImage("sizeCode error");

@@ -14,25 +14,25 @@ import { loadImage } from 'apiResources/utils/loadImage';
 import { createCanvas } from 'canvas';
 
 export const createImageOfStore_DETAIL_2 = async (props:any) => {
-  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas } = props;
+  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, printPosition } = props;
   [canvas.width, canvas.height] = [1000, 1000];
   const ctx = canvas.getContext('2d');
   const tempCanvas = createCanvas(1000, 1000);
   const tempCtx = tempCanvas.getContext('2d');
-  let printPosition = '';
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
   let patternDstCoords = coordinateData[productCode];
-  let productPath = `${Config.RESOURCE_CDN_URL}/${productCode}`;
+  let productPath = `${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}${productCode}`;
   const imageUniqueKey = uniqueKey();
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${imageUniqueKey}`;
   let productOption = '';
   let extraLayer:any = [];
   let extraLayerImage;
+  const isFrontCoordinate = coordinateData[productCode][printPosition] || [];
 
-  if (coordinateData[productCode]['T00129'] && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
+  if (isFrontCoordinate.length && CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
     // productOption = 'front';
-    productOption = 'T00129';
-    patternDstCoords = patternDstCoords[productOption];
+    productOption = printPosition;
+    patternDstCoords = isFrontCoordinate;
 
   } else if (CommonCode.PRINT_POSITION_FRONT === optionInfo.printPositionCode) {
 
@@ -41,21 +41,18 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   } else {
 
     // productOption = 'back';
-    productOption = 'T00130';
+    productOption = printPosition;
     patternDstCoords = coordinateData[productCode][productOption];
   }
 
-  // 옵션이 있는 경우 [이미지경로, 아트워크 들어 갈 좌표 변경해준다]
   if (productOption) {
 
     productPath += `/${productOption}/model`;
-    patternDstCoords = coordinateData[productCode];
-    patternDstCoords = patternDstCoords[productOption];
 
   } else {
     productPath += '/model';
-    patternDstCoords = coordinateData[productCode].front || coordinateData[productCode];
   }
+
   // ** ____ 임시로 psd 좌표 나누기 2 해서 사용 ____ ** //
   patternDstCoords = patternDstCoords.map((coord:number) => {
     return coord / 2;
