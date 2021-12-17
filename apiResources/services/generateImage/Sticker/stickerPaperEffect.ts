@@ -14,7 +14,7 @@ export const stickerPaperEffect = async (paperCode:string, cutLine:number, templ
   oroundCV.contourPaintColor(contour.canvas);
 
 
-  const shadowCanvas = oroundCV.drawShadowColor(contour.canvas, false, 0, 1, 2, "#000000b3");
+  const shadowCanvas = oroundCV.drawShadowColor(contour.canvas, false, 0, 0, 6, "#00000080");
   result.ctx.drawImage(shadowCanvas, 0, 0);
 
   // 합성이 순서대로 진행되야함 S

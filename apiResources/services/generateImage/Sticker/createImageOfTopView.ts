@@ -47,10 +47,6 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
 
   if (target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3) {
     //target 1,  3의 경우
-    ctx.shadowColor ='rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 2;
-    ctx.shadowOffsetX = 0;
-    ctx.shadowOffsetY = 2;
     const size = imageFull(width, height, outBox.width, outBox.height, 0);
     ctx.drawImage(result.canvas, size.x, size.y, size.width, size.height);
 
