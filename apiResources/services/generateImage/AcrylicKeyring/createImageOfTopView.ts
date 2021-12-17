@@ -31,6 +31,8 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
     paperShadowColor= "#88000D80"
   }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_PURPLE){
     paperShadowColor= "#401565e6"
+  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_HOLOGRAM_PEARL){
+    paperShadowColor= "#d7bfff80"
   }else{
     paperShadowColor= "#e3e3e380"
   }
