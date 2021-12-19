@@ -27,13 +27,13 @@ const ListImageOffset:any = {
     x: 142, y: 207, width: 714, height: 714
   },
   '1050060003': {
-    x: 175, y: 234, width: 670, height: 670
+    x: 187, y: 333, width: 624, height: 624
   },
   '1050060002': {
     x: 201, y: 268, width: 568, height: 568
   },
   '1050010003': {
-    x: 187, y: 333, width: 624, height: 624
+    x: 190, y: 269, width: 620, height: 620
   },
   '1050010004': {
     x: 155, y: 275, width: 690, height: 690
