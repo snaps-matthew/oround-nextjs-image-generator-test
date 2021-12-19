@@ -210,9 +210,9 @@ const productInfo: ProductGroupInfoState = {
     }
   },
   '1040050002': { // card folder
-    wrapperSize: { width: 343, height: 495 },
+    wrapperSize: { width: 381, height: 517 },
     offset: {
-      page: { top: 29, left: 25 }
+      page: { top: 40, left: 43 }
     }
   },
   '1040060001': { // tinCase
