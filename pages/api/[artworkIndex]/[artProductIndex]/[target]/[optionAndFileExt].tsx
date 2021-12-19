@@ -94,6 +94,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   } catch (error) {
     console.log("-=-on server error-=-", error);
-    return { notFound: true}
+    const errorImageCanvas = await loadErrorImage("on server error");
+    errorImageCanvas.createJPEGStream({
+      quality: 1,
+      progressive: true,
+      chromaSubsampling: false,
+    }).pipe(res);
   }
 }

@@ -7,9 +7,6 @@ import Config from 'apiResources/constants/Config';
 export const loadImage = async (url: string): Promise<any> => {
   return await Canvas.loadImage(url).catch((err)=> {
     console.log(`-=-loadImage error-=- : ${url}`);
-    return {
-      notFound: true,
-    }
   });
 }
 
