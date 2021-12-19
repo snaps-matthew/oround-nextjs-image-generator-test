@@ -37,9 +37,8 @@ export const createImageOfStoreList = async (props:{templateImage: any, productE
     ratio = productEditInfo.size[0].horizontalSizePx / productEditInfo.size[0].horizontalSizeMm;
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
-    const dummyOroundImage = await loadErrorImage("size empty")
-    const size = imageFull(width, height, outBox.width, outBox.height, 0);
-    ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+    const errorImageCanvas = await loadErrorImage("size empty")
+    ctx.drawImage(errorImageCanvas, 0, 0);
     return
   }
 

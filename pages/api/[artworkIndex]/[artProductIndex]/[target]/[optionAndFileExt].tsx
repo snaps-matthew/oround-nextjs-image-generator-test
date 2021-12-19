@@ -77,16 +77,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scene = getSelectedScene(productEditInfo, optionInfo);
     res.status(HttpResponseStatusCode.SUCCESS);
+
     res.setHeader("content-type", 'image/png');
     if(scene){
       const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName))
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
         imageComposer.stream().pipe(res);
     }else{
-      const dummyOroundImage = await loadErrorImage("sizeCode error");
-      const tmp = newCanvas(500, 500);
-      tmp.ctx.drawImage(dummyOroundImage, 0,0,500,500);
-      tmp.canvas.createJPEGStream({
+      const errorImageCanvas = await loadErrorImage("scene error");
+      errorImageCanvas.createJPEGStream({
         quality: 1,
         progressive: true,
         chromaSubsampling: false,
@@ -94,7 +93,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
   } catch (error) {
-    console.log("on server error");
-    console.log(error);
+    console.log("-=-on server error-=-", error);
+    return { notFound: true}
   }
 }

@@ -5,4 +5,5 @@ export default {
   API_V1: '/api/v1',
   ARTWORK_RESOURCE_SKIN: '/artwork-editor/resource/product/',
   ARTWORK_INFO: '/artwork/product/edit-info',
+  ERROR_IMAGE_URL:'https://oround-image-generator-resources.s3.ap-northeast-2.amazonaws.com/Texture/error.png',
 };

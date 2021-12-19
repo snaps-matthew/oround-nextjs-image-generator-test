@@ -39,9 +39,8 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
     // ratio=ratio*scale
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
-    const dummyOroundImage = await loadErrorImage("size empty")
-    const size = imageFull(width, height, outBox.width, outBox.height, 0);
-    ctx.drawImage(dummyOroundImage, size.x, size.y, size.width, size.height);
+    const errorImageCanvas = await loadErrorImage("size empty")
+    ctx.drawImage(errorImageCanvas, 0, 0);
     return
   }
 

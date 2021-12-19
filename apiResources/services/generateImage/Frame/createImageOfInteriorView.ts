@@ -39,8 +39,8 @@ export const createImageOfInteriorView = async (props:{templateImage: any, produ
     // ratio = ratio * scale
   }else{
     //사이즈가 없는경우 더미이미지로 리턴
-    const dummyOroundImage = await loadErrorImage("size empty")
-    ctx.drawImage(dummyOroundImage, 0,0);
+    const errorImageCanvas = await loadErrorImage("size empty")
+    ctx.drawImage(errorImageCanvas, 0, 0);
     return
   }
   const margin = getPreviewMargin(productCode);
