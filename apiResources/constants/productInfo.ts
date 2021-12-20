@@ -55,6 +55,9 @@ const productInfo: ProductGroupInfoState = {
   '1021010001': { // 스티커
     margin: 30
   },
+  '1021020001': {   // DIY 스티커
+    margin: 30
+  },
 
   /** phone */
   '1030010001': { //갤럭시S21ultra 젤리
@@ -117,7 +120,6 @@ const productInfo: ProductGroupInfoState = {
   '1030100002': { // 갤럭시노트10
     wrapperSize: { width: 380, height: 650 }
   },
-
   '1030110001': { // 아이폰X
     wrapperSize: { width: 380, height: 650 }
   },
@@ -172,9 +174,6 @@ const productInfo: ProductGroupInfoState = {
   '1030200001': { // 아이폰12mini
     wrapperSize: { width: 380, height: 650 }
   },
-  '1030220001': { // 아이폰Se
-    wrapperSize: { width: 380, height: 650 }
-  },
   '1030200002': { // 아이폰12mini
     wrapperSize: { width: 380, height: 650 }
   },
@@ -184,7 +183,14 @@ const productInfo: ProductGroupInfoState = {
   '1030210002': { // 아이폰12proMax
     wrapperSize: { width: 380, height: 650 }
   },
+  '1030220001': { // 아이폰SE
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030220002': { // 아이폰SE
+    wrapperSize: { width: 380, height: 650 }
+  },
 
+  /** goods */
   '1040010001': { // acrylicKeyring
     margin: 30
   },
@@ -272,6 +278,21 @@ const productInfo: ProductGroupInfoState = {
   '1040130003': { // magneticButton heart
     wrapperSize: { width: 385, height: 352 }
   },
+  '1040140001': { // 핸드폰 스트랩
+    margin: 50
+  },
+  '1040150001': { // 마스크 스트랩
+    margin: 50
+  },
+  '1040160001': { // 슬리퍼
+    margin: 50
+  },
+  '1040170001': { // 머그컵
+    margin: 50
+  },
+  '1040180001': { // 포토카드
+    margin: 50
+  },
 
   /** apparel */
   '1050010001': { //길단 20수 스탠다드 핏 라운드 반팔티
@@ -316,6 +337,13 @@ const productInfo: ProductGroupInfoState = {
       back: { top: 214, left: 300 }
     }
   },
+  '1050010007': { //오프린트미 크루넥 반팔티
+    wrapperSize: { width: 1000, height: 1000 },
+    offset: {
+      front: { top: 310, left: 300 },
+      back: { top: 214, left: 300 }
+    }
+  },
   '1050020001': { //프린트스타 17수 라운드 긴팔
     wrapperSize: { width: 1000, height: 1000 },
     offset: {
@@ -333,8 +361,8 @@ const productInfo: ProductGroupInfoState = {
   '1050030001': { //프린트스타 베이직 맨투맨
     wrapperSize: { width: 1000, height: 1000 },
     offset: {
-      front: { top: 230, left: 300 },
-      back: { top: 266, left: 300 }
+      front: { top: 262, left: 300 },
+      back: { top: 297, left: 300 }
     }
   },
   '1050030002': { //오프린트미 릴렉스 핏 맨투맨
@@ -389,7 +417,7 @@ const productInfo: ProductGroupInfoState = {
   '1050060001': { //프린트스타 베이직 후드티
     wrapperSize: { width: 1000, height: 1000 },
     offset: {
-      front: { top: 281, left: 286 },
+      front: { top: 281, left: 300 },
       back: { top: 337, left: 300 }
     }
   },
@@ -469,12 +497,7 @@ const productInfo: ProductGroupInfoState = {
       front: { top: 353, left: 272 }
     }
   },
-  '1050070009': { // 베이직 에코백 L
-    wrapperSize: { width: 1000, height: 1000 },
-    offset: {
-      front: { top: 435, left: 272 }
-    }
-  },
+
   '1050070008': { //오프린트미 베이직 에코백
     wrapperSize: { width: 1000, height: 1000 },
     offset: {
@@ -486,7 +509,13 @@ const productInfo: ProductGroupInfoState = {
     offset: {
       front: { top: 347, left: 214 }
     }
-  }
+  },
+  '1050070009': { // 베이직 에코백 L
+    wrapperSize: { width: 1000, height: 1000 },
+    offset: {
+      front: { top: 435, left: 272 }
+    }
+  },
 
 };
 
