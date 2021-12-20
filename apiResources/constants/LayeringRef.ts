@@ -7,7 +7,7 @@ const LayeringRef:any = {
   '1040130002': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1040130003': ['back', 'patternImageBack', 'patternImageFront', 'magnet', 'glare'],
   '1050050001': {
-    'T00129': ['string']
+    '167002': ['string']
   },
   '1050050002': {
     '167002': ['string']

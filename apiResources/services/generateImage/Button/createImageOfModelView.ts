@@ -3,11 +3,12 @@ import { loadImage } from 'apiResources/utils/loadImage'
 import LayeringRef from 'apiResources/constants/LayeringRef';
 import coordinateData from 'apiResources/constants/coordinateData';
 import { canvasLayerMerger, flipImage, imageMasker } from 'apiResources/utils/imageProcessor';
+import CommonCode from 'apiResources/constants/CommonCode';
 
 export const createImageOfModelView = async (props:any) => {
   const { productCode, productSize, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition, optionInfo } = props;
   const productPath = `${Config.RESOURCE_CDN_URL}/${productCode}/${printPosition}/model`;
-  const isGloss = optionInfo.glossyCode === 'T00120' ? true : false;
+  const isGloss = optionInfo.glossyCode === CommonCode.EFFECT_LARGE_PRINT_GLOSSY ? true : false;
 
   // 캔버스 생성하기
   canvas.width = 1000;

@@ -35,9 +35,9 @@ export const imageMasker = async (srcImg:any,
 export const canvasLayerMerger = async (layers:any) => {
   const canvas = createCanvas(1000, 1000);
   const ctx = canvas.getContext('2d');
+  ctx.globalCompositeOperation = 'destination-over';
   for (let i=0; i < layers.length; i++) {
     ctx.drawImage(layers[i], 0,0, 1000, 1000);
-    ctx.globalCompositeOperation = 'destination-over';
   }
   return canvas;
 }
