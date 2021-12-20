@@ -31,15 +31,15 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
     paperShadowColor= "#88000D80"
   }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_PURPLE){
     paperShadowColor= "#401565e6"
-  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_HOLOGRAM_PEARL){
-    paperShadowColor= "#d7bfff80"
-  }else{
-    paperShadowColor= "#e3e3e380"
+  }else if(glitterColorCode===CommonCode.PAPER_ACRYLIC_GLITTER_HOLOGRAM_PEARL||
+    glitterColorCode===CommonCode.PAPER_ACRYLIC_TRANSPARENCY){
+    paperShadowColor= "#e3e3e380" //투명, 글리터 홀로그램펄
   }
   let paperImagePath = "";
   if(acrylicCode===CommonCode.PAPER_ACRYLIC_GLITTER ){
     paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${glitterColorCode}.png`;
   }else if(acrylicCode===CommonCode.PAPER_ACRYLIC_HOLOGRAM){
+    paperShadowColor= "#d7bfff80"
     paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${acrylicCode}.png`;
   }
   if (target !== TargetType.STORE_DETAIL_4) {
