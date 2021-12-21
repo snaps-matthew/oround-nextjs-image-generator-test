@@ -12,13 +12,8 @@ import { getFrameColorUrl } from './getFrameColorUrl';
 import frameRectangleSkinInfo from './frameRectangleSkinInfo';
 import { getFrameSkinPolygonSize } from 'apiResources/services/generateImage/WoodFrame/getFrameSkinPolygonSize';
 import { OroundCV } from 'apiResources/utils/OroundCV';
-import frame_wood_theme from 'apiResources/services/generateImage/WoodFrame/frame_wood_theme';
-import ProductCode from 'apiResources/constants/ProductCode';
-import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
-import Config from 'apiResources/constants/Config';
-import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
 import { drawFrame } from 'apiResources/services/generateImage/WoodFrame/drawFrame';
-import frame_theme from '../Frame/frame_theme';
+import { makeMatSkin } from 'apiResources/utils/makeMatSkin';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
@@ -57,6 +52,10 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const tmp = newCanvas(frameWidth, frameHeight);      // 최종 출력물 캔버스
 
   tmp.ctx.drawImage(templateImage, innerMargin, innerMargin);
+
+  const matCanvas = makeMatSkin(productEditInfo, scale);
+  tmp.ctx.drawImage(matCanvas, innerMargin, innerMargin);
+
   for (let item of frameInfo) {
     const skinImg = await loadImage(frameSkinColor[item.type]);
     drawFrame(tmp.ctx, skinImg, item);

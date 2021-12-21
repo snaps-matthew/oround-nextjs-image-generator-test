@@ -1,28 +1,19 @@
-// import { GV } from '../constants/globalVariable'
-import CommonCode from 'apiResources/constants/CommonCode'
+import ProductCode from '../constants/ProductCode';
 
-export const getFrameWoodSkinPolygonInfo = (category:string, sizeInfo:any, paperCode:string)=> {
+export const getFrameWoodSkinPolygonInfo = ( sizeInfo:any, productCode:string)=> {
   // const sceneType = selectedScene.get('@type')
   // const sceneSubType = selectedScene.get('@subType')
   // const sizeInfo = GV.product.sizeInfoList[sceneType + sceneSubType]
-  let pageWidthPixel = sizeInfo? sizeInfo.pixelWidth : 0
-  let pageHeightPixel = sizeInfo? sizeInfo.pixelHeight : 0
-  let pageWidthMm = sizeInfo? sizeInfo.millimeterWidth : 0
-
-  //가로사이즈인데 세로형일경우, 세로사이즈인데 가로형일 경우, 가로세로를 서로 바꿔준다.
-  if((pageWidthPixel > pageHeightPixel && category === CommonCode.DIRECTION_VERTICAL) ||
-    (pageWidthPixel < pageHeightPixel && category === CommonCode.DIRECTION_HORIZONTAL)){
-    pageWidthPixel = sizeInfo? sizeInfo.pixelHeight : 0
-    pageHeightPixel = sizeInfo? sizeInfo.pixelWidth : 0
-    pageWidthMm = sizeInfo? sizeInfo.millimeterHeight : 0
-  }
+  let pageWidthPixel = sizeInfo? sizeInfo.horizontalSizePx : 0
+  let pageHeightPixel = sizeInfo? sizeInfo.verticalSizePx : 0
+  let pageWidthMm = sizeInfo? sizeInfo.horizontalSizeMm : 0
 
   let frameThick = 0;
   let frameDug = 0;
-  if(paperCode === CommonCode.PAPER_SOLID_WOOD_FRAME){
+  if(productCode === ProductCode.FRAME_WOOD){
     frameThick = 15      // 원목액자 프레임 두께
     frameDug = 8        // 원목액자 안으로 파고 들어간 크기 5가 실제 크기지만 생산 고려 여유값을 준다.
-  }else if(paperCode === CommonCode.PAPER_ALUMINIUM_FRAME){
+  }else if(productCode === ProductCode.FRAME_ALUMINIUM){
     frameThick = 7      // 알루미늄 프레임 두께
     frameDug = 7        // 알루미늄 안으로 파고 들어간 크기 5가 실제 크기지만 생산 고려 여유값을 준다.
   }

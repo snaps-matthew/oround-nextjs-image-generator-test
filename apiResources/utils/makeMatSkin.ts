@@ -1,49 +1,54 @@
 import { getPageMillimeterPerPixel } from 'apiResources/utils/getCoverMillimeterPerPixel'
 import { newCanvas } from 'apiResources/utils/newCanvas'
 import { getFrameWoodSkinPolygonInfo } from 'apiResources/utils/getFrameWoodSkinPolygonInfo'
+import { TYPE } from '../constants/type';
 
-export const makeMatSkin = (selectedScene:any, sizeInfo:any, paperCode:string, scale:number=1) => {
+export const makeMatSkin = (productEditInfo:any, scale:number) => {
+
+  const productCode:string = productEditInfo.productCode
+  const sizeInfo = productEditInfo.size[0];
+  const pagePXWidth:number = sizeInfo.horizontalSizePx;
+  const pageMMWidth:number = sizeInfo.horizontalSizeMm
+  const sceneWidth:number = productEditInfo.edit[0].width;
+  const sceneHeight:number = productEditInfo.edit[0].height;
+  const imageObject = productEditInfo.edit[0].object.find((obj:any) => {
+    const type = obj.type
+    return type === TYPE.OBJECT_IMAGE
+  })
+
+  const objX:number = imageObject.x * scale;
+  const objY:number = imageObject.y * scale;
+  const objW:number = imageObject.width * scale;
+  const objH:number = imageObject.height * scale;
   const MAT_CUTTING_PADDING = 2;     // 메트의 잘리는 영역 2mm
-  const {pageMillimeterPerPixel} = getPageMillimeterPerPixel(selectedScene);
+  const pageMillimeterPerPixel = pagePXWidth / pageMMWidth;      // page
   const matMargin = (MAT_CUTTING_PADDING * pageMillimeterPerPixel);
+  console.log('matMargin=-=-=',matMargin)
   const matPadding = matMargin * 2 * scale;
   const matThickness = matMargin * 1 * scale; // 1mm
-  const width = selectedScene.get('@width') * scale;
-  const height = selectedScene.get('@height') * scale;
+  const width = sceneWidth  * scale;
+  const height = sceneHeight * scale;
   const mat = newCanvas(width, height);
-  const images = selectedScene.get('object').filter((obj:{get:any})=> obj.get('@type') === 'image');
 
-  const {IN, innerBoxTopMargin} = getFrameWoodSkinPolygonInfo('=-= CATEGORY CODE =-=',sizeInfo, paperCode);
-  const frameMargin = innerBoxTopMargin/2
-  let isMat = true
-  images.forEach((obj:{get:any;}) => {
-    const objW = Number(obj.get('@width'))
-    const objH = Number(obj.get('@height'))
-    const objX = Number(obj.get('@x'))
-    const objY = Number(obj.get('@y'))
-    if(
-      isMat && (
-        IN[0].X-frameMargin > objX ||
-        IN[0].Y-frameMargin > objY ||
-        IN[2].X-frameMargin < objX+objW ||
-        IN[2].Y-frameMargin < objY+objH
-      )
-    ){
-      isMat = false
-    }
-  });
-  if(!isMat) return mat.canvas;
+  // const {IN, innerBoxTopMargin} = getFrameWoodSkinPolygonInfo( sizeInfo, productCode);
+  // const frameMargin = innerBoxTopMargin/2
+  // let isMat = true
+  //   if(
+  //     isMat && (
+  //       IN[0].X-frameMargin > imageObject.x ||
+  //       IN[0].Y-frameMargin > imageObject.y ||
+  //       IN[2].X-frameMargin < imageObject.x+imageObject.width ||
+  //       IN[2].Y-frameMargin < imageObject.y+imageObject.height
+  //     )
+  //   ){
+  //     isMat = false
+  //   }
+  // if(!isMat) return mat.canvas;
 
   mat.ctx.fillStyle = '#ffffff';
   mat.ctx.fillRect(0, 0, width, height);
 
-  images.forEach((obj:{get:any}) => {
-    const objW = obj.get('@width') * scale;
-    const objH = obj.get('@height') * scale;
-    const objX = obj.get('@x') * scale;
-    const objY = obj.get('@y') * scale;
     mat.ctx.clearRect(objX + (matMargin * scale), objY + (matMargin * scale), objW - matPadding, objH - matPadding);
-
     const border = [
       { color: '#e0e0e0', pos: [objX, objY,objX+objW, objY, objX+objW-matThickness, objY+matThickness, objX+matThickness, objY+matThickness]},
       { color: '#f1f1f1', pos: [objX+objW, objY, objX+objW, objY+objH, objX+objW-matThickness, objY+objH-matThickness, objX+objW-matThickness, objY+matThickness]},
@@ -61,8 +66,6 @@ export const makeMatSkin = (selectedScene:any, sizeInfo:any, paperCode:string, s
       mat.ctx.fillStyle=item.color;
       mat.ctx.fill();
     })
-    return obj
-  });
 
   return mat.canvas
 }
