@@ -14,9 +14,7 @@ export const createImageOfModelView = async (props:any) => {
   const productPath = `${Config.RESOURCE_CDN_URL}/${productCode}/${printPosition}/model`;
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
   // 틴케이스 patternDstCoords => 사이즈만 고려
-  const patternDstCoords = coordinateData[productCode].map((coord:any) => {
-    return coord / 2;
-  });
+  const patternDstCoords = coordinateData[productCode];
 
   let patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
 

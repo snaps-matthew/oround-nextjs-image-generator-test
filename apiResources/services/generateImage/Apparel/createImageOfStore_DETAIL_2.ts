@@ -53,11 +53,6 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
     productPath += '/model';
   }
 
-  // ** ____ 임시로 psd 좌표 나누기 2 해서 사용 ____ ** //
-  patternDstCoords = patternDstCoords.map((coord:number) => {
-    return coord / 2;
-  });
-
   // 추가 레이어 확인하고 올려준다
   if (LayeringRef[productCode]) {
     if (LayeringRef[productCode][productOption]) {
