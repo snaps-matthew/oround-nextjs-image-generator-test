@@ -4,9 +4,9 @@ import {generateImage} from "apiResources/services/generateImage/generateImage";
 import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getScale, getSelectedScene } from 'apiResources/utils/getSelectedScene';
-import TargetType from 'apiResources/constants/TargetType';
 import { loadErrorImage } from 'apiResources/utils/loadImage'
-import { EventProduct, EventProductList } from 'apiResources/constants/EventProductRef';
+import { EventProductList } from 'apiResources/constants/EventProductRef';
+import { eventProductDisplayer } from 'apiResources/utils/eventProductDisplayer';
 
 
 interface IRequestQuery {
@@ -73,35 +73,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const optionInfo = paramCodes.optionAndFileExt
     const sizeCode = paramCodes.optionAndFileExt.sizeCode
 
-    // 기획전(이벤트성) 상품들 임시 하드코딩
-    if (EventProductList.includes(artProductIndex)) {
-      console.log(['HELLO']);
-      res.status(HttpResponseStatusCode.SUCCESS);
-      res.setHeader("content-type", 'text/html');
-      switch (target) {
-        case TargetType.STORE_LIST_1:
-        case TargetType.STORE_DETAIL_3:
-          res.end(`<img src='${EventProduct[artProductIndex]['LIST']}' />`);
-          break;
-        case TargetType.STORE_DETAIL_2:
-          res.end(`<img src='${EventProduct[artProductIndex]['VIEW']}' />`);
-          break;
-        case TargetType.STORE_DETAIL_4:
-          res.end(`<img src='${EventProduct[artProductIndex]['ARTWORK']}' />`);
-          break;
-      }
-    }
-
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scene = getSelectedScene(productEditInfo, optionInfo);
-    res.status(HttpResponseStatusCode.SUCCESS);
 
+    res.status(HttpResponseStatusCode.SUCCESS);
     res.setHeader("content-type", 'image/png');
+
     if(scene){
-      const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName))
+      const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName));
+
+      // 이벤트 상품 확인
+      if (EventProductList.includes(productEditInfo.productCode)) {
+        res.status(HttpResponseStatusCode.SUCCESS);
+        res.setHeader("content-type", 'text/html');
+
+        const eventProduct = eventProductDisplayer(productEditInfo.productCode, artProductIndex, thumbnailImage, target);
+        res.end(`<img src='${eventProduct}' />`);
+      }
+
       const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
-        imageComposer.stream().pipe(res);
+      imageComposer.stream().pipe(res);
     }else{
       const errorImageCanvas = await loadErrorImage("scene error");
       errorImageCanvas.createJPEGStream({
