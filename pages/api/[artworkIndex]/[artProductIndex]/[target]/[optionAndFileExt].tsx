@@ -5,9 +5,8 @@ import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getScale, getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage'
-import { createCanvas } from 'canvas';
-import { newCanvas } from 'apiResources/utils/newCanvas';
+import { loadErrorImage } from 'apiResources/utils/loadImage'
+import { EventProduct, EventProductList } from 'apiResources/constants/EventProductRef';
 
 
 interface IRequestQuery {
@@ -73,6 +72,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const target = paramCodes.target
     const optionInfo = paramCodes.optionAndFileExt
     const sizeCode = paramCodes.optionAndFileExt.sizeCode
+
+    // 기획전(이벤트성) 상품들 임시 하드코딩
+    if (EventProductList.includes(artProductIndex)) {
+      console.log(['HELLO']);
+      res.status(HttpResponseStatusCode.SUCCESS);
+      res.setHeader("content-type", 'text/html');
+      switch (target) {
+        case TargetType.STORE_LIST_1:
+        case TargetType.STORE_DETAIL_3:
+          res.end(`<img src='${EventProduct[artProductIndex]['LIST']}' />`);
+          break;
+        case TargetType.STORE_DETAIL_2:
+          res.end(`<img src='${EventProduct[artProductIndex]['VIEW']}' />`);
+          break;
+        case TargetType.STORE_DETAIL_4:
+          res.end(`<img src='${EventProduct[artProductIndex]['ARTWORK']}' />`);
+          break;
+      }
+    }
+
     const productEditInfo = await getProductEditInfo(artProductIndex, sizeCode);
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scene = getSelectedScene(productEditInfo, optionInfo);
