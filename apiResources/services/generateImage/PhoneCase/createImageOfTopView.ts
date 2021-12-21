@@ -15,15 +15,16 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode:string = optionInfo.diviceColorCode;
+  const caseCode:string = optionInfo.caseCode
   const groupDelimiterName = productEditInfo.groupDelimiterName
   const scale = getScale(groupDelimiterName)
   const isHardCase = productCode.slice(-1) === '2';
   const domain = `${Config.RESOURCE_CDN_URL}/${productCode}`;
   const device = isHardCase ? '' : `${domain}/${SceneType.page}/1-device/${comparisonColorCode}.png`;
-  const caseSkin = isHardCase ? '' : `${domain}/${SceneType.page}/2-case/T00088.png`;
+  const caseSkin = isHardCase ? '' : `${domain}/${SceneType.page}/2-case/${caseCode}.png`;
   const skinPath = isHardCase ?
     `${domain}/${SceneType.page}/3-skin/T00090.png` :
-    `${domain}/${SceneType.page}/3-skin/${comparisonColorCode}_T00088.png`; // 젤리 케이스로 고정 (등록시 상품 코드가 같음- 사용자는 옵션으로 선택)
+    `${domain}/${SceneType.page}/3-skin/${comparisonColorCode}_${caseCode}.png`; // 젤리 케이스로 고정 (등록시 상품 코드가 같음- 사용자는 옵션으로 선택)
   const width = productEditInfo.edit[0].width * scale
   const height = productEditInfo.edit[0].height * scale
 
