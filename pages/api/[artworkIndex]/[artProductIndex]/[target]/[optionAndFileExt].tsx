@@ -5,9 +5,6 @@ import {getProductEditInfo} from "apiResources/api/getProductEditInfo";
 import generateThumbnail from 'apiResources/services/generateThumbnail/proc/generateThumbnail';
 import { getScale, getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import { loadErrorImage } from 'apiResources/utils/loadImage'
-import { EventProductList } from 'apiResources/constants/EventProductRef';
-import { eventProductDisplayer } from 'apiResources/utils/eventProductDisplayer';
-
 
 interface IRequestQuery {
   [key: string]: any;
@@ -82,18 +79,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if(scene){
       const thumbnailImage = await generateThumbnail(scene, getScale(groupDelimiterName));
-
-      // 이벤트 상품 확인
-      if (EventProductList.includes(productEditInfo.productCode)) {
-        res.status(HttpResponseStatusCode.SUCCESS);
-        res.setHeader("content-type", 'text/html');
-
-        const eventProduct = eventProductDisplayer(productEditInfo.productCode, artProductIndex, thumbnailImage, target);
-        res.end(`<img src='${eventProduct}' />`);
-      } else {
-        const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
-        imageComposer.stream().pipe(res);
-      }
+      const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, artProductIndex, scene })
+      imageComposer.stream().pipe(res);
 
     }else{
       const errorImageCanvas = await loadErrorImage("scene error");

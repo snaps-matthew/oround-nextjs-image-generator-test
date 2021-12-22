@@ -47,7 +47,7 @@ class ImageComposer {
   }
 
   async init(data:{
-    thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any
+    thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any, artProductIndex:string
   }) {
 
     // 이미지 매직에 사용될 인자들

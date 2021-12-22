@@ -13,17 +13,22 @@ import BuzCase from 'apiResources/services/generateImage/BuzCase/BuzCase'
 import Note from 'apiResources/services/generateImage/Note/Note'
 import Card from 'apiResources/services/generateImage/Card/Card'
 import Button from 'apiResources/services/generateImage/Button/Button'
-import TargetType from 'apiResources/constants/TargetType';
-import ProductCode from '../../constants/ProductCode';
+import ProductCode from 'apiResources/constants/ProductCode';
+import EventProduct from 'apiResources/services/generateImage/EventProduct/EventProduct'
+import { EventProductList } from 'apiResources/constants/EventProductRef';
 export const generateImage = async (props: {
-  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any
+  thumbnailImage:any, target:string, productEditInfo:any, optionInfo:any, scene:any, artProductIndex:string
 }) => {
 
   let imageComposer: any;
   let groupDelimiterName = props.productEditInfo.groupDelimiterName
+
   if(props.productEditInfo.productCode === ProductCode.FRAME_ALUMINIUM){
     groupDelimiterName = 'woodFrame';
+  } else if (EventProductList.includes(props.productEditInfo.productCode)) {
+    groupDelimiterName = 'eventProduct';
   }
+
   switch (groupDelimiterName) {
     case 'apparel':
       imageComposer = new Apparel();
@@ -72,12 +77,14 @@ export const generateImage = async (props: {
     case 'card':
       imageComposer = new Card();
       break;
+    case 'eventProduct':
+      imageComposer = new EventProduct();
+      break;
     default:
       break;
   }
 
   await imageComposer.init(props);
-
   await imageComposer.composite();
 
   return imageComposer;
