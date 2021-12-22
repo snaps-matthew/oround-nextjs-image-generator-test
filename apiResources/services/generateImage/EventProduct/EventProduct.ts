@@ -27,9 +27,7 @@ class EventProduct {
     this.target = data.target;
     this.ext = optionInfo.ext;
     if (data.target === TargetType.STORE_LIST_1 || data.target === TargetType.STORE_DETAIL_3) {
-      this.productResourcePath = productGroupName === 'slide' ?
-        `${Config.RESOURCE_CDN_URL}/${productCode}/${colorCode}_list.png`
-        :`${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png` ;
+      this.productResourcePath = `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png` ;
     } else if (data.target === TargetType.STORE_DETAIL_2) {
       this.productResourcePath = `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_view.png`;
     } else {
