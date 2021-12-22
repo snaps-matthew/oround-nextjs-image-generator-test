@@ -11,6 +11,6 @@ export const eventProductDisplayer = (productCode:string, artProductIndex:string
     case TargetType.STORE_DETAIL_2:
       return `${basePath}/view.png`;
     case TargetType.STORE_DETAIL_4:
-      return thumbnailImage;
+      return thumbnailImage.toDataURL();
   }
 }

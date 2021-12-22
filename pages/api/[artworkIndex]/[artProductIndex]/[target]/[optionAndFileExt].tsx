@@ -90,10 +90,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const eventProduct = eventProductDisplayer(productEditInfo.productCode, artProductIndex, thumbnailImage, target);
         res.end(`<img src='${eventProduct}' />`);
+      } else {
+        const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
+        imageComposer.stream().pipe(res);
       }
 
-      const imageComposer = await generateImage({ thumbnailImage, target, productEditInfo, optionInfo, scene })
-      imageComposer.stream().pipe(res);
     }else{
       const errorImageCanvas = await loadErrorImage("scene error");
       errorImageCanvas.createJPEGStream({
