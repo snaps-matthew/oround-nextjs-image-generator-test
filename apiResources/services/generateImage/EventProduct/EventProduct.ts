@@ -22,16 +22,25 @@ class EventProduct {
   }) {
     const productCode = data.productEditInfo.productCode;
     const { thumbnailImage, target, productEditInfo, optionInfo, artProductIndex } = data;
-    const productGroupName = productEditInfo.groupDelimitterName;
-    const colorCode = data.optionInfo.colorCode;
     this.target = data.target;
     this.ext = optionInfo.ext;
-    if (data.target === TargetType.STORE_LIST_1 || data.target === TargetType.STORE_DETAIL_3) {
-      this.productResourcePath = `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png` ;
+
+    if (data.target === TargetType.STORE_LIST_1) {
+
+      this.productResourcePath = productCode === '1040190002' ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list0.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
+
     } else if (data.target === TargetType.STORE_DETAIL_2) {
-      this.productResourcePath = `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_view.png`;
+
+      this.productResourcePath = productCode === '1040190002' ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list1.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_view.png`;
+
+    } else if (data.target === TargetType.STORE_DETAIL_3) {
+
+      this.productResourcePath = `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
+
     } else {
+
       this.canvas = thumbnailImage;
+
     }
   }
 
