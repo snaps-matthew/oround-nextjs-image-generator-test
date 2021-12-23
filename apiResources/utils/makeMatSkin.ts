@@ -23,7 +23,6 @@ export const makeMatSkin = (productEditInfo:any, scale:number) => {
   const MAT_CUTTING_PADDING = 2;     // 메트의 잘리는 영역 2mm
   const pageMillimeterPerPixel = pagePXWidth / pageMMWidth;      // page
   const matMargin = (MAT_CUTTING_PADDING * pageMillimeterPerPixel);
-  console.log('matMargin=-=-=',matMargin)
   const matPadding = matMargin * 2 * scale;
   const matThickness = matMargin * 1 * scale; // 1mm
   const width = sceneWidth  * scale;
