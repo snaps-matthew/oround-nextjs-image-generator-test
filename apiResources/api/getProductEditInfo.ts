@@ -3,8 +3,6 @@ import {BadRequest} from "apiResources/utils/GeneralError";
 import Config from 'apiResources/constants/Config';
 
 export const getProductEditInfo = async (artProductIndex:string, sizeCode:string): Promise<any> => {
-  console.log(`DEBUG : getProductEditInfo : ${Config.DOMAIN_API}/artwork/product/edit-info`);
-  console.log(`DEBUG : getProductEditInfo : ${Config.DOMAIN_RESOURCE}${Config.ARTWORK_RESOURCE_SKIN}`);
   const params = {
     "artProductIndex": artProductIndex,
     "sizeCode": sizeCode
@@ -18,7 +16,7 @@ export const getProductEditInfo = async (artProductIndex:string, sizeCode:string
     params,
     headers
   }).catch((err) => {
-    throw BadRequest(`${artProductIndex}  invalid, ${err.response.data.errorCode}`)
+    throw BadRequest(`${artProductIndex}  invalid`)
   });
 
   if (data.length === 0) {
