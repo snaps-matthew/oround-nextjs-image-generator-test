@@ -74,9 +74,9 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   // (2) 주름 생성하기
   const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
   const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
-  // ctx.globalCompositeOperation = 'source-over';
-  // ctx.drawImage(artworkImage, 0, 0);
-  await applyInnerWrinkle(canvas, artworkImage, productCropImage);
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.drawImage(artworkImage, 0, 0);
+  // await applyInnerWrinkle(canvas, artworkImage, productCropImage);
 
   if (extraLayer.length) {
     if (extraLayer.includes('finger')) {
