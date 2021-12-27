@@ -1,6 +1,6 @@
 import {createImageOfStoreList} from "apiResources/services/generateImage/Sticker/createImageOfStoreList";
 import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
-import TargetType from '../../../constants/TargetType';
+import TargetType from 'apiResources/constants/TargetType';
 import { createImageOfInteriorView } from 'apiResources/services/generateImage/Sticker/createImageOfInteriorView';
 import { createImageOfTopView } from 'apiResources/services/generateImage/Sticker/createImageOfTopView';
 

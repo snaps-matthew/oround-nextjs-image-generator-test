@@ -1,18 +1,13 @@
-import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { OroundCV } from 'apiResources/utils/OroundCV';
 import { getStickerCutLineSize } from 'apiResources/utils/getStickerSize';
 import {
-  getArtworkImage,
   getCreateImageInitInfo, getScale, getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
-import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
-import { calObjectPosition } from '../../../utils/calObjectPosition';
+import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
 import sticker_theme from "apiResources/services/generateImage/Sticker/sticker_theme";
-import { getSizeToTargetImage } from '../../../utils/getSizeToTargetImage';
+import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import { stickerPaperEffect } from './stickerPaperEffect';
 
 export const createImageOfInteriorView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {

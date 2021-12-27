@@ -7,8 +7,8 @@ import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import {
   getArtworkImage,
   getCreateImageInitInfo, getScale,
-} from '../../../utils/getSelectedScene';
-import TargetType from '../../../constants/TargetType';
+} from 'apiResources/utils/getSelectedScene';
+import TargetType from 'apiResources/constants/TargetType';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
 

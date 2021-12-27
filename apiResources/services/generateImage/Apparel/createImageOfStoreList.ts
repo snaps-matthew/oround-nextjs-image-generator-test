@@ -4,7 +4,7 @@ import { sceneTypeCode } from 'apiResources/constants/sceneType';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
-import { getArtworkImage, getCreateImageInitInfo, getScale, getSelectedScene } from '../../../utils/getSelectedScene';
+import { getArtworkImage, getCreateImageInitInfo, getScale, getSelectedScene } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 
 export const createImageOfStoreList = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {

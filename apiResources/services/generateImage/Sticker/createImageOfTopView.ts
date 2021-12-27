@@ -1,22 +1,16 @@
-import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
+import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { OroundCV } from 'apiResources/utils/OroundCV';
 import { getStickerCutLineSize } from 'apiResources/utils/getStickerSize';
 import {
   getArtworkImage,
   getCreateImageInitInfo, getScale, getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
-import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import CommonCode from 'apiResources/constants/CommonCode';
-import Config from 'apiResources/constants/Config';
-import { calObjectPosition } from '../../../utils/calObjectPosition';
-import sticker_theme from "apiResources/services/generateImage/Sticker/sticker_theme";
-import { getSizeToTargetImage } from '../../../utils/getSizeToTargetImage';
+import { loadErrorImage } from 'apiResources/utils/loadImage';
 import { stickerPaperEffect } from './stickerPaperEffect';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
+  const { templateImage, productEditInfo, optionInfo, canvas, target } = props;
   const groupDelimiterName = productEditInfo.groupDelimiterName
   const scale = getScale(groupDelimiterName)
   const scene = getSelectedScene(productEditInfo, optionInfo);
@@ -24,8 +18,6 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const height = scene.height * scale;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
   const paperCode = optionInfo.paperCode;
-  const sizeCode = optionInfo.sizeCode;
-  const directionCode = productEditInfo.directionCode;
 
   let ratio = 0
   if(productEditInfo.size.length > 0){

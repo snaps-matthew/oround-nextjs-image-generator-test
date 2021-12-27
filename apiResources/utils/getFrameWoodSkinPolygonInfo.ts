@@ -1,4 +1,4 @@
-import ProductCode from '../constants/ProductCode';
+import ProductCode from 'apiResources/constants/ProductCode';
 
 export const getFrameWoodSkinPolygonInfo = ( sizeInfo:any, productCode:string)=> {
   // const sceneType = selectedScene.get('@type')

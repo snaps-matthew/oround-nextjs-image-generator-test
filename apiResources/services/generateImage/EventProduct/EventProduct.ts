@@ -3,8 +3,8 @@ import TargetType from 'apiResources/constants/TargetType';
 import { Canvas, createCanvas } from 'canvas';
 import { loadImage } from 'apiResources/utils/loadImage';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { getArtworkImage } from '../../../utils/getSelectedScene';
-import { imageFull } from '../../../utils/imageAlign';
+import { getArtworkImage } from 'apiResources/utils/getSelectedScene';
+import { imageFull } from 'apiResources/utils/imageAlign';
 
 class EventProduct {
   protected productResourcePath: string;
