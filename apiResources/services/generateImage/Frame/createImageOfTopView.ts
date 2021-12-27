@@ -10,11 +10,9 @@ import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
-import { compositeMultiplyFromCanvas } from 'apiResources/utils/compositeMultiplyFromCanvas';
-import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
 import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
-import { largePrintGlossy, metalBrush } from './framePaperEffect';
+import { largePrintGlossy, metalBrush } from 'apiResources/services/generateImage/Frame/framePaperEffect';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

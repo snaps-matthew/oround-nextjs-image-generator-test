@@ -1,4 +1,4 @@
-import ImageComposer from "../ImageComposer";
+import ImageComposer from "apiResources/services/generateImage/ImageComposer";
 import { createImageOfTopView } from 'apiResources/services/generateImage/Card/createImageOfTopView';
 const { exec } = require('child_process');
 

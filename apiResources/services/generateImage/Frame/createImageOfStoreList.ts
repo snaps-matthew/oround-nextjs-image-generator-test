@@ -16,7 +16,7 @@ import Config from 'apiResources/constants/Config';
 import frame_theme from "apiResources/services/generateImage/Frame/frame_theme";
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
-import { getFrameNinePathUrl } from '../../../api/getFrameNinePathUrl';
+import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

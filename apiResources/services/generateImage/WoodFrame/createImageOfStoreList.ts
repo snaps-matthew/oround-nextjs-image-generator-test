@@ -4,20 +4,17 @@ import {
   getArtworkImage,
   getCreateImageInitInfo,
   getPreviewMargin, getScale,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import { getFrameColorUrl } from './getFrameColorUrl';
-import frameRectangleSkinInfo from './frameRectangleSkinInfo';
+import { getFrameColorUrl } from 'apiResources/services/generateImage/WoodFrame/getFrameColorUrl';
+import frameRectangleSkinInfo from 'apiResources/services/generateImage/WoodFrame/frameRectangleSkinInfo';
 import { getFrameSkinPolygonSize } from 'apiResources/services/generateImage/WoodFrame/getFrameSkinPolygonSize';
 import { OroundCV } from 'apiResources/utils/OroundCV';
 import frame_wood_theme from 'apiResources/services/generateImage/WoodFrame/frame_wood_theme';
-import ProductCode from 'apiResources/constants/ProductCode';
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import Config from 'apiResources/constants/Config';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
-import frame_theme from '../Frame/frame_theme';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

@@ -1,23 +1,17 @@
-import { imageFull, paperFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import {
-  getArtworkImage,
   getCreateImageInitInfo,
   getPreviewMargin, getScale,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
-import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
-import { compositeMultiplyFromCanvas } from 'apiResources/utils/compositeMultiplyFromCanvas';
-import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
 import frame_theme from "apiResources/services/generateImage/Frame/frame_theme";
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
-import { getFrameNinePathUrl } from '../../../api/getFrameNinePathUrl';
-import { largePrintGlossy, metalBrush } from './framePaperEffect';
+import { largePrintGlossy, metalBrush } from 'apiResources/services/generateImage/Frame/framePaperEffect';
 
 export const createImageOfInteriorView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

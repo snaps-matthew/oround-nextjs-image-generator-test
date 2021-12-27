@@ -3,9 +3,8 @@ import {loadImage} from "apiResources/utils/loadImage";
 import { SceneType } from 'apiResources/constants/sceneType';
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
-import { getOffset, getWrapperSize } from 'apiResources/utils/getProductInfo';
 import TargetType from 'apiResources/constants/TargetType';
-import { getArtworkImage, getCreateImageInitInfo, getScale } from '../../../utils/getSelectedScene';
+import { getArtworkImage, getCreateImageInitInfo, getScale } from 'apiResources/utils/getSelectedScene';
 import { getOffsetWrapper } from 'apiResources/utils/getOffsetWrapper';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {

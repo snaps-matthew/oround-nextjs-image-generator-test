@@ -1,11 +1,3 @@
-import {COMMON_NAME} from "apiResources/constants/commonName";
-import { getStickerCutLineSize } from '../utils/getStickerSize';
-import { newCanvas } from '../utils/newCanvas';
-import { OroundCV } from '../utils/OroundCV';
-import Config from './Config';
-import { loadImage } from '../utils/loadImage';
-import { paperFull } from '../utils/imageAlign';
-
 export default {
   FRAME_WOOD: "023001",
   FRAME_ALUMINIUM: '023002',

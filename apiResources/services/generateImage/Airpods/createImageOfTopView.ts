@@ -9,7 +9,6 @@ import {
   getCreateImageInitInfo,
   getArtworkImage, getScale,
 } from 'apiResources/utils/getSelectedScene';
-import { removeCuttingLine } from '../../removeCuttingLine';
 
 export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target: string}) => {
 

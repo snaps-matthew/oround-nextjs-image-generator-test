@@ -8,7 +8,7 @@ import Config from 'apiResources/constants/Config';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
 import sticker_theme from "apiResources/services/generateImage/Sticker/sticker_theme";
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
-import { stickerPaperEffect } from './stickerPaperEffect';
+import { stickerPaperEffect } from 'apiResources/services/generateImage/Sticker/stickerPaperEffect';
 
 export const createImageOfInteriorView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

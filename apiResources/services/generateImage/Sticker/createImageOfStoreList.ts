@@ -10,9 +10,9 @@ import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
 import CommonCode from 'apiResources/constants/CommonCode';
 import Config from 'apiResources/constants/Config';
-import { calObjectPosition } from '../../../utils/calObjectPosition';
+import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
 import sticker_theme from "apiResources/services/generateImage/Sticker/sticker_theme";
-import { getSizeToTargetImage } from '../../../utils/getSizeToTargetImage';
+import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 
 export const createImageOfStoreList = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
