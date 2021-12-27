@@ -1,21 +1,19 @@
 import { imageFull } from 'apiResources/utils/imageAlign';
 import { newCanvas } from 'apiResources/utils/newCanvas';
 import {
-  getArtworkImage,
   getCreateImageInitInfo,
   getPreviewMargin, getScale,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import { getFrameColorUrl } from './getFrameColorUrl';
-import frameRectangleSkinInfo from './frameRectangleSkinInfo';
+import { getFrameColorUrl } from 'apiResources/services/generateImage/WoodFrame/getFrameColorUrl';
+import frameRectangleSkinInfo from 'apiResources/services/generateImage/WoodFrame/frameRectangleSkinInfo';
 import { getFrameSkinPolygonSize } from 'apiResources/services/generateImage/WoodFrame/getFrameSkinPolygonSize';
 import frame_wood_theme from 'apiResources/services/generateImage/WoodFrame/frame_wood_theme';
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import Config from 'apiResources/constants/Config';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
 import { drawFrame } from 'apiResources/services/generateImage/WoodFrame/drawFrame';
-import { makeMatSkin } from '../../../utils/makeMatSkin';
+import { makeMatSkin } from 'apiResources/utils/makeMatSkin';
 
 export const createImageOfInteriorView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;

@@ -1,7 +1,5 @@
-import { getPageMillimeterPerPixel } from 'apiResources/utils/getCoverMillimeterPerPixel'
 import { newCanvas } from 'apiResources/utils/newCanvas'
-import { getFrameWoodSkinPolygonInfo } from 'apiResources/utils/getFrameWoodSkinPolygonInfo'
-import { TYPE } from '../constants/type';
+import { TYPE } from 'apiResources/constants/type';
 
 export const makeMatSkin = (productEditInfo:any, scale:number) => {
 

@@ -7,7 +7,7 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadErrorImage } from 'apiResources/utils/loadImage';
-import { stickerPaperEffect } from './stickerPaperEffect';
+import { stickerPaperEffect } from 'apiResources/services/generateImage/Sticker/stickerPaperEffect';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any }) => {
   const { templateImage, productEditInfo, optionInfo, canvas, target } = props;

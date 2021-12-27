@@ -4,12 +4,11 @@ import {
   getArtworkImage,
   getCreateImageInitInfo,
   getPreviewMargin, getScale,
-  getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
 import TargetType from 'apiResources/constants/TargetType';
 import { loadImage, loadErrorImage } from 'apiResources/utils/loadImage';
-import { getFrameColorUrl } from './getFrameColorUrl';
-import frameRectangleSkinInfo from './frameRectangleSkinInfo';
+import { getFrameColorUrl } from 'apiResources/services/generateImage/WoodFrame/getFrameColorUrl';
+import frameRectangleSkinInfo from 'apiResources/services/generateImage/WoodFrame/frameRectangleSkinInfo';
 import { getFrameSkinPolygonSize } from 'apiResources/services/generateImage/WoodFrame/getFrameSkinPolygonSize';
 import { OroundCV } from 'apiResources/utils/OroundCV';
 import { drawFrame } from 'apiResources/services/generateImage/WoodFrame/drawFrame';

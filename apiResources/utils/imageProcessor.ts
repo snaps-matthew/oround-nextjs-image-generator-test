@@ -1,5 +1,4 @@
 import { createCanvas } from 'canvas';
-import { imageTextSaver } from './imageTextSaver';
 
 export const flipImage = async (srcImg:any, xCoord:number, yCoord:number, imgWidth:number, imgHeight:number, canvasWidth:number, canvasHeight:number) => {
   const canvas = createCanvas(canvasWidth, canvasHeight);
