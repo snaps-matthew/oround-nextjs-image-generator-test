@@ -64,12 +64,13 @@ export const getScale = (groupDelimiterName: string) => {
 
 export const getCreateImageInitInfo = (target:string, canvas:any) =>{
   let outBox:any = {};
+
   if (target === TargetType.STORE_LIST_1) {
     outBox = {width: 600, height: 600};
   } else {
     outBox = {width: 1000, height: 1000};
   }
-  outBox = {width: 1000, height: 1000};
+
   canvas.width = outBox.width;
   canvas.height = outBox.height;
   let ctx = canvas.getContext('2d');

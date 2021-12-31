@@ -32,7 +32,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
   const offsetTop = offset.top * scale
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
-
+  
   if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
     const skinImage_bottom = await loadImage(skinPathBottom);
