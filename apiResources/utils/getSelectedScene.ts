@@ -3,6 +3,7 @@ import { TYPE } from 'apiResources/constants/type';
 import Config from 'apiResources/constants/Config';
 import { loadImage } from 'apiResources/utils/loadImage';
 import productInfo from 'apiResources/constants/productInfo';
+import TargetType from 'apiResources/constants/TargetType';
 
 export const getSelectedScene = (productEditInfo:any, optionInfo?:any) => {
   const groupName = productEditInfo.groupDelimiterName;
@@ -63,11 +64,11 @@ export const getScale = (groupDelimiterName: string) => {
 
 export const getCreateImageInitInfo = (target:string, canvas:any) =>{
   let outBox:any = {};
-  // if (target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3 || target === TargetType.STORE_DETAIL_4) {
-  //   outBox = {width: 500, height: 500};
-  // } else if (target=== TargetType.STORE_DETAIL_2) {
-  //   outBox = {width: 1000, height: 1000};
-  // }
+  if (target === TargetType.STORE_LIST_1) {
+    outBox = {width: 600, height: 600};
+  } else {
+    outBox = {width: 1000, height: 1000};
+  }
   outBox = {width: 1000, height: 1000};
   canvas.width = outBox.width;
   canvas.height = outBox.height;
