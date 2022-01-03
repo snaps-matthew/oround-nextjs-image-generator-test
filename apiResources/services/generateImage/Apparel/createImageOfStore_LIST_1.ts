@@ -1,4 +1,5 @@
 import {
+  applyInnerWrinkle,
   getArtworkReszied,
   getImageWrinkled,
 } from 'apiResources/utils/artworkImageCreator';
@@ -65,7 +66,9 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   }
 
   const productImage = await loadImage(`${productPath}/${optionInfo.colorCode}.png`);
-  const productCropImage = await loadImage(`${productPath}/crop.png`);
+  const productCropImage = await loadImage(`${productPath}/blur.png`);
+  const shadowImage = await loadImage(`${productPath}/shadow.png`);
+  const lightImage = await loadImage(`${productPath}/light.png`);
 
   // (0) 썸네일 이미지 텍스트 파일로 변환
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
@@ -78,7 +81,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
   ctx.globalCompositeOperation = 'source-over';
   ctx.drawImage(artworkImage, 0, 0);
-  // await applyInnerWrinkle(canvas, tempCanvas, productCropImage);
+  await applyInnerWrinkle(canvas, artworkImage, productCropImage, shadowImage, lightImage);
 
   if (extraLayer.length) {
     if (extraLayer.includes('finger')) {

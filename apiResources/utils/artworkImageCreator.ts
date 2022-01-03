@@ -258,25 +258,16 @@ export const changeApparelColor = async (canvas:any, colorCode:string, cropImg:s
   ctx.drawImage(cropImg, 0, 0, 1000, 1000);
 }
 
-export const changeApparelTexture = (canvas:any, textureImage:string, cropImg:string) => {
+export const applyInnerWrinkle = (canvas:any, patternImage:string, cropImage:string, shadowImage:string, lightImage:string) => {
   const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, 1000, 1000);
-  ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(textureImage, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
-
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
-}
-
-export const applyInnerWrinkle = (canvas:any, patternImage:any, cropImg:string) => {
-  const ctx = canvas.getContext('2d');
-  ctx.globalCompositeOperation = 'multiply';
   ctx.drawImage(patternImage, 0, 0, 1000, 1000);
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(cropImage, 0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.drawImage(shadowImage, 0, 0, 1000, 1000);
+  ctx.globalCompositeOperation = 'screen';
+  ctx.drawImage(lightImage, 0, 0, 1000, 1000);
 
   ctx.globalCompositeOperation = 'destination-in';
-  ctx.drawImage(patternImage, 0, 0);
-
+  ctx.drawImage(patternImage, 0, 0, 1000, 1000);
 }
