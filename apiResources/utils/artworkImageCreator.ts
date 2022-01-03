@@ -243,26 +243,9 @@ export const changeExtraLayerColor = (targetName:string, productPath:string, pat
 
 }
 
-export const changeApparelColor = async (canvas:any, colorCode:string, cropImg:string) => {
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, 1000, 1000);
-  ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(cropImg, 0, 0);
-  ctx.drawImage(cropImg, 0, 0);
-  ctx.drawImage(cropImg, 0, 0);
-
-  ctx.fillStyle = colorCode;
-  ctx.fillRect(0, 0, 1000, 1000);
-
-  ctx.globalCompositeOperation = 'destination-in';
-  ctx.drawImage(cropImg, 0, 0, 1000, 1000);
-}
-
-export const applyInnerWrinkle = (canvas:any, patternImage:string, cropImage:string, shadowImage:string, lightImage:string) => {
+export const applyInnerWrinkle = (canvas:any, patternImage:string, shadowImage:string, lightImage:string) => {
   const ctx = canvas.getContext('2d');
   ctx.drawImage(patternImage, 0, 0, 1000, 1000);
-  ctx.globalCompositeOperation = 'multiply';
-  ctx.drawImage(cropImage, 0, 0, 1000, 1000);
   ctx.globalCompositeOperation = 'multiply';
   ctx.drawImage(shadowImage, 0, 0, 1000, 1000);
   ctx.globalCompositeOperation = 'screen';
