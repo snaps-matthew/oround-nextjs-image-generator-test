@@ -12,7 +12,10 @@ import { removeCuttingLine } from 'apiResources/services/removeCuttingLine';
 import { isCanvasFrame } from 'apiResources/matchProd/isCanvasFrame';
 import Config from 'apiResources/constants/Config';
 import { getFrameNinePathUrl } from 'apiResources/api/getFrameNinePathUrl';
-import { largePrintGlossy, metalBrush } from 'apiResources/services/generateImage/Frame/framePaperEffect';
+import {
+  metalBrush, paperImageComposite,
+} from 'apiResources/services/generateImage/Frame/framePaperEffect';
+import CommonCode from 'apiResources/constants/CommonCode';
 
 export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
@@ -49,12 +52,17 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
 
   let thumbnailCanvas:any = removeCuttingLine(templateImage, paddingPx);
 
-  thumbnailCanvas = await metalBrush(colorCode, thumbnailCanvas)
-
-  await largePrintGlossy(glossyCode, thumbnailCanvas, width, height)
+  if(colorCode === CommonCode.COLOR_METAL_BRUSH){
+    thumbnailCanvas = await metalBrush(colorCode, thumbnailCanvas)
+  }else if (glossyCode===CommonCode.EFFECT_LARGE_PRINT_GLOSSY) {
+    const glossyPath = `${Config.RESOURCE_CDN_URL}/Texture/${glossyCode}.png`;
+    await paperImageComposite(glossyPath, thumbnailCanvas, width, height)
+  }else if(isCanvasFrame(productCode)){
+    const canvasEmbossingPath = `${Config.RESOURCE_CDN_URL}/Texture/canvas-pattern-embossing@2x.png`;
+    await paperImageComposite(canvasEmbossingPath, thumbnailCanvas, width, height)
+  }
 
   if(target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3) {
-
     const frameWidth = thumbnailCanvas.width + (offset * 2);
     const frameHeight = thumbnailCanvas.height + (offset * 2);
     const tmp = newCanvas(frameWidth, frameHeight);

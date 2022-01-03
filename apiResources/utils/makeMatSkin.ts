@@ -1,5 +1,6 @@
 import { newCanvas } from 'apiResources/utils/newCanvas'
 import { TYPE } from 'apiResources/constants/type';
+import { getFrameWoodSkinPolygonInfo } from 'apiResources/utils/getFrameWoodSkinPolygonInfo';
 
 export const makeMatSkin = (productEditInfo:any, scale:number) => {
 
@@ -27,20 +28,20 @@ export const makeMatSkin = (productEditInfo:any, scale:number) => {
   const height = sceneHeight * scale;
   const mat = newCanvas(width, height);
 
-  // const {IN, innerBoxTopMargin} = getFrameWoodSkinPolygonInfo( sizeInfo, productCode);
-  // const frameMargin = innerBoxTopMargin/2
-  // let isMat = true
-  //   if(
-  //     isMat && (
-  //       IN[0].X-frameMargin > imageObject.x ||
-  //       IN[0].Y-frameMargin > imageObject.y ||
-  //       IN[2].X-frameMargin < imageObject.x+imageObject.width ||
-  //       IN[2].Y-frameMargin < imageObject.y+imageObject.height
-  //     )
-  //   ){
-  //     isMat = false
-  //   }
-  // if(!isMat) return mat.canvas;
+  const {IN, innerBoxTopMargin} = getFrameWoodSkinPolygonInfo( sizeInfo, productCode);
+  const frameMargin = innerBoxTopMargin/2
+  let isMat = true
+    if(
+      isMat && (
+        IN[0].X-frameMargin > imageObject.x ||
+        IN[0].Y-frameMargin > imageObject.y ||
+        IN[2].X-frameMargin < imageObject.x+imageObject.width ||
+        IN[2].Y-frameMargin < imageObject.y+imageObject.height
+      )
+    ){
+      isMat = false
+    }
+  if(!isMat) return mat.canvas;
 
   mat.ctx.fillStyle = '#ffffff';
   mat.ctx.fillRect(0, 0, width, height);

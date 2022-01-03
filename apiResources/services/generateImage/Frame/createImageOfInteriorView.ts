@@ -11,7 +11,10 @@ import Config from 'apiResources/constants/Config';
 import frame_theme from "apiResources/services/generateImage/Frame/frame_theme";
 import { getSizeToTargetImage } from 'apiResources/utils/getSizeToTargetImage';
 import { calObjectPosition } from 'apiResources/utils/calObjectPosition';
-import { largePrintGlossy, metalBrush } from 'apiResources/services/generateImage/Frame/framePaperEffect';
+import {
+  metalBrush, paperImageComposite,
+} from 'apiResources/services/generateImage/Frame/framePaperEffect';
+import CommonCode from 'apiResources/constants/CommonCode';
 
 export const createImageOfInteriorView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string, drawObject:any}) => {
   const {templateImage, productEditInfo, optionInfo, canvas, target, drawObject} = props;
@@ -48,51 +51,57 @@ export const createImageOfInteriorView = async (props:{templateImage: any, produ
 
   let thumbnailCanvas:any = removeCuttingLine(templateImage, paddingPx);
 
-  thumbnailCanvas = await metalBrush(colorCode, thumbnailCanvas)
+  if(colorCode === CommonCode.COLOR_METAL_BRUSH){
+    thumbnailCanvas = await metalBrush(colorCode, thumbnailCanvas)
+  }else if (glossyCode===CommonCode.EFFECT_LARGE_PRINT_GLOSSY) {
+    const glossyPath = `${Config.RESOURCE_CDN_URL}/Texture/${glossyCode}.png`;
+    await paperImageComposite(glossyPath, thumbnailCanvas, width, height)
+  }else if(isCanvasFrame(productCode)){
+    const canvasEmbossingPath = `${Config.RESOURCE_CDN_URL}/Texture/canvas-pattern-embossing@2x.png`;
+    await paperImageComposite(canvasEmbossingPath, thumbnailCanvas, width, height)
+  }
 
-  await largePrintGlossy(glossyCode, thumbnailCanvas, width, height)
+  const themeListInfo:any = frame_theme;
+  const themeInfo = themeListInfo[productCode];
+  const {
+    sizeToTargetImageWidth,
+    sizeToTargetImageHeight
+  } = getSizeToTargetImage(themeInfo, directionCode, productEditInfo.size[0].horizontalSizeMm, productEditInfo.size[0].verticalSizeMm);
 
-    const themeListInfo:any = frame_theme;
-    const themeInfo = themeListInfo[productCode];
-    const {
-      sizeToTargetImageWidth,
-      sizeToTargetImageHeight
-    } = getSizeToTargetImage(themeInfo, directionCode, productEditInfo.size[0].horizontalSizeMm, productEditInfo.size[0].verticalSizeMm);
+  canvas.width = themeInfo.width;
+  canvas.height = themeInfo.height;
 
-    canvas.width = themeInfo.width;
-    canvas.height = themeInfo.height;
+  for (const obj of themeInfo.object) {
 
-    for (const obj of themeInfo.object) {
+    if (obj.type === "image") {
+      const { x, y } = calObjectPosition(obj.position, obj.x, obj.y, sizeToTargetImageWidth, sizeToTargetImageHeight);
+      ctx.save();
+      ctx.shadowColor = obj.shadowColor;
+      ctx.shadowBlur = obj.shadowBlur;
+      ctx.shadowOffsetX = obj.shadowOffsetX;
+      ctx.shadowOffsetY = obj.shadowOffsetY;
 
-      if (obj.type === "image") {
-        const { x, y } = calObjectPosition(obj.position, obj.x, obj.y, sizeToTargetImageWidth, sizeToTargetImageHeight);
-        ctx.save();
-        ctx.shadowColor = obj.shadowColor;
-        ctx.shadowBlur = obj.shadowBlur;
-        ctx.shadowOffsetX = obj.shadowOffsetX;
-        ctx.shadowOffsetY = obj.shadowOffsetY;
-
-        const tmp = newCanvas(sizeToTargetImageWidth, sizeToTargetImageHeight);
-        tmp.ctx.drawImage(thumbnailCanvas, 0, 0, sizeToTargetImageWidth, sizeToTargetImageHeight);
-        // 입체감을 주기위해 라인 반사광을 넣는다.
-        tmp.ctx.save()
-        tmp.ctx.lineWidth = 1;
-        tmp.ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-        tmp.ctx.lineWidth = 1;
-        tmp.ctx.rect(1,1, width-2, height-2);
-        tmp.ctx.stroke()
-        tmp.ctx.restore()
-        drawObject(thumbnailCanvas, canvas, x, y, sizeToTargetImageWidth, sizeToTargetImageHeight);
-        ctx.restore();
-      } else if (obj.type === "shadow") {
-        const img = await loadImage(themeImagePath + obj.path);
-        // const shadowWidth = height * img.width / img.height;
-        // const {x, y} = calObjectPosition(obj.position, obj.x, obj.y, shadowWidth, height);
-        // drawObject(img, canvas, x, y, shadowWidth, height);
-        drawObject(img, canvas, obj.x, obj.y, img.width, img.height);
-      } else {
-        const img = await loadImage(themeImagePath + obj.path);
-        drawObject(img, canvas, obj.x, obj.y, img.width, img.height);
-      }
+      const tmp = newCanvas(sizeToTargetImageWidth, sizeToTargetImageHeight);
+      tmp.ctx.drawImage(thumbnailCanvas, 0, 0, sizeToTargetImageWidth, sizeToTargetImageHeight);
+      // 입체감을 주기위해 라인 반사광을 넣는다.
+      tmp.ctx.save()
+      tmp.ctx.lineWidth = 1;
+      tmp.ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+      tmp.ctx.lineWidth = 1;
+      tmp.ctx.rect(1,1, width-2, height-2);
+      tmp.ctx.stroke()
+      tmp.ctx.restore()
+      drawObject(thumbnailCanvas, canvas, x, y, sizeToTargetImageWidth, sizeToTargetImageHeight);
+      ctx.restore();
+    } else if (obj.type === "shadow") {
+      const img = await loadImage(themeImagePath + obj.path);
+      // const shadowWidth = height * img.width / img.height;
+      // const {x, y} = calObjectPosition(obj.position, obj.x, obj.y, shadowWidth, height);
+      // drawObject(img, canvas, x, y, shadowWidth, height);
+      drawObject(img, canvas, obj.x, obj.y, img.width, img.height);
+    } else {
+      const img = await loadImage(themeImagePath + obj.path);
+      drawObject(img, canvas, obj.x, obj.y, img.width, img.height);
     }
+  }
 }
