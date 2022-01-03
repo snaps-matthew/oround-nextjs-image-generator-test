@@ -66,7 +66,6 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   }
 
   const productImage = await loadImage(`${productPath}/${optionInfo.colorCode}.png`);
-  const productCropImage = await loadImage(`${productPath}/blur.png`);
   const shadowImage = await loadImage(`${productPath}/shadow.png`);
   const lightImage = await loadImage(`${productPath}/light.png`);
 
@@ -81,7 +80,7 @@ export const createImageOfStore_LIST_1 = async (props:any) => {
   const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
   ctx.globalCompositeOperation = 'source-over';
   ctx.drawImage(artworkImage, 0, 0);
-  await applyInnerWrinkle(canvas, artworkImage, productCropImage, shadowImage, lightImage);
+  await applyInnerWrinkle(canvas, artworkImage, shadowImage, lightImage);
 
   if (extraLayer.length) {
     if (extraLayer.includes('finger')) {
