@@ -57,7 +57,7 @@ export const createImageOfInteriorView = async (props:{templateImage: any, produ
     const glossyPath = `${Config.RESOURCE_CDN_URL}/Texture/${glossyCode}.png`;
     await paperImageComposite(glossyPath, thumbnailCanvas, width, height)
   }else if(isCanvasFrame(productCode)){
-    const canvasEmbossingPath = `${Config.RESOURCE_CDN_URL}/Texture/canvas-pattern-embossing@2x.png`;
+    const canvasEmbossingPath = `${Config.RESOURCE_CDN_URL}/Texture/canvas_pattern_embossing@2x.png`;
     await paperImageComposite(canvasEmbossingPath, thumbnailCanvas, width, height)
   }
 
