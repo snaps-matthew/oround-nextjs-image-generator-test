@@ -35,7 +35,7 @@ class EventProduct {
 
     if (data.target === TargetType.STORE_LIST_1) {
 
-      this.productResourcePath = productCode === '1040190002' ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list0.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
+      this.productResourcePath = ['1040190002', '1040180001'].includes(productCode) ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list0.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
 
     } else if (data.target === TargetType.STORE_DETAIL_2) {
 
@@ -43,7 +43,7 @@ class EventProduct {
 
     } else if (data.target === TargetType.STORE_DETAIL_3) {
 
-      this.productResourcePath = productCode === '1040190002' ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list1.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
+      this.productResourcePath = ['1040190002', '1040180001'].includes(productCode) ? `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list1.png` : `${Config.RESOURCE_CDN_URL}/${productCode}/${artProductIndex}_list.png`;
 
     } else {
       const {artworkImage, artworkImageWidth, artworkImageHeight}  = await getArtworkImage(productEditInfo, optionInfo);

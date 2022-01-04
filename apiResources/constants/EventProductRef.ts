@@ -11,6 +11,7 @@ export const EventProductList:string[] = [
   '1040160001',
   '1040190001',
   '1040190002',
+  '1040180001',
 ]
 
 export const EventProductArtProdIdx:string[] = [
@@ -57,7 +58,6 @@ export const EventProductArtProdIdx:string[] = [
   '19631',
   '19858',
   '19762',
-  '20901',
   '20032',
   '20802'
 ]
