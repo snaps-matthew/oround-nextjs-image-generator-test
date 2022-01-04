@@ -25,7 +25,7 @@ export const getArtworkReszied = (srcCoords:number[], dstCoords:number[], catego
     perspectiveCoords.push(srcCoords[i],
       srcCoords[i + 1], dstCoords[i] + adjustment[`${categoryName}`]['x'], dstCoords[i + 1] + adjustment[`${categoryName}`]['y'])
   }
-
+  
   return new Promise((resolve, reject) => {
 
     exec(`convert inline:${inputFilePath}.txt -matte -virtual-pixel transparent -background transparent -extent 1000x1000 \

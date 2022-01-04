@@ -10,12 +10,13 @@ import {
 } from 'apiResources/utils/getSelectedScene';
 import { getWrapperSize } from 'apiResources/utils/getProductInfo';
 import { isUVPrintPhoneCase } from 'apiResources/matchProd/isPhoneCaseProd';
+import { EventProductArtProdIdx } from 'apiResources/constants/EventProductRef';
 
-export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:any}) => {
-  const {templateImage, productEditInfo, optionInfo, canvas, target} = props;
+export const createImageOfTopView = async (props:{templateImage: any, productEditInfo:any, optionInfo:any, artProductIndex:string, canvas: any, target:any}) => {
+  const {templateImage, productEditInfo, optionInfo, artProductIndex, canvas, target} = props;
+  const caseCode:string = optionInfo.caseCode
   const productCode:string = productEditInfo.productCode;
   const comparisonColorCode:string = optionInfo.diviceColorCode;
-  const caseCode:string = optionInfo.caseCode
   const groupDelimiterName = productEditInfo.groupDelimiterName
   const scale = getScale(groupDelimiterName)
   const isHardCase = productCode.slice(-1) === '2';
@@ -30,7 +31,11 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target !== TargetType.STORE_DETAIL_4) {
+  if (target === TargetType.STORE_DETAIL_2 && EventProductArtProdIdx.includes(artProductIndex)) {
+    const eventProdImage = await loadImage(`${Config.RESOURCE_CDN_URL}/EventProduct/woojung.png`);
+    ctx.drawImage(eventProdImage, 0, 0);
+  }
+  else if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
     const wrapper = getWrapperSize(productCode)
     const wrapperWidth = wrapper.width * scale

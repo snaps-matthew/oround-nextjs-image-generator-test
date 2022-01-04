@@ -7,8 +7,8 @@ class AcrylicKeyring extends ImageComposer {
   }
 
   async composite() {
-    const { canvas, productEditInfo, optionInfo, target, thumbnailImage } = this;
-    await createImageOfTopView({thumbnailImage, productEditInfo, optionInfo, canvas, target });
+    const { canvas, productEditInfo, optionInfo, target, thumbnailImage, artProductIndex } = this;
+    await createImageOfTopView({thumbnailImage, productEditInfo, optionInfo, artProductIndex, canvas, target });
   }
 }
 

@@ -7,9 +7,10 @@ class PhoneCase extends ImageComposer {
   }
 
   async composite() {
-    const {productCode, canvas, productEditInfo, optionInfo, target, drawObject,stream} = this;
+    const { canvas, productEditInfo, optionInfo, target, artProductIndex } = this;
+
     let templateImage = this.thumbnailImage
-    await createImageOfTopView({templateImage, productEditInfo, optionInfo, canvas, target });
+    await createImageOfTopView({templateImage, productEditInfo, optionInfo, artProductIndex, canvas, target });
   }
 }
 

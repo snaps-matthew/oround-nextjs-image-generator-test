@@ -11,6 +11,7 @@ class ImageComposer {
   protected wrinkleMag: number;
   protected artworkWidth: any;
   protected artworkHeight: any;
+  protected artProductIndex: string;
   protected target: string;
   protected productSize: string;
   protected thumbnailImage: any;
@@ -34,6 +35,7 @@ class ImageComposer {
     this.wrinkleMag = -20;
     this.categoryName = '';
     this.directionCode = '';
+    this.artProductIndex = '';
     this.canvas = createCanvas(1000,1000);
     this.tempCanvas = createCanvas(1000, 1000);
     this.productSize = '';
@@ -64,6 +66,7 @@ class ImageComposer {
     this.directionCode = data.productEditInfo.directionCode || '';
     this.thumbnailImage = data.thumbnailImage;
     this.productEditInfo = data.productEditInfo;
+    this.artProductIndex = data.artProductIndex;
     this.optionInfo = data.optionInfo;
     this.target = data.target;
     this.productSize = data.optionInfo.sizeCode;

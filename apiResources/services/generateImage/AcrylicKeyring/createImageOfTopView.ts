@@ -14,10 +14,11 @@ import {
   getCreateImageInitInfo, getScale,
   getSelectedScene,
 } from 'apiResources/utils/getSelectedScene';
+import { EventProductArtProdIdx } from 'apiResources/constants/EventProductRef';
 
 
-export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, canvas: any, target:string}) => {
-  const {thumbnailImage, productEditInfo, optionInfo, canvas, target} = props;
+export const createImageOfTopView = async (props:{thumbnailImage: any, productEditInfo:any, optionInfo:any, artProductIndex:string, canvas: any, target:string}) => {
+  const {thumbnailImage, productEditInfo, optionInfo, artProductIndex, canvas, target} = props;
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
   const acrylicCode = optionInfo.acrylicCode;
@@ -42,7 +43,18 @@ export const createImageOfTopView = async (props:{thumbnailImage: any, productEd
     paperShadowColor= "#d7bfff80"
     paperImagePath = `${Config.RESOURCE_CDN_URL}/Texture/${acrylicCode}.png`;
   }
-  if (target !== TargetType.STORE_DETAIL_4) {
+
+  if (target !== TargetType.STORE_DETAIL_4 && EventProductArtProdIdx.includes(artProductIndex)) {
+    let eventProdImagePath = `${Config.RESOURCE_CDN_URL}/EventProduct/${artProductIndex}/`;
+    if (target === TargetType.STORE_LIST_1 || target === TargetType.STORE_DETAIL_3) {
+      eventProdImagePath += 'list0.png';
+    } else {
+      eventProdImagePath += 'view.png';
+    }
+    const eventProdImage = await loadImage(eventProdImagePath);
+    ctx.drawImage(eventProdImage, 0, 0, outBox.width, outBox.height);
+  }
+  else if (target !== TargetType.STORE_DETAIL_4) {
     //target 1, 2, 3의 경우
     const groupDelimiterName = productEditInfo.groupDelimiterName
     const scale = getScale(groupDelimiterName)
