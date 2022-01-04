@@ -7,14 +7,15 @@ import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import ImageProcessingRef from 'apiResources/constants/ImageProcessingRef';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
+import { getCreateImageInitInfo } from 'apiResources/utils/getSelectedScene';
 
 export const createImageOfModelView = async (props:any) => {
-  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition } = props;
+  const { categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, thumbnailImage, canvas, printPosition, target } = props;
   const productPath = `${Config.RESOURCE_CDN_URL}/${productCode}/${printPosition}/model`;
   let patternSrcCoords = [];
   const patternImageFileName = `${ImageProcessingRef.BASE_RESOURCE_PATH}/patternImage_${uniqueKey()}`;
-  const ctx = canvas.getContext('2d');
-  [canvas.width, canvas.height] = [1000, 1000];
+  const { ctx, outBox } = getCreateImageInitInfo(target, canvas);
+  const imageListViewRatio = outBox.width / 1000;
 
   // (0) 썸네일 이미지 텍스트 파일로 변환하기
   await imageTextSaver(thumbnailImage.toDataURL(), patternImageFileName);
@@ -27,19 +28,23 @@ export const createImageOfModelView = async (props:any) => {
   }
 
   // 틴케이스 patternDstCoords => 사이즈만 고려
-  const patternDstCoords = coordinateData[productCode][productSize];
+  const patternDstCoords = coordinateData[productCode][productSize].map((c:any) => c * imageListViewRatio);
 
   // (1) 아트워크 리사이징
-  await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
+  const artworkResized = await getArtworkReszied(patternSrcCoords, patternDstCoords, categoryName, patternImageFileName, patternImageFileName);
 
   // (2) 아트워크 마스킹 => 틴케이스의 경우, 아트워크 코너들을 둥글게 잘라줘야 한다
-  const artworkMasked = await imageDstOut(patternImageFileName, productPath, `${productSize}_mask`, productCode);
-  
+
   // (3) 상품 위에 올리기
-  const finalImage = await loadImage(`data:image/png;base64,${artworkMasked}`);
   const productImage = await loadImage(`${productPath}/${productColor}_${productSize}.png`);
-  ctx.drawImage(productImage, 0, 0);
-  ctx.drawImage(finalImage, 0, 0);
+  const maskImage = await loadImage(`${productPath}/${productSize}_mask.png`);
+  const artworkLoaded = await loadImage(`data:image/png;base64,${artworkResized}`);
+
+  ctx.drawImage(artworkLoaded, 0, 0);
+  ctx.globalCompositeOperation = 'destination-out';
+  ctx.drawImage(maskImage, 0, 0, outBox.width, outBox.height);
+  ctx.globalCompositeOperation = 'destination-over';
+  ctx.drawImage(productImage, 0, 0, outBox.width, outBox.height);
 
   // 임시 생성한 이미지 텍스트 파일 삭제
   patternImageRemover([patternImageFileName]);

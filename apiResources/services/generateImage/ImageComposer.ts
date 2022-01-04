@@ -16,6 +16,7 @@ class ImageComposer {
   protected thumbnailImage: any;
   protected directionCode: string;
   protected canvas: Canvas;
+  protected tempCanvas: Canvas;
   protected sizeCode: string;
   protected paperCode: string;
   protected backCode: string;
@@ -33,7 +34,8 @@ class ImageComposer {
     this.wrinkleMag = -20;
     this.categoryName = '';
     this.directionCode = '';
-    this.canvas = createCanvas(10,10);
+    this.canvas = createCanvas(1000,1000);
+    this.tempCanvas = createCanvas(1000, 1000);
     this.productSize = '';
     this.productColor = '';
     this.paperCode = '';

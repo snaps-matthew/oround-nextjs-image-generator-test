@@ -1,8 +1,7 @@
 import TargetType from "apiResources/constants/TargetType";
 import ImageComposer from 'apiResources/services/generateImage/ImageComposer';
 import { createImageOfStoreList } from "apiResources/services/generateImage/Apparel/createImageOfStoreList";
-import { createImageOfStore_LIST_1 } from 'apiResources/services/generateImage/Apparel/createImageOfStore_LIST_1';
-import { createImageOfStore_DETAIL_2 } from 'apiResources/services/generateImage/Apparel/createImageOfStore_DETAIL_2'
+import { createImageOfModelView } from 'apiResources/services/generateImage/Apparel/createImageOfModelView'
 import isEcoBag from 'apiResources/constants/isEcoBag';
 
 class Apparel extends ImageComposer {
@@ -24,6 +23,7 @@ class Apparel extends ImageComposer {
       productSize,
       optionInfo,
       canvas,
+      tempCanvas,
       printPosition
     } = this;
 
@@ -33,12 +33,12 @@ class Apparel extends ImageComposer {
       if (isEcoBag.includes(productCode)) {
         await createImageOfStoreList({ thumbnailImage, productEditInfo, optionInfo, canvas, target });
       } else {
-        await createImageOfStore_LIST_1({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, printPosition })
+        await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, tempCanvas, printPosition, target })
       }
 
     } else if (this.target === TargetType.STORE_DETAIL_2) {
 
-      await createImageOfStore_DETAIL_2({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, printPosition })
+      await createImageOfModelView({ categoryName, productCode, productColor, productSize, directionCode, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, tempCanvas, printPosition, target })
 
     } else if (this.target === TargetType.STORE_DETAIL_3 || this.target === TargetType.STORE_DETAIL_4) {
 

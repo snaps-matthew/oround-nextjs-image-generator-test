@@ -12,13 +12,12 @@ import { uniqueKey } from 'apiResources/utils/sugar';
 import { imageTextSaver } from 'apiResources/utils/imageTextSaver';
 import { patternImageRemover } from 'apiResources/utils/patternImageRemover';
 import { loadImage } from 'apiResources/utils/loadImage';
-import { createCanvas } from 'canvas';
+import ListImageOffset from 'apiResources/constants/ListImageOffset';
+import TargetType from 'apiResources/constants/TargetType';
 
-export const createImageOfStore_DETAIL_2 = async (props:any) => {
-  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, printPosition } = props;
-  [canvas.width, canvas.height] = [1000, 1000];
+export const createImageOfModelView = async (props:any) => {
+  const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, tempCanvas, printPosition, target } = props;
   const ctx = canvas.getContext('2d');
-  const tempCanvas = createCanvas(1000, 1000);
   const tempCtx = tempCanvas.getContext('2d');
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
   let patternDstCoords = coordinateData[productCode];
@@ -93,6 +92,16 @@ export const createImageOfStore_DETAIL_2 = async (props:any) => {
   // (4) 상품 위에 올리기
   ctx.globalCompositeOperation = 'destination-over';
   ctx.drawImage(productImage, 0, 0, 1000, 1000);
+
+  if (target === TargetType.STORE_LIST_1) {
+    tempCtx.drawImage(canvas, 0, 0);
+    [canvas.width, canvas.height] = [600, 600];
+    ctx.globalCompositeOperation = 'source-over'
+    ctx.drawImage(
+      tempCanvas,
+      ListImageOffset[productCode].x, ListImageOffset[productCode].y, ListImageOffset[productCode].width, ListImageOffset[productCode].height,
+      0, 0, 600, 600);
+  }
 
   patternImageRemover([patternImageFileName]);
 
