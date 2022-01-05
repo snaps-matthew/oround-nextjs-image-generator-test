@@ -17,6 +17,7 @@ import TargetType from 'apiResources/constants/TargetType';
 
 export const createImageOfModelView = async (props:any) => {
   const { categoryName, productCode, productColor, artworkWidth, artworkHeight, optionInfo, thumbnailImage, canvas, tempCanvas, printPosition, target } = props;
+    [canvas.width, canvas.height] = [1000, 1000];
   const ctx = canvas.getContext('2d');
   const tempCtx = tempCanvas.getContext('2d');
   const patternSrcCoords = [0, 0, artworkWidth, 0, artworkWidth, artworkHeight, 0, artworkHeight];
@@ -75,7 +76,7 @@ export const createImageOfModelView = async (props:any) => {
   const artworkWrinkled:any = await getImageWrinkled(productPath, productCode, patternImageFileName);
   const artworkImage = await loadImage(`data:image/png;base64,${artworkWrinkled}`);
   ctx.globalCompositeOperation = 'source-over';
-  ctx.drawImage(artworkImage, 0, 0);
+  ctx.drawImage(artworkImage, 0, 0, 1000, 1000);
   await applyInnerWrinkle(canvas, artworkImage, shadowImage, lightImage);
 
   if (extraLayer.length) {
@@ -86,7 +87,7 @@ export const createImageOfModelView = async (props:any) => {
     }
 
     ctx.globalCompositeOperation = 'source-over'
-    ctx.drawImage(extraLayerImage, 0, 0);
+    ctx.drawImage(extraLayerImage, 0, 0, 1000, 1000);
   }
 
   // (4) 상품 위에 올리기
@@ -94,7 +95,7 @@ export const createImageOfModelView = async (props:any) => {
   ctx.drawImage(productImage, 0, 0, 1000, 1000);
 
   if (target === TargetType.STORE_LIST_1) {
-    tempCtx.drawImage(canvas, 0, 0);
+    tempCtx.drawImage(canvas, 0, 0, 1000, 1000);
     [canvas.width, canvas.height] = [600, 600];
     ctx.globalCompositeOperation = 'source-over'
     ctx.drawImage(
