@@ -31,7 +31,7 @@ export const createImageOfTopView = async (props:{templateImage: any, productEdi
 
   const {ctx, outBox} = getCreateImageInitInfo(target, canvas)
 
-  if (target === TargetType.STORE_DETAIL_2 && EventProductArtProdIdx.includes(artProductIndex)) {
+  if (target === TargetType.STORE_DETAIL_3 && EventProductArtProdIdx.includes(artProductIndex)) {
     const eventProdImage = await loadImage(`${Config.RESOURCE_CDN_URL}/EventProduct/woojung.png`);
     ctx.drawImage(eventProdImage, 0, 0);
   }

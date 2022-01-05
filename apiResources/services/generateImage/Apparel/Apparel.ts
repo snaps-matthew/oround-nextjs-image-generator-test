@@ -39,9 +39,9 @@ class Apparel extends ImageComposer {
       if (target === TargetType.STORE_LIST_1 ) {
         eventProdImagePath += 'list0.png';
       } else if (target === TargetType.STORE_DETAIL_3) {
-        eventProdImagePath += 'view.png';
-      } else {
         eventProdImagePath += 'list1.png';
+      } else {
+        eventProdImagePath += 'view.png';
       }
       const eventProdImage = await loadImage(eventProdImagePath);
       ctx.drawImage(eventProdImage, 0, 0, outBox.width, outBox.height);
