@@ -41,6 +41,8 @@ export const createImageOfModelView = async (props:any) => {
   const artworkLoaded = await loadImage(`data:image/png;base64,${artworkResized}`);
 
   ctx.drawImage(artworkLoaded, 0, 0);
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.drawImage(artworkLoaded, 0, 0);
   ctx.globalCompositeOperation = 'destination-out';
   ctx.drawImage(maskImage, 0, 0, outBox.width, outBox.height);
   ctx.globalCompositeOperation = 'destination-over';
