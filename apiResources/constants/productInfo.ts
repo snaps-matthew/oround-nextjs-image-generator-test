@@ -189,6 +189,30 @@ const productInfo: ProductGroupInfoState = {
   '1030220002': { // 아이폰SE
     wrapperSize: { width: 380, height: 650 }
   },
+  '1030230001': { // 아이폰 13
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030230002': { // 아이폰 13 하드
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030240001': { // 아이폰 13 pro
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030240002': { // 아이폰 13 pro 하드
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030250001': { // 아이폰 13 pro max
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030250002': { // 아이폰 13 pro max 하드
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030260001': { // 아이폰 13 mini
+    wrapperSize: { width: 380, height: 650 }
+  },
+  '1030260002': { // 아이폰 13 mini 하드
+    wrapperSize: { width: 380, height: 650 }
+  },
 
   /** goods */
   '1040010001': { // acrylicKeyring
