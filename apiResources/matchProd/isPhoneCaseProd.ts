@@ -24,7 +24,6 @@ export const isUVPrintPhoneCase = (productCode:string) => {
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_12_MINI ||
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_12_PRO_MAX ||
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_SE ||
-  productCode === PRODUCT_CODE.PHONE_CASE_FANCY_IPHONE_SE ||
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_13 ||
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_13_PRO ||
   productCode === PRODUCT_CODE.PHONE_CASE_UV_IPHONE_13_MINI ||
